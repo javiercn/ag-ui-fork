@@ -1,0 +1,276 @@
+﻿[
+  {
+    client: {
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: Suggest me an Italian pasta recipe
+            }
+          ]
+        }
+      ],
+      runAgentInput: {
+        threadId: thread_Id_1,
+        runId: run_Id_1,
+        messages: [
+          {
+            role: user,
+            content: Suggest me an Italian pasta recipe
+          }
+        ],
+        state: {
+          recipe: {
+            title: ,
+            cuisine: ,
+            prep_time_minutes: 0,
+            cook_time_minutes: 0,
+            skill_level: 
+          }
+        }
+      },
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_1,
+          runId: run_Id_1
+        },
+        {
+          type: STATE_SNAPSHOT,
+          snapshot: {
+            recipe: {
+              title: Classic Spaghetti Carbonara,
+              cuisine: Italian,
+              ingredients: [
+                400g spaghetti,
+                200g guanciale or pancetta,
+                4 large egg yolks,
+                100g Pecorino Romano cheese, grated,
+                Freshly ground black pepper,
+                Salt for pasta water
+              ],
+              steps: [
+                Bring a large pot of salted water to boil and cook spaghetti until al dente.,
+                While pasta cooks, cut guanciale into small strips and cook in a dry pan over medium heat until crispy.,
+                In a bowl, whisk together egg yolks and grated Pecorino Romano.,
+                Drain pasta, reserving 1 cup of pasta water.,
+                Toss hot pasta with guanciale, then remove from heat.,
+                Add egg and cheese mixture, tossing quickly to create a creamy sauce. Add pasta water as needed.,
+                Season generously with black pepper and serve immediately.
+              ],
+              prep_time_minutes: 10,
+              cook_time_minutes: 20,
+              skill_level: intermediate
+            }
+          }
+        },
+        {
+          type: TEXT_MESSAGE_START,
+          messageId: msg_Id_1,
+          role: assistant,
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text: Here's a Classic Spaghetti Carbonara recipe — an intermediate Italian dish with guanciale, egg yolks, and Pecorino Romano. It takes about 30 minutes total to prepare and cook.,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: msg_Id_1,
+          delta: Here's a Classic Spaghetti Carbonara recipe — an intermediate Italian dish with guanciale, egg yolks, and Pecorino Romano. It takes about 30 minutes total to prepare and cook.,
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text: Here's a Classic Spaghetti Carbonara recipe — an intermediate Italian dish with guanciale, egg yolks, and Pecorino Romano. It takes about 30 minutes total to prepare and cook.,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_END,
+          messageId: msg_Id_1
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_1,
+          runId: run_Id_1
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: assistant,
+          additionalProperties: {
+            agui_thread_id: thread_Id_1
+          },
+          responseId: run_Id_1,
+          conversationId: thread_Id_1
+        },
+        {
+          role: assistant,
+          responseId: run_Id_1,
+          conversationId: thread_Id_1
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text: Here's a Classic Spaghetti Carbonara recipe — an intermediate Italian dish with guanciale, egg yolks, and Pecorino Romano. It takes about 30 minutes total to prepare and cook.
+            }
+          ],
+          responseId: run_Id_1,
+          messageId: msg_Id_1,
+          conversationId: thread_Id_1,
+          createdAt: {Scrubbed}
+        },
+        {
+          role: assistant,
+          responseId: run_Id_1,
+          conversationId: thread_Id_1,
+          finishReason: stop
+        }
+      ]
+    },
+    server: {
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: Suggest me an Italian pasta recipe
+            }
+          ]
+        },
+        {
+          role: system,
+          contents: [
+            {
+              $type: text,
+              text:
+You are a helpful recipe assistant. When users ask you to create or suggest a recipe,
+respond with a complete JSON object that includes:
+- recipe.title: The recipe name
+- recipe.cuisine: Type of cuisine (e.g., Italian, Mexican, Japanese)
+- recipe.ingredients: Array of ingredient strings with quantities
+- recipe.steps: Array of cooking instruction strings
+- recipe.prep_time_minutes: Preparation time in minutes
+- recipe.cook_time_minutes: Cooking time in minutes
+- recipe.skill_level: One of "beginner", "intermediate", or "advanced"
+
+Always include all fields in the response. Be creative and helpful.
+            }
+          ]
+        },
+        {
+          role: system,
+          contents: [
+            {
+              $type: text,
+              text: Here is the current state in JSON format:
+            },
+            {
+              $type: text,
+              text: {"recipe":{"title":"","cuisine":"","ingredients":[],"steps":[],"prep_time_minutes":0,"cook_time_minutes":0,"skill_level":""}}
+            },
+            {
+              $type: text,
+              text: The new state is:
+            }
+          ]
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: Assistant,
+          contents: [
+            {
+              $type: text,
+              text: {"recipe":{"title":"Classic Spaghetti Carbonara","cuisine":"Italian","ingredients":["400g spaghetti","200g guanciale or pancetta","4 large egg yolks","100g Pecorino Romano cheese, grated","Freshly ground black pepper","Salt for pasta water"],"steps":["Bring a large pot of salted water to boil and cook spaghetti until al dente.","While pasta cooks, cut guanciale into small strips and cook in a dry pan over medium heat until crispy.","In a bowl, whisk together egg yolks and grated Pecorino Romano.","Drain pasta, reserving 1 cup of pasta water.","Toss hot pasta with guanciale, then remove from heat.","Add egg and cheese mixture, tossing quickly to create a creamy sauce. Add pasta water as needed.","Season generously with black pepper and serve immediately."],"prep_time_minutes":10,"cook_time_minutes":20,"skill_level":"intermediate"}}
+            }
+          ],
+          modelId: gpt-4o-mini
+        }
+      ],
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_1,
+          runId: run_Id_1
+        },
+        {
+          type: TEXT_MESSAGE_START,
+          messageId: msg_Id_2,
+          role: assistant,
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text: {"recipe":{"title":"Classic Spaghetti Carbonara","cuisine":"Italian","ingredients":["400g spaghetti","200g guanciale or pancetta","4 large egg yolks","100g Pecorino Romano cheese, grated","Freshly ground black pepper","Salt for pasta water"],"steps":["Bring a large pot of salted water to boil and cook spaghetti until al dente.","While pasta cooks, cut guanciale into small strips and cook in a dry pan over medium heat until crispy.","In a bowl, whisk together egg yolks and grated Pecorino Romano.","Drain pasta, reserving 1 cup of pasta water.","Toss hot pasta with guanciale, then remove from heat.","Add egg and cheese mixture, tossing quickly to create a creamy sauce. Add pasta water as needed.","Season generously with black pepper and serve immediately."],"prep_time_minutes":10,"cook_time_minutes":20,"skill_level":"intermediate"}}
+              }
+            ],
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: msg_Id_2,
+          delta: {"recipe":{"title":"Classic Spaghetti Carbonara","cuisine":"Italian","ingredients":["400g spaghetti","200g guanciale or pancetta","4 large egg yolks","100g Pecorino Romano cheese, grated","Freshly ground black pepper","Salt for pasta water"],"steps":["Bring a large pot of salted water to boil and cook spaghetti until al dente.","While pasta cooks, cut guanciale into small strips and cook in a dry pan over medium heat until crispy.","In a bowl, whisk together egg yolks and grated Pecorino Romano.","Drain pasta, reserving 1 cup of pasta water.","Toss hot pasta with guanciale, then remove from heat.","Add egg and cheese mixture, tossing quickly to create a creamy sauce. Add pasta water as needed.","Season generously with black pepper and serve immediately."],"prep_time_minutes":10,"cook_time_minutes":20,"skill_level":"intermediate"}},
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text: {"recipe":{"title":"Classic Spaghetti Carbonara","cuisine":"Italian","ingredients":["400g spaghetti","200g guanciale or pancetta","4 large egg yolks","100g Pecorino Romano cheese, grated","Freshly ground black pepper","Salt for pasta water"],"steps":["Bring a large pot of salted water to boil and cook spaghetti until al dente.","While pasta cooks, cut guanciale into small strips and cook in a dry pan over medium heat until crispy.","In a bowl, whisk together egg yolks and grated Pecorino Romano.","Drain pasta, reserving 1 cup of pasta water.","Toss hot pasta with guanciale, then remove from heat.","Add egg and cheese mixture, tossing quickly to create a creamy sauce. Add pasta water as needed.","Season generously with black pepper and serve immediately."],"prep_time_minutes":10,"cook_time_minutes":20,"skill_level":"intermediate"}}
+              }
+            ],
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: TEXT_MESSAGE_END,
+          messageId: msg_Id_2
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_1,
+          runId: run_Id_1,
+          outcome: {
+            type: success
+          }
+        }
+      ]
+    }
+  }
+]

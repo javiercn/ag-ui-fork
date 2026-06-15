@@ -1,0 +1,14 @@
+[
+  [
+    {
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "I've incremented the counter. The counter is now at 1."
+        }
+      ],
+      "modelId": "gpt-4o-mini"
+    }
+  ]
+]

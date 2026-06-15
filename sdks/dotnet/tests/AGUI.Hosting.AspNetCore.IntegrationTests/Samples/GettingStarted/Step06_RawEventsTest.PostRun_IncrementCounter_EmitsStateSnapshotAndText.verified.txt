@@ -1,0 +1,226 @@
+﻿[
+  {
+    client: {
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: Please increment the counter
+            }
+          ]
+        }
+      ],
+      runAgentInput: {
+        threadId: thread_Id_1,
+        runId: run_Id_1,
+        messages: [
+          {
+            role: user,
+            content: Please increment the counter
+          }
+        ],
+        state: {
+          counter: 0,
+          lastAction: none
+        }
+      },
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_1,
+          runId: run_Id_1
+        },
+        {
+          type: STATE_SNAPSHOT,
+          snapshot: {
+            counter: 1,
+            lastAction: incremented
+          }
+        },
+        {
+          type: TEXT_MESSAGE_START,
+          messageId: msg_Id_1,
+          role: assistant,
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text: I've incremented the counter. The counter is now at 1.,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: msg_Id_1,
+          delta: I've incremented the counter. The counter is now at 1.,
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text: I've incremented the counter. The counter is now at 1.,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_END,
+          messageId: msg_Id_1
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_1,
+          runId: run_Id_1
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: assistant,
+          additionalProperties: {
+            agui_thread_id: thread_Id_1
+          },
+          responseId: run_Id_1,
+          conversationId: thread_Id_1
+        },
+        {
+          role: assistant,
+          responseId: run_Id_1,
+          conversationId: thread_Id_1
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text: I've incremented the counter. The counter is now at 1.
+            }
+          ],
+          responseId: run_Id_1,
+          messageId: msg_Id_1,
+          conversationId: thread_Id_1,
+          createdAt: {Scrubbed}
+        },
+        {
+          role: assistant,
+          responseId: run_Id_1,
+          conversationId: thread_Id_1,
+          finishReason: stop
+        }
+      ]
+    },
+    server: {
+      runAgentInput: {
+        threadId: thread_Id_1,
+        runId: run_Id_1,
+        messages: [
+          {
+            role: user,
+            content: Please increment the counter
+          }
+        ],
+        state: {
+          counter: 0,
+          lastAction: none
+        }
+      },
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: Please increment the counter
+            }
+          ]
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: Assistant,
+          contents: [
+            {
+              $type: text,
+              text: I've incremented the counter. The counter is now at 1.
+            }
+          ],
+          modelId: gpt-4o-mini
+        }
+      ],
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_1,
+          runId: run_Id_1
+        },
+        {
+          type: TEXT_MESSAGE_START,
+          messageId: msg_Id_2,
+          role: assistant,
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text: I've incremented the counter. The counter is now at 1.
+              }
+            ],
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: msg_Id_2,
+          delta: I've incremented the counter. The counter is now at 1.,
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text: I've incremented the counter. The counter is now at 1.
+              }
+            ],
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: TEXT_MESSAGE_END,
+          messageId: msg_Id_2
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_1,
+          runId: run_Id_1,
+          outcome: {
+            type: success
+          }
+        }
+      ]
+    }
+  }
+]

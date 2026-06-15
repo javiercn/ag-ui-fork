@@ -1,0 +1,41 @@
+[
+  [
+    {
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "functionCall",
+          "name": "GetUserLocation",
+          "arguments": {},
+          "informationalOnly": false,
+          "callId": "call_abc123"
+        }
+      ],
+      "finishReason": "toolCalls",
+      "modelId": "gpt-4o-mini"
+    }
+  ],
+  [
+    {
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "Based on your location in Amsterdam, Netherlands,"
+        }
+      ],
+      "modelId": "gpt-4o-mini"
+    },
+    {
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " here are some great things to do nearby:\n\n1. Visit the Rijksmuseum\n2. Take a canal cruise\n3. Explore the Jordaan neighborhood"
+        }
+      ],
+      "finishReason": "stop",
+      "modelId": "gpt-4o-mini"
+    }
+  ]
+]

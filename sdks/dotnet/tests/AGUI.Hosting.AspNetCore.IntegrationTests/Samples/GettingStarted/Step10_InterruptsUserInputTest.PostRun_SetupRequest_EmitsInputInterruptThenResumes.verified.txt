@@ -1,0 +1,226 @@
+﻿[
+  {
+    client: {
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: Please setup my account
+            }
+          ]
+        }
+      ],
+      runAgentInput: {
+        threadId: thread_Id_1,
+        runId: run_Id_1,
+        messages: [
+          {
+            role: user,
+            content: Please setup my account
+          }
+        ]
+      },
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_1,
+          runId: run_Id_1
+        },
+        {
+          type: TEXT_MESSAGE_START,
+          messageId: msg_Id_1,
+          role: assistant
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: msg_Id_1,
+          delta: I need some additional information to complete the setup.
+        },
+        {
+          type: TEXT_MESSAGE_END,
+          messageId: msg_Id_1
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_1,
+          runId: run_Id_1,
+          outcome: {
+            type: interrupt,
+            interrupts: [
+              {
+                id: input_Id_2,
+                reason: input_Id_3,
+                message: Please enter your preferred username:,
+                metadata: {
+                  type: user_input,
+                  prompt: Please enter your preferred username:,
+                  inputType: text,
+                  required: true
+                }
+              }
+            ]
+          }
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: assistant,
+          additionalProperties: {
+            agui_thread_id: thread_Id_1
+          },
+          responseId: run_Id_1,
+          conversationId: thread_Id_1
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text: I need some additional information to complete the setup.
+            }
+          ],
+          responseId: run_Id_1,
+          messageId: msg_Id_1,
+          conversationId: thread_Id_1,
+          createdAt: {Scrubbed}
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: interruptRequest,
+              reason: input_Id_3,
+              message: Please enter your preferred username:,
+              metadata: {
+                type: user_input,
+                prompt: Please enter your preferred username:,
+                inputType: text,
+                required: true
+              },
+              requestId: input_Id_2,
+              additionalProperties: {
+                agui_interrupt: {
+                  id: input_Id_2,
+                  reason: input_Id_3,
+                  message: Please enter your preferred username:,
+                  metadata: {
+                    type: user_input,
+                    prompt: Please enter your preferred username:,
+                    inputType: text,
+                    required: true
+                  }
+                }
+              }
+            }
+          ],
+          responseId: run_Id_1,
+          conversationId: thread_Id_1
+        }
+      ]
+    }
+  },
+  {
+    client: {
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: Please setup my account
+            }
+          ]
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text: I need some additional information to complete the setup.
+            }
+          ]
+        }
+      ],
+      runAgentInput: {
+        threadId: thread_Id_2,
+        runId: run_Id_2,
+        messages: [
+          {
+            role: user,
+            content: Please setup my account
+          },
+          {
+            role: assistant,
+            content: I need some additional information to complete the setup.
+          }
+        ],
+        state: {
+          interruptResponse: {
+            response: johndoe42,
+            prompt: Please enter your preferred username:
+          }
+        }
+      },
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_2,
+          runId: run_Id_2
+        },
+        {
+          type: TEXT_MESSAGE_START,
+          messageId: msg_Id_4,
+          role: assistant
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: msg_Id_4,
+          delta: Thank you! You provided 'johndoe42' for 'Please enter your preferred username:'. Processing your input...
+        },
+        {
+          type: TEXT_MESSAGE_END,
+          messageId: msg_Id_4
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_2,
+          runId: run_Id_2,
+          outcome: {
+            type: success
+          }
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: assistant,
+          additionalProperties: {
+            agui_thread_id: thread_Id_2
+          },
+          responseId: run_Id_2,
+          conversationId: thread_Id_2
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text: Thank you! You provided 'johndoe42' for 'Please enter your preferred username:'. Processing your input...
+            }
+          ],
+          responseId: run_Id_2,
+          messageId: msg_Id_4,
+          conversationId: thread_Id_2,
+          createdAt: {Scrubbed}
+        },
+        {
+          role: assistant,
+          responseId: run_Id_2,
+          conversationId: thread_Id_2,
+          finishReason: stop
+        }
+      ]
+    }
+  }
+]

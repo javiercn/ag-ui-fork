@@ -1,0 +1,736 @@
+﻿[
+  {
+    client: {
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: Find Italian restaurants in Seattle
+            }
+          ]
+        }
+      ],
+      runAgentInput: {
+        threadId: thread_Id_1,
+        runId: run_Id_1,
+        messages: [
+          {
+            role: user,
+            content: Find Italian restaurants in Seattle
+          }
+        ]
+      },
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_1,
+          runId: run_Id_1
+        },
+        {
+          type: TOOL_CALL_START,
+          parentMessageId: chatcmpl-Id_1,
+          toolCallId: call_Id_1,
+          toolCallName: SearchRestaurants,
+          rawEvent: {
+            authorName: null,
+            role: assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: SearchRestaurants,
+                arguments: {
+                  request: {
+                    location: Seattle,
+                    cuisine: Italian
+                  }
+                },
+                informationalOnly: false,
+                callId: call_Id_1,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: chatcmpl-Id_1,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: toolCalls,
+            modelId: null,
+            continuationToken: null
+          }
+        },
+        {
+          type: TOOL_CALL_ARGS,
+          toolCallId: call_Id_1,
+          delta: {"request":{"location":"Seattle","cuisine":"Italian"}},
+          rawEvent: {
+            authorName: null,
+            role: assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: SearchRestaurants,
+                arguments: {
+                  request: {
+                    location: Seattle,
+                    cuisine: Italian
+                  }
+                },
+                informationalOnly: false,
+                callId: call_Id_1,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: chatcmpl-Id_1,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: toolCalls,
+            modelId: null,
+            continuationToken: null
+          }
+        },
+        {
+          type: TOOL_CALL_END,
+          toolCallId: call_Id_1,
+          rawEvent: {
+            authorName: null,
+            role: assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: SearchRestaurants,
+                arguments: {
+                  request: {
+                    location: Seattle,
+                    cuisine: Italian
+                  }
+                },
+                informationalOnly: false,
+                callId: call_Id_1,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: chatcmpl-Id_1,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: toolCalls,
+            modelId: null,
+            continuationToken: null
+          }
+        },
+        {
+          type: TOOL_CALL_RESULT,
+          messageId: call_Id_1,
+          toolCallId: call_Id_1,
+          content: "{\"location\":\"Seattle\",\"cuisine\":\"Italian\",\"results\":[{\"name\":\"The Golden Fork\",\"cuisine\":\"Italian\",\"rating\":4.5,\"address\":\"123 Main St, Seattle\"},{\"name\":\"Spice Haven\",\"cuisine\":\"Indian\",\"rating\":4.7,\"address\":\"456 Oak Ave, Seattle\"},{\"name\":\"Green Leaf\",\"cuisine\":\"Vegetarian\",\"rating\":4.3,\"address\":\"789 Elm Rd, Seattle\"}]}",
+          rawEvent: {
+            authorName: null,
+            role: null,
+            contents: [
+              {
+                $type: functionResult,
+                result: {"location":"Seattle","cuisine":"Italian","results":[{"name":"The Golden Fork","cuisine":"Italian","rating":4.5,"address":"123 Main St, Seattle"},{"name":"Spice Haven","cuisine":"Indian","rating":4.7,"address":"456 Oak Ave, Seattle"},{"name":"Green Leaf","cuisine":"Vegetarian","rating":4.3,"address":"789 Elm Rd, Seattle"}]},
+                callId: call_Id_1,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: null,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_START,
+          messageId: chatcmpl-Id_2,
+          role: assistant,
+          rawEvent: {
+            authorName: null,
+            role: assistant,
+            contents: [
+              {
+                $type: text,
+                text:
+I found some great Italian restaurants in Seattle for you!
+
+,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: chatcmpl-Id_2,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: null,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: chatcmpl-Id_2,
+          delta:
+I found some great Italian restaurants in Seattle for you!
+
+,
+          rawEvent: {
+            authorName: null,
+            role: assistant,
+            contents: [
+              {
+                $type: text,
+                text:
+I found some great Italian restaurants in Seattle for you!
+
+,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: chatcmpl-Id_2,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: null,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: chatcmpl-Id_2,
+          delta:
+1. **The Golden Fork** - Italian cuisine, rated 4.5/5, located at 123 Main St, Seattle
+,
+          rawEvent: {
+            authorName: null,
+            role: assistant,
+            contents: [
+              {
+                $type: text,
+                text:
+1. **The Golden Fork** - Italian cuisine, rated 4.5/5, located at 123 Main St, Seattle
+,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: chatcmpl-Id_2,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: null,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: chatcmpl-Id_2,
+          delta:
+2. **Spice Haven** - Indian cuisine, rated 4.7/5, located at 456 Oak Ave, Seattle
+,
+          rawEvent: {
+            authorName: null,
+            role: assistant,
+            contents: [
+              {
+                $type: text,
+                text:
+2. **Spice Haven** - Indian cuisine, rated 4.7/5, located at 456 Oak Ave, Seattle
+,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: chatcmpl-Id_2,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: null,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: chatcmpl-Id_2,
+          delta: 3. **Green Leaf** - Vegetarian cuisine, rated 4.3/5, located at 789 Elm Rd, Seattle,
+          rawEvent: {
+            authorName: null,
+            role: assistant,
+            contents: [
+              {
+                $type: text,
+                text: 3. **Green Leaf** - Vegetarian cuisine, rated 4.3/5, located at 789 Elm Rd, Seattle,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: chatcmpl-Id_2,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: null,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_END,
+          messageId: chatcmpl-Id_2
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_1,
+          runId: run_Id_1,
+          outcome: {
+            type: success
+          }
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: assistant,
+          additionalProperties: {
+            agui_thread_id: thread_Id_1
+          },
+          responseId: run_Id_1,
+          conversationId: thread_Id_1
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: functionCall,
+              name: SearchRestaurants,
+              arguments: {
+                request: {
+                  location: Seattle,
+                  cuisine: Italian
+                }
+              },
+              informationalOnly: true,
+              callId: call_Id_1
+            }
+          ],
+          responseId: run_Id_1,
+          conversationId: thread_Id_1,
+          createdAt: {Scrubbed}
+        },
+        {
+          role: tool,
+          contents: [
+            {
+              $type: functionResult,
+              result: "{\"location\":\"Seattle\",\"cuisine\":\"Italian\",\"results\":[{\"name\":\"The Golden Fork\",\"cuisine\":\"Italian\",\"rating\":4.5,\"address\":\"123 Main St, Seattle\"},{\"name\":\"Spice Haven\",\"cuisine\":\"Indian\",\"rating\":4.7,\"address\":\"456 Oak Ave, Seattle\"},{\"name\":\"Green Leaf\",\"cuisine\":\"Vegetarian\",\"rating\":4.3,\"address\":\"789 Elm Rd, Seattle\"}]}",
+              callId: call_Id_1
+            }
+          ],
+          responseId: run_Id_1,
+          conversationId: thread_Id_1
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text:
+I found some great Italian restaurants in Seattle for you!
+
+
+            }
+          ],
+          responseId: run_Id_1,
+          messageId: chatcmpl-Id_2,
+          conversationId: thread_Id_1,
+          createdAt: {Scrubbed}
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text:
+1. **The Golden Fork** - Italian cuisine, rated 4.5/5, located at 123 Main St, Seattle
+
+            }
+          ],
+          responseId: run_Id_1,
+          messageId: chatcmpl-Id_2,
+          conversationId: thread_Id_1,
+          createdAt: {Scrubbed}
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text:
+2. **Spice Haven** - Indian cuisine, rated 4.7/5, located at 456 Oak Ave, Seattle
+
+            }
+          ],
+          responseId: run_Id_1,
+          messageId: chatcmpl-Id_2,
+          conversationId: thread_Id_1,
+          createdAt: {Scrubbed}
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text: 3. **Green Leaf** - Vegetarian cuisine, rated 4.3/5, located at 789 Elm Rd, Seattle
+            }
+          ],
+          responseId: run_Id_1,
+          messageId: chatcmpl-Id_2,
+          conversationId: thread_Id_1,
+          createdAt: {Scrubbed}
+        },
+        {
+          role: assistant,
+          responseId: run_Id_1,
+          conversationId: thread_Id_1,
+          finishReason: stop
+        }
+      ]
+    },
+    server: {
+      runAgentInput: {
+        threadId: thread_Id_1,
+        runId: run_Id_1,
+        messages: [
+          {
+            role: user,
+            content: Find Italian restaurants in Seattle
+          }
+        ]
+      },
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: Find Italian restaurants in Seattle
+            }
+          ]
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: functionCall,
+              name: SearchRestaurants,
+              arguments: {
+                request: {
+                  location: Seattle,
+                  cuisine: Italian
+                }
+              },
+              informationalOnly: false,
+              callId: call_Id_1
+            }
+          ],
+          messageId: chatcmpl-Id_1,
+          finishReason: toolCalls
+        },
+        {
+          contents: [
+            {
+              $type: functionResult,
+              result: {"location":"Seattle","cuisine":"Italian","results":[{"name":"The Golden Fork","cuisine":"Italian","rating":4.5,"address":"123 Main St, Seattle"},{"name":"Spice Haven","cuisine":"Indian","rating":4.7,"address":"456 Oak Ave, Seattle"},{"name":"Green Leaf","cuisine":"Vegetarian","rating":4.3,"address":"789 Elm Rd, Seattle"}]},
+              callId: call_Id_1
+            }
+          ]
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text:
+I found some great Italian restaurants in Seattle for you!
+
+
+            }
+          ],
+          messageId: chatcmpl-Id_2
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text:
+1. **The Golden Fork** - Italian cuisine, rated 4.5/5, located at 123 Main St, Seattle
+
+            }
+          ],
+          messageId: chatcmpl-Id_2
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text:
+2. **Spice Haven** - Indian cuisine, rated 4.7/5, located at 456 Oak Ave, Seattle
+
+            }
+          ],
+          messageId: chatcmpl-Id_2
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text: 3. **Green Leaf** - Vegetarian cuisine, rated 4.3/5, located at 789 Elm Rd, Seattle
+            }
+          ],
+          messageId: chatcmpl-Id_2
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text: 
+            }
+          ],
+          messageId: chatcmpl-Id_2,
+          finishReason: stop
+        }
+      ],
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_1,
+          runId: run_Id_1
+        },
+        {
+          type: TOOL_CALL_START,
+          parentMessageId: chatcmpl-Id_1,
+          toolCallId: call_Id_1,
+          toolCallName: SearchRestaurants,
+          rawEvent: {
+            role: assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: SearchRestaurants,
+                arguments: {
+                  request: {
+                    location: Seattle,
+                    cuisine: Italian
+                  }
+                },
+                informationalOnly: false,
+                callId: call_Id_1
+              }
+            ],
+            messageId: chatcmpl-Id_1,
+            finishReason: toolCalls
+          }
+        },
+        {
+          type: TOOL_CALL_ARGS,
+          toolCallId: call_Id_1,
+          delta:
+{
+  "request": {
+    "location": "Seattle",
+    "cuisine": "Italian"
+  }
+},
+          rawEvent: {
+            role: assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: SearchRestaurants,
+                arguments: {
+                  request: {
+                    location: Seattle,
+                    cuisine: Italian
+                  }
+                },
+                informationalOnly: false,
+                callId: call_Id_1
+              }
+            ],
+            messageId: chatcmpl-Id_1,
+            finishReason: toolCalls
+          }
+        },
+        {
+          type: TOOL_CALL_END,
+          toolCallId: call_Id_1,
+          rawEvent: {
+            role: assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: SearchRestaurants,
+                arguments: {
+                  request: {
+                    location: Seattle,
+                    cuisine: Italian
+                  }
+                },
+                informationalOnly: false,
+                callId: call_Id_1
+              }
+            ],
+            messageId: chatcmpl-Id_1,
+            finishReason: toolCalls
+          }
+        },
+        {
+          type: TOOL_CALL_RESULT,
+          messageId: call_Id_1,
+          toolCallId: call_Id_1,
+          content: "{\"location\":\"Seattle\",\"cuisine\":\"Italian\",\"results\":[{\"name\":\"The Golden Fork\",\"cuisine\":\"Italian\",\"rating\":4.5,\"address\":\"123 Main St, Seattle\"},{\"name\":\"Spice Haven\",\"cuisine\":\"Indian\",\"rating\":4.7,\"address\":\"456 Oak Ave, Seattle\"},{\"name\":\"Green Leaf\",\"cuisine\":\"Vegetarian\",\"rating\":4.3,\"address\":\"789 Elm Rd, Seattle\"}]}",
+          rawEvent: {
+            contents: [
+              {
+                $type: functionResult,
+                result: {"location":"Seattle","cuisine":"Italian","results":[{"name":"The Golden Fork","cuisine":"Italian","rating":4.5,"address":"123 Main St, Seattle"},{"name":"Spice Haven","cuisine":"Indian","rating":4.7,"address":"456 Oak Ave, Seattle"},{"name":"Green Leaf","cuisine":"Vegetarian","rating":4.3,"address":"789 Elm Rd, Seattle"}]},
+                callId: call_Id_1
+              }
+            ]
+          }
+        },
+        {
+          type: TEXT_MESSAGE_START,
+          messageId: chatcmpl-Id_2,
+          role: assistant,
+          rawEvent: {
+            role: assistant,
+            contents: [
+              {
+                $type: text,
+                text:
+I found some great Italian restaurants in Seattle for you!
+
+
+              }
+            ],
+            messageId: chatcmpl-Id_2
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: chatcmpl-Id_2,
+          delta:
+I found some great Italian restaurants in Seattle for you!
+
+,
+          rawEvent: {
+            role: assistant,
+            contents: [
+              {
+                $type: text,
+                text:
+I found some great Italian restaurants in Seattle for you!
+
+
+              }
+            ],
+            messageId: chatcmpl-Id_2
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: chatcmpl-Id_2,
+          delta:
+1. **The Golden Fork** - Italian cuisine, rated 4.5/5, located at 123 Main St, Seattle
+,
+          rawEvent: {
+            role: assistant,
+            contents: [
+              {
+                $type: text,
+                text:
+1. **The Golden Fork** - Italian cuisine, rated 4.5/5, located at 123 Main St, Seattle
+
+              }
+            ],
+            messageId: chatcmpl-Id_2
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: chatcmpl-Id_2,
+          delta:
+2. **Spice Haven** - Indian cuisine, rated 4.7/5, located at 456 Oak Ave, Seattle
+,
+          rawEvent: {
+            role: assistant,
+            contents: [
+              {
+                $type: text,
+                text:
+2. **Spice Haven** - Indian cuisine, rated 4.7/5, located at 456 Oak Ave, Seattle
+
+              }
+            ],
+            messageId: chatcmpl-Id_2
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: chatcmpl-Id_2,
+          delta: 3. **Green Leaf** - Vegetarian cuisine, rated 4.3/5, located at 789 Elm Rd, Seattle,
+          rawEvent: {
+            role: assistant,
+            contents: [
+              {
+                $type: text,
+                text: 3. **Green Leaf** - Vegetarian cuisine, rated 4.3/5, located at 789 Elm Rd, Seattle
+              }
+            ],
+            messageId: chatcmpl-Id_2
+          }
+        },
+        {
+          type: TEXT_MESSAGE_END,
+          messageId: chatcmpl-Id_2
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_1,
+          runId: run_Id_1,
+          outcome: {
+            type: success
+          }
+        }
+      ]
+    }
+  }
+]

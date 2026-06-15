@@ -1,0 +1,776 @@
+﻿[
+  {
+    client: {
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: What are some fun things to do near me?
+            }
+          ]
+        }
+      ],
+      runAgentInput: {
+        threadId: thread_Id_1,
+        runId: run_Id_1,
+        messages: [
+          {
+            role: user,
+            content: What are some fun things to do near me?
+          }
+        ],
+        tools: [
+          {
+            name: GetUserLocation,
+            description: Get the user's current location from GPS.,
+            parameters: {
+              type: object
+            }
+          }
+        ]
+      },
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_1,
+          runId: run_Id_1
+        },
+        {
+          type: TOOL_CALL_START,
+          toolCallId: call_Id_1,
+          toolCallName: GetUserLocation,
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: GetUserLocation,
+                informationalOnly: false,
+                callId: call_Id_1,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: toolCalls,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: TOOL_CALL_ARGS,
+          toolCallId: call_Id_1,
+          delta: {},
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: GetUserLocation,
+                informationalOnly: false,
+                callId: call_Id_1,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: toolCalls,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: TOOL_CALL_END,
+          toolCallId: call_Id_1,
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: GetUserLocation,
+                informationalOnly: false,
+                callId: call_Id_1,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: toolCalls,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_1,
+          runId: run_Id_1,
+          outcome: {
+            type: success
+          }
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: assistant,
+          additionalProperties: {
+            agui_thread_id: thread_Id_1
+          },
+          responseId: run_Id_1,
+          conversationId: thread_Id_1
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: functionCall,
+              name: GetUserLocation,
+              informationalOnly: true,
+              callId: call_Id_1
+            }
+          ],
+          responseId: run_Id_1,
+          conversationId: thread_Id_1,
+          createdAt: {Scrubbed}
+        },
+        {
+          role: assistant,
+          responseId: run_Id_1,
+          conversationId: thread_Id_1,
+          finishReason: stop
+        },
+        {
+          role: tool,
+          contents: [
+            {
+              $type: functionResult,
+              result: Amsterdam, Netherlands (52.37°N, 4.90°E),
+              callId: call_Id_1
+            }
+          ],
+          responseId: Guid_1,
+          messageId: Guid_1,
+          conversationId: thread_Id_1,
+          createdAt: {Scrubbed}
+        },
+        {
+          role: assistant,
+          additionalProperties: {
+            agui_thread_id: thread_Id_2
+          },
+          responseId: run_Id_2,
+          conversationId: thread_Id_1
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text: Based on your location in Amsterdam, Netherlands,
+            }
+          ],
+          responseId: run_Id_2,
+          messageId: msg_Id_1,
+          conversationId: thread_Id_1,
+          createdAt: {Scrubbed}
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text:
+ here are some great things to do nearby:
+
+1. Visit the Rijksmuseum
+2. Take a canal cruise
+3. Explore the Jordaan neighborhood
+            }
+          ],
+          responseId: run_Id_2,
+          messageId: msg_Id_2,
+          conversationId: thread_Id_1,
+          createdAt: {Scrubbed}
+        },
+        {
+          role: assistant,
+          responseId: run_Id_2,
+          conversationId: thread_Id_1,
+          finishReason: stop
+        }
+      ]
+    },
+    server: {
+      runAgentInput: {
+        threadId: thread_Id_1,
+        runId: run_Id_1,
+        messages: [
+          {
+            role: user,
+            content: What are some fun things to do near me?
+          }
+        ],
+        tools: [
+          {
+            name: GetUserLocation,
+            description: Get the user's current location from GPS.,
+            parameters: {
+              type: object
+            }
+          }
+        ]
+      },
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: What are some fun things to do near me?
+            }
+          ]
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: Assistant,
+          contents: [
+            {
+              $type: functionCall,
+              name: GetUserLocation,
+              informationalOnly: false,
+              callId: call_Id_1
+            }
+          ],
+          finishReason: toolCalls,
+          modelId: gpt-4o-mini
+        }
+      ],
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_1,
+          runId: run_Id_1
+        },
+        {
+          type: TOOL_CALL_START,
+          toolCallId: call_Id_1,
+          toolCallName: GetUserLocation,
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: GetUserLocation,
+                informationalOnly: false,
+                callId: call_Id_1
+              }
+            ],
+            finishReason: toolCalls,
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: TOOL_CALL_ARGS,
+          toolCallId: call_Id_1,
+          delta: {},
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: GetUserLocation,
+                informationalOnly: false,
+                callId: call_Id_1
+              }
+            ],
+            finishReason: toolCalls,
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: TOOL_CALL_END,
+          toolCallId: call_Id_1,
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: GetUserLocation,
+                informationalOnly: false,
+                callId: call_Id_1
+              }
+            ],
+            finishReason: toolCalls,
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_1,
+          runId: run_Id_1,
+          outcome: {
+            type: success
+          }
+        }
+      ]
+    }
+  },
+  {
+    client: {
+      runAgentInput: {
+        threadId: thread_Id_2,
+        runId: run_Id_2,
+        messages: [
+          {
+            role: user,
+            content: What are some fun things to do near me?
+          },
+          {
+            role: assistant,
+            toolCalls: [
+              {
+                id: call_Id_1,
+                type: function,
+                function: {
+                  name: GetUserLocation,
+                  arguments: {}
+                }
+              }
+            ],
+            content: 
+          },
+          {
+            role: tool,
+            toolCallId: call_Id_1,
+            content: "Amsterdam, Netherlands (52.37°N, 4.90°E)"
+          }
+        ],
+        tools: [
+          {
+            name: GetUserLocation,
+            description: Get the user's current location from GPS.,
+            parameters: {
+              type: object
+            }
+          }
+        ]
+      },
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_2,
+          runId: run_Id_2
+        },
+        {
+          type: TEXT_MESSAGE_START,
+          messageId: msg_Id_1,
+          role: assistant,
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text: Based on your location in Amsterdam, Netherlands,,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: msg_Id_1,
+          delta: Based on your location in Amsterdam, Netherlands,,
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text: Based on your location in Amsterdam, Netherlands,,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_END,
+          messageId: msg_Id_1,
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text:
+ here are some great things to do nearby:
+
+1. Visit the Rijksmuseum
+2. Take a canal cruise
+3. Explore the Jordaan neighborhood,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: stop,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_START,
+          messageId: msg_Id_2,
+          role: assistant,
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text:
+ here are some great things to do nearby:
+
+1. Visit the Rijksmuseum
+2. Take a canal cruise
+3. Explore the Jordaan neighborhood,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: stop,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: msg_Id_2,
+          delta:
+ here are some great things to do nearby:
+
+1. Visit the Rijksmuseum
+2. Take a canal cruise
+3. Explore the Jordaan neighborhood,
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text:
+ here are some great things to do nearby:
+
+1. Visit the Rijksmuseum
+2. Take a canal cruise
+3. Explore the Jordaan neighborhood,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: stop,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_END,
+          messageId: msg_Id_2
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_2,
+          runId: run_Id_2,
+          outcome: {
+            type: success
+          }
+        }
+      ]
+    },
+    server: {
+      runAgentInput: {
+        threadId: thread_Id_2,
+        runId: run_Id_2,
+        messages: [
+          {
+            role: user,
+            content: What are some fun things to do near me?
+          },
+          {
+            role: assistant,
+            toolCalls: [
+              {
+                id: call_Id_1,
+                type: function,
+                function: {
+                  name: GetUserLocation,
+                  arguments: {}
+                }
+              }
+            ],
+            content: 
+          },
+          {
+            role: tool,
+            toolCallId: call_Id_1,
+            content: "Amsterdam, Netherlands (52.37°N, 4.90°E)"
+          }
+        ],
+        tools: [
+          {
+            name: GetUserLocation,
+            description: Get the user's current location from GPS.,
+            parameters: {
+              type: object
+            }
+          }
+        ]
+      },
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: What are some fun things to do near me?
+            }
+          ]
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: toolApprovalRequest,
+              toolCall: {
+                $type: functionCall,
+                name: GetUserLocation,
+                informationalOnly: false,
+                callId: call_Id_1
+              },
+              requestId: approval_call_abc123
+            }
+          ]
+        },
+        {
+          role: tool,
+          contents: [
+            {
+              $type: functionResult,
+              result: "Amsterdam, Netherlands (52.37°N, 4.90°E)",
+              callId: call_Id_1
+            }
+          ]
+        },
+        {
+          role: user,
+          contents: [
+            {
+              $type: toolApprovalResponse,
+              approved: true,
+              toolCall: {
+                $type: functionCall,
+                name: GetUserLocation,
+                informationalOnly: false,
+                callId: call_Id_1
+              },
+              requestId: approval_call_abc123
+            }
+          ]
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: Assistant,
+          contents: [
+            {
+              $type: text,
+              text: Based on your location in Amsterdam, Netherlands,
+            }
+          ],
+          modelId: gpt-4o-mini
+        },
+        {
+          role: Assistant,
+          contents: [
+            {
+              $type: text,
+              text:
+ here are some great things to do nearby:
+
+1. Visit the Rijksmuseum
+2. Take a canal cruise
+3. Explore the Jordaan neighborhood
+            }
+          ],
+          finishReason: stop,
+          modelId: gpt-4o-mini
+        }
+      ],
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_2,
+          runId: run_Id_2
+        },
+        {
+          type: TEXT_MESSAGE_START,
+          messageId: msg_Id_3,
+          role: assistant,
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text: Based on your location in Amsterdam, Netherlands,
+              }
+            ],
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: msg_Id_3,
+          delta: Based on your location in Amsterdam, Netherlands,,
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text: Based on your location in Amsterdam, Netherlands,
+              }
+            ],
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: TEXT_MESSAGE_END,
+          messageId: msg_Id_3,
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text:
+ here are some great things to do nearby:
+
+1. Visit the Rijksmuseum
+2. Take a canal cruise
+3. Explore the Jordaan neighborhood
+              }
+            ],
+            finishReason: stop,
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: TEXT_MESSAGE_START,
+          messageId: msg_Id_4,
+          role: assistant,
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text:
+ here are some great things to do nearby:
+
+1. Visit the Rijksmuseum
+2. Take a canal cruise
+3. Explore the Jordaan neighborhood
+              }
+            ],
+            finishReason: stop,
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: msg_Id_4,
+          delta:
+ here are some great things to do nearby:
+
+1. Visit the Rijksmuseum
+2. Take a canal cruise
+3. Explore the Jordaan neighborhood,
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text:
+ here are some great things to do nearby:
+
+1. Visit the Rijksmuseum
+2. Take a canal cruise
+3. Explore the Jordaan neighborhood
+              }
+            ],
+            finishReason: stop,
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: TEXT_MESSAGE_END,
+          messageId: msg_Id_4
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_2,
+          runId: run_Id_2,
+          outcome: {
+            type: success
+          }
+        }
+      ]
+    }
+  }
+]

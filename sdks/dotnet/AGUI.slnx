@@ -8,6 +8,20 @@
     <Project Path="tests/AGUI.Abstractions.UnitTests/AGUI.Abstractions.UnitTests.csproj" />
     <Project Path="tests/AGUI.Client.UnitTests/AGUI.Client.UnitTests.csproj" />
     <Project Path="tests/AGUI.Hosting.AspNetCore.UnitTests/AGUI.Hosting.AspNetCore.UnitTests.csproj" />
+    <Project Path="tests/AGUI.Hosting.AspNetCore.IntegrationTests/AGUI.Hosting.AspNetCore.IntegrationTests.csproj" />
+  </Folder>
+  <Folder Name="/samples/GettingStarted/">
+    <Project Path="samples/GettingStarted/Step01_GettingStarted/Step01_GettingStarted.csproj" />
+    <Project Path="samples/GettingStarted/Step02_BackendTools/Step02_BackendTools.csproj" />
+    <Project Path="samples/GettingStarted/Step03_FrontendTools/Step03_FrontendTools.csproj" />
+    <Project Path="samples/GettingStarted/Step04_HumanInLoop/Step04_HumanInLoop.csproj" />
+    <Project Path="samples/GettingStarted/Step05_StateManagement/Step05_StateManagement.csproj" />
+    <Project Path="samples/GettingStarted/Step06_RawEvents/Step06_RawEvents.csproj" />
+    <Project Path="samples/GettingStarted/Step07_ThinkingEvents/Step07_ThinkingEvents.csproj" />
+    <Project Path="samples/GettingStarted/Step08_MultimodalMessages/Step08_MultimodalMessages.csproj" />
+    <Project Path="samples/GettingStarted/Step09_InterruptsApproval/Step09_InterruptsApproval.csproj" />
+    <Project Path="samples/GettingStarted/Step10_InterruptsUserInput/Step10_InterruptsUserInput.csproj" />
+    <Project Path="samples/GettingStarted/Step11_Serialization/Step11_Serialization.csproj" />
   </Folder>
   <Folder Name="/samples/" />
 </Solution>
