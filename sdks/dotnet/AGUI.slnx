@@ -9,6 +9,8 @@
     <Project Path="tests/AGUI.Client.UnitTests/AGUI.Client.UnitTests.csproj" />
     <Project Path="tests/AGUI.Hosting.AspNetCore.UnitTests/AGUI.Hosting.AspNetCore.UnitTests.csproj" />
     <Project Path="tests/AGUI.Hosting.AspNetCore.IntegrationTests/AGUI.Hosting.AspNetCore.IntegrationTests.csproj" />
+    <Project Path="tests/CrossLanguage.TestServer/CrossLanguage.TestServer.csproj" />
+    <Project Path="tests/AGUI.CrossLanguage.IntegrationTests/AGUI.CrossLanguage.IntegrationTests.csproj" />
   </Folder>
   <Folder Name="/samples/GettingStarted/">
     <Project Path="samples/GettingStarted/Step01_GettingStarted/Step01_GettingStarted.csproj" />
