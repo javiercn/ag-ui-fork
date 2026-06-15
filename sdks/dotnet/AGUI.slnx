@@ -2,10 +2,12 @@
   <Folder Name="/src/">
     <Project Path="src/AGUI.Abstractions/AGUI.Abstractions.csproj" />
     <Project Path="src/AGUI.Client/AGUI.Client.csproj" />
+    <Project Path="src/AGUI.Hosting.AspNetCore/AGUI.Hosting.AspNetCore.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/AGUI.Abstractions.UnitTests/AGUI.Abstractions.UnitTests.csproj" />
     <Project Path="tests/AGUI.Client.UnitTests/AGUI.Client.UnitTests.csproj" />
+    <Project Path="tests/AGUI.Hosting.AspNetCore.UnitTests/AGUI.Hosting.AspNetCore.UnitTests.csproj" />
   </Folder>
   <Folder Name="/samples/" />
 </Solution>

@@ -1,0 +1,20 @@
+﻿#nullable enable
+Microsoft.Extensions.DependencyInjection.AGUIServiceCollectionExtensions
+static Microsoft.Extensions.DependencyInjection.AGUIServiceCollectionExtensions.AddAGUI(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static Microsoft.Extensions.DependencyInjection.AGUIServiceCollectionExtensions.RegisterInterruptContentTypes(System.Text.Json.JsonSerializerOptions! options) -> void
+AGUI.Hosting.AspNetCore.ChatResponseUpdateAGUIExtensions
+static AGUI.Hosting.AspNetCore.ChatResponseUpdateAGUIExtensions.AsAGUIEventStreamAsync(this System.Collections.Generic.IAsyncEnumerable<Microsoft.Extensions.AI.ChatResponseUpdate!>! updates, AGUI.Hosting.AspNetCore.ChatRequestContext! context, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<AGUI.Abstractions.BaseEvent!>!
+AGUI.Hosting.AspNetCore.AGUIStreamOptions
+AGUI.Hosting.AspNetCore.AGUIStreamOptions.AGUIStreamOptions() -> void
+AGUI.Hosting.AspNetCore.AGUIStreamOptions.MapInterrupt(System.Func<Microsoft.Extensions.AI.AIContent!, AGUI.Abstractions.AGUIInterrupt?>! mapper) -> AGUI.Hosting.AspNetCore.AGUIStreamOptions!
+AGUI.Hosting.AspNetCore.AGUIStreamOptions.MapContent(System.Func<Microsoft.Extensions.AI.AIContent!, System.Collections.Generic.IEnumerable<AGUI.Abstractions.BaseEvent!>?>! mapper) -> AGUI.Hosting.AspNetCore.AGUIStreamOptions!
+AGUI.Hosting.AspNetCore.AGUIStreamOptions.MapCall(string! toolName, System.Func<Microsoft.Extensions.AI.FunctionCallContent!, System.Collections.Generic.IEnumerable<AGUI.Abstractions.BaseEvent!>!>! mapper) -> AGUI.Hosting.AspNetCore.AGUIStreamOptions!
+AGUI.Hosting.AspNetCore.AGUIStreamOptions.MapResult(string! toolName, System.Func<Microsoft.Extensions.AI.FunctionResultContent!, System.Collections.Generic.IEnumerable<AGUI.Abstractions.BaseEvent!>!>! mapper) -> AGUI.Hosting.AspNetCore.AGUIStreamOptions!
+AGUI.Hosting.AspNetCore.AGUIStreamOptions.MapResultAsStateDelta(string! toolName) -> AGUI.Hosting.AspNetCore.AGUIStreamOptions!
+AGUI.Hosting.AspNetCore.AGUIStreamOptions.MapResultAsStateSnapshot(string! toolName) -> AGUI.Hosting.AspNetCore.AGUIStreamOptions!
+AGUI.Hosting.AspNetCore.ChatRequestContext
+AGUI.Hosting.AspNetCore.ChatRequestContext.Input.get -> AGUI.Abstractions.RunAgentInput!
+AGUI.Hosting.AspNetCore.ChatRequestContext.Messages.get -> System.Collections.Generic.List<Microsoft.Extensions.AI.ChatMessage!>!
+AGUI.Hosting.AspNetCore.ChatRequestContext.ChatOptions.get -> Microsoft.Extensions.AI.ChatOptions!
+AGUI.Hosting.AspNetCore.RunAgentInputExtensions
+static AGUI.Hosting.AspNetCore.RunAgentInputExtensions.ToChatRequestContext(this AGUI.Abstractions.RunAgentInput! input, System.Text.Json.JsonSerializerOptions! jsonSerializerOptions, AGUI.Hosting.AspNetCore.AGUIStreamOptions? streamOptions = null) -> AGUI.Hosting.AspNetCore.ChatRequestContext!

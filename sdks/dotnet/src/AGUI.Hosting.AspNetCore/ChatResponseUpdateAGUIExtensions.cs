@@ -1,0 +1,326 @@
+using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
+using AGUI.Abstractions;
+using AGUI.Hosting.AspNetCore.Internal;
+using Microsoft.Extensions.AI;
+
+namespace AGUI.Hosting.AspNetCore;
+
+/// <summary>
+/// Extension methods for converting <see cref="ChatResponseUpdate"/> streams to AG-UI event streams.
+/// </summary>
+public static class ChatResponseUpdateAGUIExtensions
+{
+    private static readonly JsonElement AGUIToolApprovalSchema =
+        JsonDocument.Parse("""
+            {
+                "type": "object",
+                "properties": {
+                    "approved": { "type": "boolean" }
+                },
+                "required": ["approved"]
+            }
+            """).RootElement.Clone();
+
+    /// <summary>
+    /// Converts a stream of <see cref="ChatResponseUpdate"/> instances to a stream of AG-UI <see cref="BaseEvent"/> instances.
+    /// </summary>
+    /// <param name="updates">The stream of chat response updates.</param>
+    /// <param name="context">The request context produced by <see cref="RunAgentInputExtensions.ToChatRequestContext"/>.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>An async enumerable of AG-UI events.</returns>
+    public static async IAsyncEnumerable<BaseEvent> AsAGUIEventStreamAsync(
+        this IAsyncEnumerable<ChatResponseUpdate> updates,
+        ChatRequestContext context,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(context);
+
+        var threadId = context.Input.ThreadId;
+        var runId = context.Input.RunId;
+        var options = context.StreamOptions;
+        var jsonSerializerOptions = context.JsonSerializerOptions;
+        var isContinuation = context.IsContinuation;
+        var clientToolNames = context.ClientToolNames;
+
+        bool runStartedEmitted = false;
+        bool runFinishedEmitted = false;
+        var messageTracker = new TextMessageTracker();
+
+        // Track tool call IDs → tool names for correlating results with registered mappings.
+        Dictionary<string, string>? callIdToToolName = null;
+
+        // Accumulate tool approval interrupts so we can emit a single RunFinished with all of them.
+        List<AGUIInterrupt>? pendingApprovalInterrupts = null;
+
+        await foreach (var chatResponse in updates.WithCancellation(cancellationToken).ConfigureAwait(false))
+        {
+            // Check if RawRepresentation contains an AG-UI event - emit it directly.
+            if (chatResponse.RawRepresentation is BaseEvent rawEvent)
+            {
+                if (rawEvent is RunStartedEvent)
+                {
+                    runStartedEmitted = true;
+                }
+                else if (rawEvent is RunFinishedEvent)
+                {
+                    runFinishedEmitted = true;
+                }
+                else if (!runStartedEmitted)
+                {
+                    runStartedEmitted = true;
+                    yield return RunStartedEvent.Create(threadId, runId);
+                }
+
+                yield return rawEvent;
+                continue;
+            }
+
+            // Emit RunStartedEvent automatically if not explicitly provided
+            if (!runStartedEmitted)
+            {
+                runStartedEmitted = true;
+                yield return RunStartedEvent.Create(threadId, runId);
+            }
+
+            // Serialize the raw ChatResponseUpdate once for attaching to emitted events
+            var raw = JsonSerializer.SerializeToElement(chatResponse, jsonSerializerOptions.GetTypeInfo(typeof(ChatResponseUpdate)));
+
+            string? effectiveMessageId = null;
+            foreach (var content in chatResponse.Contents)
+            {
+                switch (content)
+                {
+                    case TextContent textContent:
+                        effectiveMessageId ??= chatResponse.MessageId ?? AGUIIdGenerator.NewMessageId();
+
+                        if (!messageTracker.IsMessageId(effectiveMessageId))
+                        {
+                            if (messageTracker.Close(raw) is { } textEndEvt)
+                            {
+                                yield return textEndEvt;
+                            }
+
+                            yield return messageTracker.Open(
+                                effectiveMessageId,
+                                MapAGUIRole(chatResponse.Role) ?? AGUIRoles.Assistant,
+                                chatResponse.AuthorName,
+                                raw);
+                        }
+
+                        if (!string.IsNullOrEmpty(textContent.Text))
+                        {
+                            yield return messageTracker.EmitDelta(textContent.Text, raw);
+                        }
+                        break;
+
+                    case FunctionCallContent fcc:
+
+                        // On continuation, suppress re-emitted FCCs (client already has them from turn 1)
+                        if (isContinuation)
+                        {
+                            // Still track for correlating FRCs later
+                            callIdToToolName ??= new Dictionary<string, string>(StringComparer.Ordinal);
+                            callIdToToolName[fcc.CallId] = fcc.Name;
+                            break;
+                        }
+
+                        // Close any open text message before emitting tool call events
+                        if (messageTracker.Close(raw) is { } fccEndEvt)
+                        {
+                            yield return fccEndEvt;
+                        }
+
+                        yield return ToolCallStartEvent.Create(fcc.CallId, fcc.Name, chatResponse.MessageId, raw);
+
+                        var args = JsonSerializer.Serialize(fcc.Arguments, jsonSerializerOptions.GetTypeInfo(typeof(IDictionary<string, object?>)));
+                        yield return ToolCallArgsEvent.Create(fcc.CallId, args, raw);
+
+                        yield return ToolCallEndEvent.Create(fcc.CallId, raw);
+
+                        // Emit mapped events for this tool call if a call mapping is registered
+                        if (options.TryGetCallMapping(fcc.Name, out var callMapper))
+                        {
+                            foreach (var mappedEvt in callMapper(fcc))
+                            {
+                                yield return mappedEvt;
+                            }
+                        }
+
+                        // Track call ID → tool name for correlating results with registered result mappings
+                        if (options.TryGetResultMapping(fcc.Name, out _))
+                        {
+                            callIdToToolName ??= new Dictionary<string, string>(StringComparer.Ordinal);
+                            callIdToToolName[fcc.CallId] = fcc.Name;
+                        }
+                        break;
+
+                    case FunctionResultContent frc:
+                        // On continuation, suppress client tool results (client already has them)
+                        if (isContinuation
+                            && callIdToToolName is not null
+                            && callIdToToolName.TryGetValue(frc.CallId, out var frcToolName)
+                            && clientToolNames.Contains(frcToolName))
+                        {
+                            break;
+                        }
+
+                        var result = SerializeResultContent(frc, jsonSerializerOptions) ?? "";
+                        yield return ToolCallResultEvent.Create(frc.CallId, result, raw);
+
+                        // Emit mapped events for this tool result if a result mapping is registered
+                        if (callIdToToolName is not null
+                            && callIdToToolName.TryGetValue(frc.CallId, out var mappedToolName)
+                            && options!.TryGetResultMapping(mappedToolName, out var resultMapper))
+                        {
+                            foreach (var mappedEvt in resultMapper(frc))
+                            {
+                                yield return mappedEvt;
+                            }
+                        }
+                        break;
+
+                    case ToolApprovalRequestContent { ToolCall: FunctionCallContent toolCall } ar:
+
+                        // Close any open text message before emitting tool call events
+                        if (messageTracker.Close(raw) is { } arEndEvt)
+                        {
+                            yield return arEndEvt;
+                        }
+
+                        // Emit the tool call events so spec-compliant clients can see the proposal
+                        yield return ToolCallStartEvent.Create(toolCall.CallId, toolCall.Name, chatResponse.MessageId, raw);
+
+                        var approvalArgs = JsonSerializer.Serialize(toolCall.Arguments, jsonSerializerOptions.GetTypeInfo(typeof(IDictionary<string, object?>)));
+                        yield return ToolCallArgsEvent.Create(toolCall.CallId, approvalArgs, raw);
+
+                        yield return ToolCallEndEvent.Create(toolCall.CallId, raw);
+
+                        // In mixed invocation (first turn), don't accumulate interrupts.
+                        // The stream will finish with RUN_FINISHED(success) instead.
+                        if (clientToolNames.Count > 0 && !isContinuation)
+                        {
+                            break;
+                        }
+
+                        // Accumulate the interrupt — we'll emit a single RunFinished with all interrupts at the end
+                        pendingApprovalInterrupts ??= new List<AGUIInterrupt>();
+                        pendingApprovalInterrupts.Add(new AGUIInterrupt
+                        {
+                            Id = ar.RequestId,
+                            Reason = InterruptReasons.ToolCall,
+                            ToolCallId = toolCall.CallId,
+                            Message = $"Approval required for tool call: {toolCall.Name}",
+                            ResponseSchema = AGUIToolApprovalSchema,
+                        });
+                        break;
+
+                    default:
+                        // Check registered interrupt mappers for custom interrupt-producing content types
+                        var interrupt = options.InvokeInterruptMappers(content);
+                        if (interrupt is not null)
+                        {
+                            // Close any open text message before emitting interrupt
+                            if (messageTracker.Close(raw) is { } intEndEvt)
+                            {
+                                yield return intEndEvt;
+                            }
+
+                            yield return RunFinishedEvent.Create(threadId, runId,
+                                new RunFinishedInterruptOutcome { Interrupts = [interrupt] });
+
+                            runFinishedEmitted = true;
+                        }
+                        else
+                        {
+                            var events = options.InvokeContentMappers(content);
+                            if (events is not null)
+                            {
+                                foreach (var evt in events)
+                                {
+                                    if (evt is RunFinishedEvent)
+                                    {
+                                        runFinishedEmitted = true;
+                                    }
+
+                                    yield return evt;
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
+        // End the last message if there was one
+        if (messageTracker.Close() is { } finalEndEvt)
+        {
+            yield return finalEndEvt;
+        }
+
+        // Emit RunStartedEvent if no updates were processed (empty stream)
+        if (!runStartedEmitted)
+        {
+            yield return RunStartedEvent.Create(threadId, runId);
+        }
+
+        // Emit accumulated tool approval interrupts as a single RunFinished
+        if (pendingApprovalInterrupts is { Count: > 0 })
+        {
+            yield return RunFinishedEvent.Create(threadId, runId,
+                new RunFinishedInterruptOutcome { Interrupts = pendingApprovalInterrupts });
+            runFinishedEmitted = true;
+        }
+
+        // Emit RunFinishedEvent automatically if not explicitly provided
+        if (!runFinishedEmitted)
+        {
+            yield return RunFinishedEvent.Create(threadId, runId, new RunFinishedSuccessOutcome());
+        }
+    }
+
+    private static string? SerializeResultContent(FunctionResultContent frc, JsonSerializerOptions options)
+    {
+        return frc.Result switch
+        {
+            null => null,
+            string str => str,
+            JsonElement jsonElement => jsonElement.GetRawText(),
+            _ => JsonSerializer.Serialize(frc.Result, options.GetTypeInfo(frc.Result.GetType())),
+        };
+    }
+
+    private static string? MapAGUIRole(ChatRole? role)
+    {
+        if (role is null)
+        {
+            return null;
+        }
+
+        if (role == ChatRole.Assistant)
+        {
+            return AGUIRoles.Assistant;
+        }
+
+        if (role == ChatRole.User)
+        {
+            return AGUIRoles.User;
+        }
+
+        if (role == ChatRole.System)
+        {
+            return AGUIRoles.System;
+        }
+
+        if (role == ChatRole.Tool)
+        {
+            return AGUIRoles.Tool;
+        }
+
+        return role.Value.Value.ToLowerInvariant();
+    }
+}

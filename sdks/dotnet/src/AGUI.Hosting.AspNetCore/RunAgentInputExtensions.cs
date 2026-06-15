@@ -1,0 +1,252 @@
+#pragma warning disable CA2227 // Collection properties should be read-only — Tools is read-write by design
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+using AGUI.Abstractions;
+using Microsoft.Extensions.AI;
+
+namespace AGUI.Hosting.AspNetCore;
+
+/// <summary>
+/// Extension methods for adapting <see cref="RunAgentInput"/> to the
+/// Microsoft.Extensions.AI request shape.
+/// </summary>
+public static class RunAgentInputExtensions
+{
+    /// <summary>
+    /// Adapts an AG-UI <see cref="RunAgentInput"/> into a <see cref="ChatRequestContext"/>
+    /// containing a <see cref="ChatMessage"/> list, a <see cref="ChatOptions"/> with the
+    /// originating input stashed under <c>AdditionalProperties["agui_input"]</c>, the
+    /// supplied <see cref="JsonSerializerOptions"/>, and (optionally) caller-provided
+    /// <see cref="AGUIStreamOptions"/>.
+    /// </summary>
+    /// <param name="input">The AG-UI input to adapt.</param>
+    /// <param name="jsonSerializerOptions">JSON serializer options used both for downstream serialization and by the stream converter. Typically resolved from <c>IOptions&lt;Microsoft.AspNetCore.Http.Json.JsonOptions&gt;</c> by the caller.</param>
+    /// <param name="streamOptions">
+    /// Optional stream-converter configuration (interrupt mapper, result mappings, etc.).
+    /// Typically resolved by the caller from DI or endpoint metadata. If <see langword="null"/>,
+    /// a default instance is created. The returned context owns this instance.
+    /// </param>
+    /// <returns>A <see cref="ChatRequestContext"/> with the adapted request, ready to be
+    /// passed to <see cref="IChatClient.GetStreamingResponseAsync(IEnumerable{ChatMessage}, ChatOptions?, System.Threading.CancellationToken)"/>
+    /// and then to <see cref="ChatResponseUpdateAGUIExtensions.AsAGUIEventStreamAsync(IAsyncEnumerable{ChatResponseUpdate}, ChatRequestContext, System.Threading.CancellationToken)"/>.</returns>
+    /// <remarks>
+    /// Client tools declared on <see cref="RunAgentInput.Tools"/> are wired through the
+    /// approval-flow pipeline and installed on <see cref="ChatRequestContext.ChatOptions"/>.<c>Tools</c>
+    /// automatically — callers do not add them manually.
+    /// </remarks>
+    public static ChatRequestContext ToChatRequestContext(
+        this RunAgentInput input,
+        JsonSerializerOptions jsonSerializerOptions,
+        AGUIStreamOptions? streamOptions = null)
+    {
+        ArgumentNullException.ThrowIfNull(input);
+        ArgumentNullException.ThrowIfNull(jsonSerializerOptions);
+
+        var messages = input.Messages.AsChatMessages().ToList();
+        var clientTools = input.Tools?.AsAITools().ToList();
+
+        var clientToolNames = new HashSet<string>(StringComparer.Ordinal);
+        if (clientTools is not null)
+        {
+            foreach (var tool in clientTools)
+            {
+                clientToolNames.Add(tool.Name);
+            }
+        }
+
+        var chatOptions = new ChatOptions
+        {
+            AdditionalProperties = new AdditionalPropertiesDictionary
+            {
+                ["agui_input"] = input,
+            },
+        };
+
+        var isContinuation = ConfigureForMixedInvocation(chatOptions, clientTools, clientToolNames, messages);
+
+        return new ChatRequestContext(
+            input,
+            messages,
+            chatOptions,
+            streamOptions ?? new AGUIStreamOptions(),
+            jsonSerializerOptions,
+            isContinuation,
+            clientToolNames);
+    }
+
+    /// <summary>
+    /// Configures <paramref name="chatOptions"/> for mixed server/client tool invocation.
+    /// On the first turn, wraps client tools in <see cref="ApprovalRequiredAIFunction"/> so FICC
+    /// terminates with approval requests for all tools. On continuation (client tool results
+    /// present in messages), creates proxy functions for client tools and injects approval
+    /// responses so FICC executes all pending tool calls.
+    /// </summary>
+    /// <returns><see langword="true"/> if this is a continuation turn; <see langword="false"/> otherwise (either no client tools, or first turn).</returns>
+    private static bool ConfigureForMixedInvocation(
+        ChatOptions chatOptions,
+        IList<AITool>? clientTools,
+        HashSet<string> clientToolNames,
+        List<ChatMessage> chatMessages)
+    {
+        if (clientTools is not { Count: > 0 })
+        {
+            return false;
+        }
+
+        if (HasClientToolResults(chatMessages, clientToolNames))
+        {
+            ProcessContinuation(chatOptions, clientTools, clientToolNames, chatMessages);
+            return true;
+        }
+
+        // First turn: wrap client tools in ApprovalRequiredAIFunction.
+        // When FICC sees any ApprovalRequired tool called, it converts ALL FCCs in the
+        // response to ToolApprovalRequestContent and terminates. The stream converter
+        // unwraps them back to plain TOOL_CALL events.
+        chatOptions.Tools ??= new List<AITool>();
+        foreach (var tool in clientTools)
+        {
+            if (tool is AIFunction aiFunction)
+            {
+                chatOptions.Tools.Add(new ApprovalRequiredAIFunction(aiFunction));
+            }
+            else
+            {
+                chatOptions.Tools.Add(tool);
+            }
+        }
+
+        return false;
+    }
+
+    private static bool HasClientToolResults(List<ChatMessage> messages, HashSet<string> clientToolNames)
+    {
+        var clientCallIds = new HashSet<string>(StringComparer.Ordinal);
+
+        foreach (var message in messages)
+        {
+            foreach (var content in message.Contents)
+            {
+                if (content is FunctionCallContent fcc && clientToolNames.Contains(fcc.Name))
+                {
+                    clientCallIds.Add(fcc.CallId);
+                }
+                else if (content is FunctionResultContent frc && clientCallIds.Contains(frc.CallId))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static void ProcessContinuation(
+        ChatOptions chatOptions,
+        IList<AITool> clientTools,
+        HashSet<string> clientToolNames,
+        List<ChatMessage> chatMessages)
+    {
+        // Collect client tool results from messages
+        var clientCallResults = new Dictionary<string, string>(StringComparer.Ordinal);
+        var callIdToName = new Dictionary<string, string>(StringComparer.Ordinal);
+
+        foreach (var message in chatMessages)
+        {
+            foreach (var content in message.Contents)
+            {
+                if (content is FunctionCallContent fcc && clientToolNames.Contains(fcc.Name))
+                {
+                    callIdToName[fcc.CallId] = fcc.Name;
+                }
+                else if (content is FunctionResultContent frc && callIdToName.ContainsKey(frc.CallId))
+                {
+                    clientCallResults[frc.CallId] = frc.Result?.ToString() ?? string.Empty;
+                }
+            }
+        }
+
+        // Find the last assistant message with tool calls and collect all pending FCCs.
+        // Replace FCCs with ToolApprovalRequestContent (as FICC would have emitted them)
+        // and inject a User message with ToolApprovalResponseContent for each.
+        var approvalResponses = new List<AIContent>();
+        for (var i = chatMessages.Count - 1; i >= 0; i--)
+        {
+            var msg = chatMessages[i];
+            if (msg.Role != ChatRole.Assistant)
+            {
+                continue;
+            }
+
+            var hasFcc = false;
+            foreach (var content in msg.Contents)
+            {
+                if (content is FunctionCallContent)
+                {
+                    hasFcc = true;
+                    break;
+                }
+            }
+
+            if (!hasFcc)
+            {
+                continue;
+            }
+
+            // Replace the assistant message contents: convert FCCs to ToolApprovalRequestContent
+            var newContents = new List<AIContent>();
+            foreach (var content in msg.Contents)
+            {
+                if (content is FunctionCallContent fcc)
+                {
+                    var request = new ToolApprovalRequestContent($"approval_{fcc.CallId}", fcc);
+                    newContents.Add(request);
+                    approvalResponses.Add(request.CreateResponse(approved: true));
+                }
+                else
+                {
+                    newContents.Add(content);
+                }
+            }
+
+            chatMessages[i] = new ChatMessage(msg.Role, newContents);
+            break; // Only process the last assistant message with tool calls
+        }
+
+        // Inject a User message with approval responses for all pending tool calls
+        if (approvalResponses.Count > 0)
+        {
+            chatMessages.Add(new ChatMessage(ChatRole.User, approvalResponses));
+        }
+
+        // Create proxy functions for client tools that have pre-computed results
+        // and add them to the existing tools list (which may contain server tools)
+        chatOptions.Tools ??= new List<AITool>();
+        foreach (var tool in clientTools)
+        {
+            string? result = null;
+            foreach (var kvp in clientCallResults)
+            {
+                if (callIdToName.TryGetValue(kvp.Key, out var name) && name == tool.Name)
+                {
+                    result = kvp.Value;
+                    break;
+                }
+            }
+
+            if (result is not null)
+            {
+                var proxyResult = result;
+                var description = (tool as AIFunction)?.Description ?? string.Empty;
+                var proxy = AIFunctionFactory.Create(
+                    () => proxyResult,
+                    tool.Name,
+                    description);
+                chatOptions.Tools.Add(proxy);
+            }
+        }
+    }
+}
