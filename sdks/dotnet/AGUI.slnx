@@ -1,5 +1,9 @@
 <Solution>
-  <Folder Name="/src/" />
-  <Folder Name="/tests/" />
+  <Folder Name="/src/">
+    <Project Path="src/AGUI.Abstractions/AGUI.Abstractions.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AGUI.Abstractions.UnitTests/AGUI.Abstractions.UnitTests.csproj" />
+  </Folder>
   <Folder Name="/samples/" />
 </Solution>
