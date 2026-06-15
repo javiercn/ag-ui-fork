@@ -12,6 +12,10 @@
     <Project Path="tests/CrossLanguage.TestServer/CrossLanguage.TestServer.csproj" />
     <Project Path="tests/AGUI.CrossLanguage.IntegrationTests/AGUI.CrossLanguage.IntegrationTests.csproj" />
   </Folder>
+  <Folder Name="/samples/AGUIClientServer/">
+    <Project Path="samples/AGUIClientServer/AGUIDojoServer/AGUIDojoServer.csproj" />
+    <Project Path="samples/AGUIClientServer/AGUIDojoServerConsoleClient/AGUIDojoServerConsoleClient.csproj" />
+  </Folder>
   <Folder Name="/samples/GettingStarted/">
     <Project Path="samples/GettingStarted/Step01_GettingStarted/Step01_GettingStarted.csproj" />
     <Project Path="samples/GettingStarted/Step02_BackendTools/Step02_BackendTools.csproj" />

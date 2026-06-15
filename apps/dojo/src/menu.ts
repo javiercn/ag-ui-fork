@@ -181,6 +181,7 @@ export const menuIntegrations = [
       "predictive_state_updates",
       "shared_state",
       "tool_based_generative_ui",
+      "subgraphs",
     ],
   },
   {

@@ -396,7 +396,8 @@ export const agentsIntegrations = {
         shared_state: "shared_state",
         tool_based_generative_ui: "tool_based_generative_ui",
         predictive_state_updates: "predictive_state_updates",
-      },
+    subgraphs: "subgraphs",
+      }
     ),
 
   a2a: async () => {
