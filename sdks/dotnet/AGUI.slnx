@@ -12,6 +12,10 @@
     <Project Path="tests/CrossLanguage.TestServer/CrossLanguage.TestServer.csproj" />
     <Project Path="tests/AGUI.CrossLanguage.IntegrationTests/AGUI.CrossLanguage.IntegrationTests.csproj" />
   </Folder>
+  <Folder Name="/samples/AGUIWithCopilotSdk/">
+    <Project Path="samples/AGUIWithCopilotSdk/AGUIWithCopilotSdkServer/AGUIWithCopilotSdkServer.csproj" />
+    <Project Path="samples/AGUIWithCopilotSdk/AGUIWithCopilotSdkConsoleClient/AGUIWithCopilotSdkConsoleClient.csproj" />
+  </Folder>
   <Folder Name="/samples/AGUIWithMcpTools/">
     <Project Path="samples/AGUIWithMcpTools/AGUIWithMcpToolsServer/AGUIWithMcpToolsServer.csproj" />
     <Project Path="samples/AGUIWithMcpTools/AGUIWithMcpToolsConsoleClient/AGUIWithMcpToolsConsoleClient.csproj" />
