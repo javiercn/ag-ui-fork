@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 
 using JsonOptions = Microsoft.AspNetCore.Http.Json.JsonOptions;
 
-namespace Step06_RawEvents;
+namespace Step06_RawEvents.Server;
 
 internal static class AGUIEndpoint
 {

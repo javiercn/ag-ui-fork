@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using AGUI.Abstractions;
 using Microsoft.Extensions.AI;
 
-namespace Step06_RawEvents;
+namespace Step06_RawEvents.Server;
 
 /// <summary>
 /// A stateless <see cref="DelegatingChatClient"/> that brackets the inner client's response

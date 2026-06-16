@@ -29,7 +29,8 @@
     <ProjectReference Include="..\..\samples\GettingStarted\Step04_HumanInLoop\Step04_HumanInLoop.Client\Step04_HumanInLoop.Client.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step05_StateManagement\Step05_StateManagement.Server\Step05_StateManagement.Server.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step05_StateManagement\Step05_StateManagement.Client\Step05_StateManagement.Client.csproj" />
-    <ProjectReference Include="..\..\samples\GettingStarted\Step06_RawEvents\Step06_RawEvents.csproj" />
+    <ProjectReference Include="..\..\samples\GettingStarted\Step06_RawEvents\Step06_RawEvents.Server\Step06_RawEvents.Server.csproj" />
+    <ProjectReference Include="..\..\samples\GettingStarted\Step06_RawEvents\Step06_RawEvents.Client\Step06_RawEvents.Client.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step07_ThinkingEvents\Step07_ThinkingEvents.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step08_MultimodalMessages\Step08_MultimodalMessages.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step09_InterruptsApproval\Step09_InterruptsApproval.csproj" />

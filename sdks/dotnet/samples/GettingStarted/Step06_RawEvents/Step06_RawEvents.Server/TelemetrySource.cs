@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Step06_RawEvents;
+namespace Step06_RawEvents.Server;
 
 /// <summary>
 /// Stand-in for an external telemetry / observability system that emits opaque JSON events

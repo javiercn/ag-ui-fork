@@ -10,15 +10,16 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Step06_RawEvents;
+using Step06_RawEvents.Client;
+using Step06_RawEvents.Server;
 using VerifyXunit;
 using Xunit;
 
 namespace AGUI.Hosting.AspNetCore.IntegrationTests.Samples.GettingStarted;
 
-public sealed class Step06_RawEventsTest : IntegrationTestBase<Step06_RawEvents.Program>
+public sealed class Step06_RawEventsTest : IntegrationTestBase<Step06_RawEvents.Server.Program>
 {
-    public Step06_RawEventsTest(WebApplicationFactory<Step06_RawEvents.Program> factory)
+    public Step06_RawEventsTest(WebApplicationFactory<Step06_RawEvents.Server.Program> factory)
         : base(factory)
     {
     }
@@ -31,10 +32,8 @@ public sealed class Step06_RawEventsTest : IntegrationTestBase<Step06_RawEvents.
         var clientMessages = new List<List<ChatMessage>>();
         var clientUpdates = new List<List<ChatResponseUpdate>>();
 
-        var messages = new List<ChatMessage> { new(ChatRole.User, "Tell me about ag-ui raw events") };
-        clientMessages.Add(messages.ToList());
-        var updates = await CollectUpdates(aguiClient, messages, options: null);
-        clientUpdates.Add(updates);
+        await Step06_RawEvents.Client.SampleClient.RunAsync(
+            aguiClient, TextWriter.Null, clientMessages, clientUpdates);
 
         await VerifyAllCaptures(transport, server, clientMessages, clientUpdates);
     }

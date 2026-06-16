@@ -2,7 +2,7 @@ using Azure.AI.OpenAI;
 using Azure.Identity;
 using Microsoft.Extensions.AI;
 
-namespace Step06_RawEvents;
+namespace Step06_RawEvents.Server;
 
 public class Program
 {
