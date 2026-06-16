@@ -2,7 +2,7 @@ using Azure.AI.OpenAI;
 using Azure.Identity;
 using Microsoft.Extensions.AI;
 
-namespace Step07_ThinkingEvents;
+namespace Step07_ThinkingEvents.Server;
 
 public class Program
 {

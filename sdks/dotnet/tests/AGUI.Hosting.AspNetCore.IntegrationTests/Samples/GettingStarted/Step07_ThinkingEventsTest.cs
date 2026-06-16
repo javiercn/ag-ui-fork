@@ -10,15 +10,16 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Step07_ThinkingEvents;
+using Step07_ThinkingEvents.Client;
+using Step07_ThinkingEvents.Server;
 using VerifyXunit;
 using Xunit;
 
 namespace AGUI.Hosting.AspNetCore.IntegrationTests.Samples.GettingStarted;
 
-public sealed class Step07_ThinkingEventsTest : IntegrationTestBase<Step07_ThinkingEvents.Program>
+public sealed class Step07_ThinkingEventsTest : IntegrationTestBase<Step07_ThinkingEvents.Server.Program>
 {
-    public Step07_ThinkingEventsTest(WebApplicationFactory<Step07_ThinkingEvents.Program> factory)
+    public Step07_ThinkingEventsTest(WebApplicationFactory<Step07_ThinkingEvents.Server.Program> factory)
         : base(factory)
     {
     }
@@ -31,10 +32,8 @@ public sealed class Step07_ThinkingEventsTest : IntegrationTestBase<Step07_Think
         var clientMessages = new List<List<ChatMessage>>();
         var clientUpdates = new List<List<ChatResponseUpdate>>();
 
-        var messages = new List<ChatMessage> { new(ChatRole.User, "What is 15 * 23?") };
-        clientMessages.Add(messages.ToList());
-        var updates = await CollectUpdates(aguiClient, messages);
-        clientUpdates.Add(updates);
+        await Step07_ThinkingEvents.Client.SampleClient.RunAsync(
+            aguiClient, TextWriter.Null, clientMessages, clientUpdates);
 
         await VerifyAllCaptures(transport, server, clientMessages, clientUpdates);
     }
