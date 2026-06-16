@@ -19,7 +19,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\AGUI.Hosting.AspNetCore\AGUI.Hosting.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\AGUI.Client\AGUI.Client.csproj" />
-    <ProjectReference Include="..\..\samples\GettingStarted\Step01_GettingStarted\Step01_GettingStarted.csproj" />
+    <ProjectReference Include="..\..\samples\GettingStarted\Step01_GettingStarted\Step01_GettingStarted.Server\Step01_GettingStarted.Server.csproj" />
+    <ProjectReference Include="..\..\samples\GettingStarted\Step01_GettingStarted\Step01_GettingStarted.Client\Step01_GettingStarted.Client.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step02_BackendTools\Step02_BackendTools.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step03_FrontendTools\Step03_FrontendTools.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step04_HumanInLoop\Step04_HumanInLoop.csproj" />

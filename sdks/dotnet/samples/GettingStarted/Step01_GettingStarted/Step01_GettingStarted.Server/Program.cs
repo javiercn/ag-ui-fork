@@ -2,7 +2,7 @@ using Azure.AI.OpenAI;
 using Azure.Identity;
 using Microsoft.Extensions.AI;
 
-namespace Step01_GettingStarted;
+namespace Step01_GettingStarted.Server;
 
 public class Program
 {

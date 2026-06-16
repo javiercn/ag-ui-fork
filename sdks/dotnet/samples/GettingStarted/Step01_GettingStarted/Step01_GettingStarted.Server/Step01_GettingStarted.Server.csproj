@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\AGUI.Abstractions\AGUI.Abstractions.csproj" />
-    <ProjectReference Include="..\..\..\src\AGUI.Hosting.AspNetCore\AGUI.Hosting.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\..\..\src\AGUI.Abstractions\AGUI.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\..\src\AGUI.Hosting.AspNetCore\AGUI.Hosting.AspNetCore.csproj" />
   </ItemGroup>
 
 </Project>

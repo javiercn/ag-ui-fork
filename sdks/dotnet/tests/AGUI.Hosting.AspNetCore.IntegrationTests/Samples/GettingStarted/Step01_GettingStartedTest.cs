@@ -1,11 +1,12 @@
-﻿using AGUI.Abstractions;
+using AGUI.Abstractions;
 using AGUI.Client;
 using AGUI.Hosting.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
-using Step01_GettingStarted;
+using Step01_GettingStarted.Client;
+using Step01_GettingStarted.Server;
 using System.Runtime.CompilerServices;
 using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
@@ -16,9 +17,9 @@ using Xunit;
 
 namespace AGUI.Hosting.AspNetCore.IntegrationTests.Samples.GettingStarted;
 
-public sealed class Step01_GettingStartedTest : IntegrationTestBase<Step01_GettingStarted.Program>
+public sealed class Step01_GettingStartedTest : IntegrationTestBase<Step01_GettingStarted.Server.Program>
 {
-    public Step01_GettingStartedTest(WebApplicationFactory<Step01_GettingStarted.Program> factory)
+    public Step01_GettingStartedTest(WebApplicationFactory<Step01_GettingStarted.Server.Program> factory)
         : base(factory)
     {
     }
@@ -31,22 +32,7 @@ public sealed class Step01_GettingStartedTest : IntegrationTestBase<Step01_Getti
         var clientMessages = new List<List<ChatMessage>>();
         var clientUpdates = new List<List<ChatResponseUpdate>>();
 
-        // Turn 1
-        var messages = new List<ChatMessage> { new(ChatRole.User, "Hello") };
-        clientMessages.Add(messages.ToList());
-        var turn1Updates = await CollectUpdates(aguiClient, messages);
-        clientUpdates.Add(turn1Updates);
-
-        // Synthesize assistant message from turn 1 using ToChatResponse().Messages
-        messages.AddMessages(turn1Updates.ToChatResponse());
-
-        // Add second user message
-        messages.Add(new ChatMessage(ChatRole.User, "How are you?"));
-
-        // Turn 2
-        clientMessages.Add(messages.ToList());
-        var turn2Updates = await CollectUpdates(aguiClient, messages);
-        clientUpdates.Add(turn2Updates);
+        await SampleClient.RunAsync(aguiClient, TextWriter.Null, clientMessages, clientUpdates);
 
         await VerifyAllCaptures(transport, server, clientMessages, clientUpdates);
     }
