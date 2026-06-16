@@ -1,9 +1,16 @@
 using AGUI.Client;
-using Step01_GettingStarted.Client;
 
-var baseUrl = args.Length > 0 ? args[0] : "http://localhost:5001";
+namespace Step01_GettingStarted.Client;
 
-using var httpClient = new HttpClient();
-var aguiClient = new AGUIChatClient(httpClient, baseUrl);
+public static class Program
+{
+    public static async Task Main(string[] args)
+    {
+        var baseUrl = args.Length > 0 ? args[0] : "http://localhost:5001";
 
-await SampleClient.RunAsync(aguiClient, Console.Out).ConfigureAwait(false);
+        using var httpClient = new HttpClient();
+        var aguiClient = new AGUIChatClient(httpClient, baseUrl);
+
+        await SampleClient.RunAsync(aguiClient, Console.Out).ConfigureAwait(false);
+    }
+}
