@@ -4,7 +4,7 @@ using AGUI.Abstractions;
 using AGUI.Hosting.AspNetCore;
 using Microsoft.Extensions.AI;
 
-namespace Step05_StateManagement;
+namespace Step05_StateManagement.Server;
 
 /// <summary>
 /// A stateless <see cref="DelegatingChatClient"/> that implements the recipe

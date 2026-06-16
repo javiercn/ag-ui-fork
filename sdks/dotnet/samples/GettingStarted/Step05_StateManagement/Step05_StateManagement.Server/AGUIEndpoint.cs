@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 
 using JsonOptions = Microsoft.AspNetCore.Http.Json.JsonOptions;
 
-namespace Step05_StateManagement;
+namespace Step05_StateManagement.Server;
 
 internal static class AGUIEndpoint
 {

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Step05_StateManagement;
+namespace Step05_StateManagement.Server;
 
 internal sealed class AgentState
 {

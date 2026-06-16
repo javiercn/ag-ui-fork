@@ -11,15 +11,16 @@ using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
-using Step05_StateManagement;
+using Step05_StateManagement.Client;
+using Step05_StateManagement.Server;
 using VerifyXunit;
 using Xunit;
 
 namespace AGUI.Hosting.AspNetCore.IntegrationTests.Samples.GettingStarted;
 
-public sealed class Step05_StateManagementTest : IntegrationTestBase<Step05_StateManagement.Program>
+public sealed class Step05_StateManagementTest : IntegrationTestBase<Step05_StateManagement.Server.Program>
 {
-    public Step05_StateManagementTest(WebApplicationFactory<Step05_StateManagement.Program> factory)
+    public Step05_StateManagementTest(WebApplicationFactory<Step05_StateManagement.Server.Program> factory)
         : base(factory)
     {
     }
@@ -32,19 +33,8 @@ public sealed class Step05_StateManagementTest : IntegrationTestBase<Step05_Stat
         var clientMessages = new List<List<ChatMessage>>();
         var clientUpdates = new List<List<ChatResponseUpdate>>();
 
-        // Send a message with state to trigger state management mode
-        var messages = new List<ChatMessage> { new(ChatRole.User, "Suggest me an Italian pasta recipe") };
-        var state = new { recipe = new { title = "", cuisine = "", ingredients = new string[0], steps = new string[0], prep_time_minutes = 0, cook_time_minutes = 0, skill_level = "" } };
-        var options = new ChatOptions
-        {
-            RawRepresentationFactory = _ => new RunAgentInput
-            {
-                State = JsonSerializer.SerializeToElement(state, s_jsonOptions.GetTypeInfo(typeof(object)))
-            }
-        };
-        clientMessages.Add(messages.ToList());
-        var updates = await CollectUpdates(aguiClient, messages, options);
-        clientUpdates.Add(updates);
+        await Step05_StateManagement.Client.SampleClient.RunAsync(
+            aguiClient, TextWriter.Null, clientMessages, clientUpdates);
 
         await VerifyAllCaptures(transport, server, clientMessages, clientUpdates);
     }
