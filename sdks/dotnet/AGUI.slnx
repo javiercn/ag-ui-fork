@@ -35,7 +35,8 @@
     <Project Path="samples/GettingStarted/Step08_MultimodalMessages/Step08_MultimodalMessages.Client/Step08_MultimodalMessages.Client.csproj" />
     <Project Path="samples/GettingStarted/Step09_InterruptsApproval/Step09_InterruptsApproval.Server/Step09_InterruptsApproval.Server.csproj" />
     <Project Path="samples/GettingStarted/Step09_InterruptsApproval/Step09_InterruptsApproval.Client/Step09_InterruptsApproval.Client.csproj" />
-    <Project Path="samples/GettingStarted/Step10_InterruptsUserInput/Step10_InterruptsUserInput.csproj" />
+    <Project Path="samples/GettingStarted/Step10_InterruptsUserInput/Step10_InterruptsUserInput.Server/Step10_InterruptsUserInput.Server.csproj" />
+    <Project Path="samples/GettingStarted/Step10_InterruptsUserInput/Step10_InterruptsUserInput.Client/Step10_InterruptsUserInput.Client.csproj" />
     <Project Path="samples/GettingStarted/Step11_Serialization/Step11_Serialization.csproj" />
   </Folder>
   <Folder Name="/samples/" />

@@ -2,7 +2,7 @@ using Azure.AI.OpenAI;
 using Azure.Identity;
 using Microsoft.Extensions.AI;
 
-namespace Step10_InterruptsUserInput;
+namespace Step10_InterruptsUserInput.Server;
 
 public class Program
 {

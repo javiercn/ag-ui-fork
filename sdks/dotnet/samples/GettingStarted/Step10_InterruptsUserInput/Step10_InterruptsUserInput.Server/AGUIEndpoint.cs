@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 
 using JsonOptions = Microsoft.AspNetCore.Http.Json.JsonOptions;
 
-namespace Step10_InterruptsUserInput;
+namespace Step10_InterruptsUserInput.Server;
 
 internal static class AGUIEndpoint
 {

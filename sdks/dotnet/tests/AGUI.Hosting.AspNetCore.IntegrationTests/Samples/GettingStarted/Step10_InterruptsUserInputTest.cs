@@ -10,15 +10,16 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Step10_InterruptsUserInput;
+using Step10_InterruptsUserInput.Client;
+using Step10_InterruptsUserInput.Server;
 using VerifyXunit;
 using Xunit;
 
 namespace AGUI.Hosting.AspNetCore.IntegrationTests.Samples.GettingStarted;
 
-public sealed class Step10_InterruptsUserInputTest : IntegrationTestBase<Step10_InterruptsUserInput.Program>
+public sealed class Step10_InterruptsUserInputTest : IntegrationTestBase<Step10_InterruptsUserInput.Server.Program>
 {
-    public Step10_InterruptsUserInputTest(WebApplicationFactory<Step10_InterruptsUserInput.Program> factory)
+    public Step10_InterruptsUserInputTest(WebApplicationFactory<Step10_InterruptsUserInput.Server.Program> factory)
         : base(factory)
     {
     }
@@ -31,37 +32,8 @@ public sealed class Step10_InterruptsUserInputTest : IntegrationTestBase<Step10_
         var clientMessages = new List<List<ChatMessage>>();
         var clientUpdates = new List<List<ChatResponseUpdate>>();
 
-        // Turn 1: Send setup request - should get user input interrupt
-        var messages1 = new List<ChatMessage> { new(ChatRole.User, "Please setup my account") };
-        clientMessages.Add(messages1.ToList());
-        var updates1 = await CollectUpdates(aguiClient, messages1);
-        clientUpdates.Add(updates1);
-
-        // Turn 2: Resume with user input via state
-        var messages2 = new List<ChatMessage>
-        {
-            new(ChatRole.User, "Please setup my account"),
-            new(ChatRole.Assistant, "I need some additional information to complete the setup.")
-        };
-        var options2 = new ChatOptions
-        {
-            RawRepresentationFactory = _ => new RunAgentInput
-            {
-                State = JsonSerializer.SerializeToElement(
-                    new
-                    {
-                        interruptResponse = new
-                        {
-                            response = "johndoe42",
-                            prompt = "Please enter your preferred username:"
-                        }
-                    },
-                    s_jsonOptions.GetTypeInfo(typeof(object)))
-            }
-        };
-        clientMessages.Add(messages2.ToList());
-        var updates2 = await CollectUpdates(aguiClient, messages2, options2);
-        clientUpdates.Add(updates2);
+        await Step10_InterruptsUserInput.Client.SampleClient.RunAsync(
+            aguiClient, TextWriter.Null, clientMessages, clientUpdates);
 
         await VerifyAllCaptures(transport, server, clientMessages, clientUpdates);
     }
