@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Step02_BackendTools;
+namespace Step02_BackendTools.Server;
 
 [JsonSerializable(typeof(RestaurantSearchRequest))]
 [JsonSerializable(typeof(RestaurantSearchResponse))]

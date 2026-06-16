@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Step02_BackendTools;
+using Step02_BackendTools.Client;
+using Step02_BackendTools.Server;
 using System.Runtime.CompilerServices;
 using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
@@ -17,9 +18,9 @@ using Xunit;
 
 namespace AGUI.Hosting.AspNetCore.IntegrationTests.Samples.GettingStarted;
 
-public sealed class Step02_BackendToolsTest : IntegrationTestBase<Step02_BackendTools.Program>
+public sealed class Step02_BackendToolsTest : IntegrationTestBase<Step02_BackendTools.Server.Program>
 {
-    public Step02_BackendToolsTest(WebApplicationFactory<Step02_BackendTools.Program> factory)
+    public Step02_BackendToolsTest(WebApplicationFactory<Step02_BackendTools.Server.Program> factory)
         : base(factory)
     {
     }
@@ -32,11 +33,7 @@ public sealed class Step02_BackendToolsTest : IntegrationTestBase<Step02_Backend
         var clientMessages = new List<List<ChatMessage>>();
         var clientUpdates = new List<List<ChatResponseUpdate>>();
 
-        // Single turn: user asks about restaurants, LLM calls SearchRestaurants tool, then responds with text
-        var messages = new List<ChatMessage> { new(ChatRole.User, "Find Italian restaurants in Seattle") };
-        clientMessages.Add(messages.ToList());
-        var updates = await CollectUpdates(aguiClient, messages);
-        clientUpdates.Add(updates);
+        await SampleClient.RunAsync(aguiClient, TextWriter.Null, clientMessages, clientUpdates);
 
         await VerifyAllCaptures(transport, server, clientMessages, clientUpdates);
     }

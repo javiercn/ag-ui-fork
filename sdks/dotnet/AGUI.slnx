@@ -19,7 +19,8 @@
   <Folder Name="/samples/GettingStarted/">
     <Project Path="samples/GettingStarted/Step01_GettingStarted/Step01_GettingStarted.Server/Step01_GettingStarted.Server.csproj" />
     <Project Path="samples/GettingStarted/Step01_GettingStarted/Step01_GettingStarted.Client/Step01_GettingStarted.Client.csproj" />
-    <Project Path="samples/GettingStarted/Step02_BackendTools/Step02_BackendTools.csproj" />
+    <Project Path="samples/GettingStarted/Step02_BackendTools/Step02_BackendTools.Server/Step02_BackendTools.Server.csproj" />
+    <Project Path="samples/GettingStarted/Step02_BackendTools/Step02_BackendTools.Client/Step02_BackendTools.Client.csproj" />
     <Project Path="samples/GettingStarted/Step03_FrontendTools/Step03_FrontendTools.csproj" />
     <Project Path="samples/GettingStarted/Step04_HumanInLoop/Step04_HumanInLoop.csproj" />
     <Project Path="samples/GettingStarted/Step05_StateManagement/Step05_StateManagement.csproj" />

@@ -3,7 +3,7 @@ using Azure.AI.OpenAI;
 using Azure.Identity;
 using Microsoft.Extensions.AI;
 
-namespace Step02_BackendTools;
+namespace Step02_BackendTools.Server;
 
 public class Program
 {

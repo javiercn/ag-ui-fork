@@ -1,4 +1,4 @@
-namespace Step02_BackendTools;
+namespace Step02_BackendTools.Server;
 
 internal sealed class RestaurantSearchRequest
 {
