@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 
 using JsonOptions = Microsoft.AspNetCore.Http.Json.JsonOptions;
 
-namespace Step09_InterruptsApproval;
+namespace Step09_InterruptsApproval.Server;
 
 internal static class AGUIEndpoint
 {

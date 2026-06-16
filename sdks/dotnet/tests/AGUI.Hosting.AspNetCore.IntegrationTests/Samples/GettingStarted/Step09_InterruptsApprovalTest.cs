@@ -10,15 +10,16 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Step09_InterruptsApproval;
+using Step09_InterruptsApproval.Client;
+using Step09_InterruptsApproval.Server;
 using VerifyXunit;
 using Xunit;
 
 namespace AGUI.Hosting.AspNetCore.IntegrationTests.Samples.GettingStarted;
 
-public sealed class Step09_InterruptsApprovalTest : IntegrationTestBase<Step09_InterruptsApproval.Program>
+public sealed class Step09_InterruptsApprovalTest : IntegrationTestBase<Step09_InterruptsApproval.Server.Program>
 {
-    public Step09_InterruptsApprovalTest(WebApplicationFactory<Step09_InterruptsApproval.Program> factory)
+    public Step09_InterruptsApprovalTest(WebApplicationFactory<Step09_InterruptsApproval.Server.Program> factory)
         : base(factory)
     {
     }
@@ -64,32 +65,8 @@ public sealed class Step09_InterruptsApprovalTest : IntegrationTestBase<Step09_I
         var clientMessages = new List<List<ChatMessage>>();
         var clientUpdates = new List<List<ChatResponseUpdate>>();
 
-        // Turn 1: Send delete request - should get interrupt (ToolApprovalRequestContent)
-        var messages1 = new List<ChatMessage> { new(ChatRole.User, "Please delete the file /etc/important.conf") };
-        clientMessages.Add(messages1.ToList());
-        var updates1 = await CollectUpdates(aguiClient, messages1);
-        clientUpdates.Add(updates1);
-
-        // Extract the ToolApprovalRequestContent from the response
-        var approvalRequest = updates1
-            .SelectMany(u => u.Contents)
-            .OfType<ToolApprovalRequestContent>()
-            .Single();
-
-        // Turn 2: Approve the tool call and resume
-        // CreateResponse builds a ToolApprovalResponseContent linked to the original request.
-        // The AGUIChatClient pipeline detects ToolApprovalResponseContent in messages
-        // and converts it into the interrupt response state on the wire.
-        var approvalResponse = approvalRequest.CreateResponse(approved: true);
-        var messages2 = new List<ChatMessage>
-        {
-            new(ChatRole.User, "Please delete the file /etc/important.conf"),
-            new(ChatRole.Assistant, [approvalRequest]),
-            new(ChatRole.User, [approvalResponse])
-        };
-        clientMessages.Add(messages2.ToList());
-        var updates2 = await CollectUpdates(aguiClient, messages2);
-        clientUpdates.Add(updates2);
+        await Step09_InterruptsApproval.Client.SampleClient.RunAsync(
+            aguiClient, TextWriter.Null, clientMessages, clientUpdates);
 
         await VerifyAllCaptures(transportCapture, serverCapture, clientMessages, clientUpdates);
     }

@@ -3,7 +3,7 @@ using Azure.AI.OpenAI;
 using Azure.Identity;
 using Microsoft.Extensions.AI;
 
-namespace Step09_InterruptsApproval;
+namespace Step09_InterruptsApproval.Server;
 
 public class Program
 {
