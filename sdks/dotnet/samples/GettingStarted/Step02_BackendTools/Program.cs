@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Azure.AI.OpenAI;
 using Azure.Identity;
 using Microsoft.Extensions.AI;
@@ -15,6 +16,10 @@ public class Program
         builder.Services.ConfigureHttpJsonOptions(options =>
             options.SerializerOptions.TypeInfoResolverChain.Add(SampleJsonSerializerContext.Default));
 
+        var searchRestaurants = AIFunctionFactory.Create(
+            SearchRestaurants,
+            serializerOptions: SampleJsonSerializerContext.Default.Options);
+
         if (string.Equals(builder.Configuration["UseAzureOpenAI"], "true", StringComparison.OrdinalIgnoreCase))
         {
             var endpoint = builder.Configuration["AZURE_OPENAI_ENDPOINT"]
@@ -27,13 +32,23 @@ public class Program
                     new DefaultAzureCredential())
                 .GetChatClient(deploymentName)
                 .AsIChatClient())
-                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true);
+                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true)
+                .ConfigureOptions(options =>
+                {
+                    options.Tools ??= [];
+                    options.Tools.Add(searchRestaurants);
+                });
         }
         else
         {
             builder.Services.AddSingleton<FakeChatClient>();
             builder.Services.AddChatClient(sp => sp.GetRequiredService<FakeChatClient>())
-                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true);
+                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true)
+                .ConfigureOptions(options =>
+                {
+                    options.Tools ??= [];
+                    options.Tools.Add(searchRestaurants);
+                });
         }
 
         var app = builder.Build();
@@ -41,5 +56,42 @@ public class Program
         app.MapAGUI("/");
 
         app.Run();
+    }
+
+    [Description("Search for restaurants in a location.")]
+    private static RestaurantSearchResponse SearchRestaurants(
+        [Description("The restaurant search request")] RestaurantSearchRequest request)
+    {
+        string cuisine = request.Cuisine == "any" ? "Italian" : request.Cuisine;
+
+        return new RestaurantSearchResponse
+        {
+            Location = request.Location,
+            Cuisine = request.Cuisine,
+            Results =
+            [
+                new RestaurantInfo
+                {
+                    Name = "The Golden Fork",
+                    Cuisine = cuisine,
+                    Rating = 4.5,
+                    Address = $"123 Main St, {request.Location}"
+                },
+                new RestaurantInfo
+                {
+                    Name = "Spice Haven",
+                    Cuisine = cuisine == "Italian" ? "Indian" : cuisine,
+                    Rating = 4.7,
+                    Address = $"456 Oak Ave, {request.Location}"
+                },
+                new RestaurantInfo
+                {
+                    Name = "Green Leaf",
+                    Cuisine = "Vegetarian",
+                    Rating = 4.3,
+                    Address = $"789 Elm Rd, {request.Location}"
+                }
+            ]
+        };
     }
 }
