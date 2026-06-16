@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using Step09_InterruptsApproval.Client;
 using Step09_InterruptsApproval.Server;
 using VerifyXunit;
@@ -50,9 +51,25 @@ public sealed class Step09_InterruptsApprovalTest : IntegrationTestBase<Step09_I
         {
             builder.ConfigureTestServices(services =>
             {
-                // Replace the chat client pipeline with FunctionInvokingChatClient wrapping our captures
+                // Match Step09's production pipeline: ApprovalRequiredAIFunction so FICC
+                // emits ToolApprovalRequestContent on tool calls, and the
+                // ToolApprovalResumeChatClient wrapper so the SDK-injected
+                // InterruptResponseContent gets decoded back to MEAI's approval shape.
                 services.RemoveAll<IChatClient>();
                 services.AddChatClient(sp => (IChatClient)serverCapture)
+                    .ConfigureOptions(options =>
+                    {
+                        options.Tools ??= [];
+                        options.Tools.Add(new ApprovalRequiredAIFunction(
+                            AIFunctionFactory.Create(
+                                (string filename) => $"File '{filename}' deleted successfully.",
+                                "delete_file",
+                                "Deletes a file from the system")));
+                    })
+                    .Use((c, sp) => new ToolApprovalResumeChatClient(
+                        c,
+                        sp.GetRequiredService<IOptions<Microsoft.AspNetCore.Http.Json.JsonOptions>>()
+                            .Value.SerializerOptions))
                     .UseFunctionInvocation();
             });
         });
