@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -24,32 +24,22 @@ public sealed class Step06_RawEventsTest : IntegrationTestBase<Step06_RawEvents.
     }
 
     [Fact]
-    public async Task PostRun_IncrementCounter_EmitsStateSnapshotAndText()
+    public async Task PostRun_EmitsRawTelemetryEventsAroundResponse()
     {
         var (aguiClient, transport, server) = CreateCapturingClient();
 
         var clientMessages = new List<List<ChatMessage>>();
         var clientUpdates = new List<List<ChatResponseUpdate>>();
 
-        // Send an increment command with initial counter state
-        var messages = new List<ChatMessage> { new(ChatRole.User, "Please increment the counter") };
-        var state = new { counter = 0, lastAction = "none" };
-        var options = new ChatOptions
-        {
-            RawRepresentationFactory = _ => new RunAgentInput
-            {
-                State = JsonSerializer.SerializeToElement(state, s_jsonOptions.GetTypeInfo(typeof(object)))
-            }
-        };
+        var messages = new List<ChatMessage> { new(ChatRole.User, "Tell me about ag-ui raw events") };
         clientMessages.Add(messages.ToList());
-        var updates = await CollectUpdates(aguiClient, messages, options);
+        var updates = await CollectUpdates(aguiClient, messages, options: null);
         clientUpdates.Add(updates);
 
         await VerifyAllCaptures(transport, server, clientMessages, clientUpdates);
     }
 
     private (AGUIChatClient Client, CapturingAGUITransport Transport, CapturingChatClient Server) CreateCapturingClient(
-        int turnCount = 1,
         [CallerMemberName] string testName = "")
     {
         var serverCapture = new CapturingChatClient();
@@ -73,7 +63,9 @@ public sealed class Step06_RawEventsTest : IntegrationTestBase<Step06_RawEvents.
             builder.ConfigureTestServices(services =>
             {
                 services.RemoveAll<IChatClient>();
-                services.AddSingleton<IChatClient>(serverCapture);
+                services.AddSingleton<IChatClient>(sp => new TelemetryRawEventsChatClient(
+                    serverCapture,
+                    sp.GetRequiredService<TelemetrySource>()));
             });
         });
 
@@ -139,7 +131,7 @@ public sealed class Step06_RawEventsTest : IntegrationTestBase<Step06_RawEvents.
 
         options.TypeInfoResolverChain.Add(AIJsonUtilities.DefaultOptions.TypeInfoResolver!);
         options.TypeInfoResolverChain.Add(AGUIJsonSerializerContext.Default);
-        options.TypeInfoResolverChain.Add(SampleJsonSerializerContext.Default);        AGUIServiceCollectionExtensions.RegisterInterruptContentTypes(options);
+        AGUIServiceCollectionExtensions.RegisterInterruptContentTypes(options);
         return options;
     }
 

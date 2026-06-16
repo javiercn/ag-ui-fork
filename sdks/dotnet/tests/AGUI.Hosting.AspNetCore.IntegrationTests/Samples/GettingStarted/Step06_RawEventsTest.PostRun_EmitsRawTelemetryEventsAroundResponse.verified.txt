@@ -7,7 +7,7 @@
           contents: [
             {
               $type: text,
-              text: Please increment the counter
+              text: Tell me about ag-ui raw events
             }
           ]
         }
@@ -18,13 +18,9 @@
         messages: [
           {
             role: user,
-            content: Please increment the counter
+            content: Tell me about ag-ui raw events
           }
-        ],
-        state: {
-          counter: 0,
-          lastAction: none
-        }
+        ]
       },
       events: [
         {
@@ -33,11 +29,26 @@
           runId: run_Id_1
         },
         {
-          type: STATE_SNAPSHOT,
-          snapshot: {
-            counter: 1,
-            lastAction: incremented
-          }
+          type: RAW,
+          event: {
+            kind: rag.retrieval,
+            query: ag-ui raw events,
+            documentIds: [
+              doc_intro,
+              doc_protocol
+            ],
+            latencyMs: 87
+          },
+          source: rag
+        },
+        {
+          type: RAW,
+          event: {
+            kind: rag.rerank,
+            model: rerank-v2,
+            latencyMs: 12
+          },
+          source: rag
         },
         {
           type: TEXT_MESSAGE_START,
@@ -49,7 +60,7 @@
             contents: [
               {
                 $type: text,
-                text: I've incremented the counter. The counter is now at 1.,
+                text: Raw events let an agent pass through opaque events from external systems unchanged.,
                 annotations: null,
                 additionalProperties: null
               }
@@ -67,14 +78,14 @@
         {
           type: TEXT_MESSAGE_CONTENT,
           messageId: msg_Id_1,
-          delta: I've incremented the counter. The counter is now at 1.,
+          delta: Raw events let an agent pass through opaque events from external systems unchanged.,
           rawEvent: {
             authorName: null,
             role: Assistant,
             contents: [
               {
                 $type: text,
-                text: I've incremented the counter. The counter is now at 1.,
+                text: Raw events let an agent pass through opaque events from external systems unchanged.,
                 annotations: null,
                 additionalProperties: null
               }
@@ -90,13 +101,35 @@
           }
         },
         {
+          type: RAW,
+          event: {
+            kind: trace.span,
+            name: llm.generate,
+            spanId: span_42,
+            durationMs: 134
+          },
+          source: trace
+        },
+        {
+          type: RAW,
+          event: {
+            kind: metrics.usage,
+            promptTokens: 412,
+            completionTokens: 78
+          },
+          source: metrics
+        },
+        {
           type: TEXT_MESSAGE_END,
           messageId: msg_Id_1
         },
         {
           type: RUN_FINISHED,
           threadId: thread_Id_1,
-          runId: run_Id_1
+          runId: run_Id_1,
+          outcome: {
+            type: success
+          }
         }
       ],
       chatResponseUpdates: [
@@ -115,16 +148,31 @@
         },
         {
           role: assistant,
+          responseId: run_Id_1,
+          conversationId: thread_Id_1
+        },
+        {
+          role: assistant,
           contents: [
             {
               $type: text,
-              text: I've incremented the counter. The counter is now at 1.
+              text: Raw events let an agent pass through opaque events from external systems unchanged.
             }
           ],
           responseId: run_Id_1,
           messageId: msg_Id_1,
           conversationId: thread_Id_1,
           createdAt: {Scrubbed}
+        },
+        {
+          role: assistant,
+          responseId: run_Id_1,
+          conversationId: thread_Id_1
+        },
+        {
+          role: assistant,
+          responseId: run_Id_1,
+          conversationId: thread_Id_1
         },
         {
           role: assistant,
@@ -141,13 +189,9 @@
         messages: [
           {
             role: user,
-            content: Please increment the counter
+            content: Tell me about ag-ui raw events
           }
-        ],
-        state: {
-          counter: 0,
-          lastAction: none
-        }
+        ]
       },
       chatMessages: [
         {
@@ -155,7 +199,7 @@
           contents: [
             {
               $type: text,
-              text: Please increment the counter
+              text: Tell me about ag-ui raw events
             }
           ]
         }
@@ -166,7 +210,7 @@
           contents: [
             {
               $type: text,
-              text: I've incremented the counter. The counter is now at 1.
+              text: Raw events let an agent pass through opaque events from external systems unchanged.
             }
           ],
           modelId: gpt-4o-mini
@@ -187,7 +231,7 @@
             contents: [
               {
                 $type: text,
-                text: I've incremented the counter. The counter is now at 1.
+                text: Raw events let an agent pass through opaque events from external systems unchanged.
               }
             ],
             modelId: gpt-4o-mini
@@ -196,13 +240,13 @@
         {
           type: TEXT_MESSAGE_CONTENT,
           messageId: msg_Id_2,
-          delta: I've incremented the counter. The counter is now at 1.,
+          delta: Raw events let an agent pass through opaque events from external systems unchanged.,
           rawEvent: {
             role: Assistant,
             contents: [
               {
                 $type: text,
-                text: I've incremented the counter. The counter is now at 1.
+                text: Raw events let an agent pass through opaque events from external systems unchanged.
               }
             ],
             modelId: gpt-4o-mini

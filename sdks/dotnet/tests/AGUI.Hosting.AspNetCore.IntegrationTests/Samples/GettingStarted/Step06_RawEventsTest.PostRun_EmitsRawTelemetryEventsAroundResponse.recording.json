@@ -5,7 +5,7 @@
       "contents": [
         {
           "$type": "text",
-          "text": "I've incremented the counter. The counter is now at 1."
+          "text": "Raw events let an agent pass through opaque events from external systems unchanged."
         }
       ],
       "modelId": "gpt-4o-mini"
