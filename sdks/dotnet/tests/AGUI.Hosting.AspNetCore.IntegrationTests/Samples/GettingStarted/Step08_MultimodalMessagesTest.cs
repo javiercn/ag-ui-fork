@@ -10,15 +10,16 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Step08_MultimodalMessages;
+using Step08_MultimodalMessages.Client;
+using Step08_MultimodalMessages.Server;
 using VerifyXunit;
 using Xunit;
 
 namespace AGUI.Hosting.AspNetCore.IntegrationTests.Samples.GettingStarted;
 
-public sealed class Step08_MultimodalMessagesTest : IntegrationTestBase<Step08_MultimodalMessages.Program>
+public sealed class Step08_MultimodalMessagesTest : IntegrationTestBase<Step08_MultimodalMessages.Server.Program>
 {
-    public Step08_MultimodalMessagesTest(WebApplicationFactory<Step08_MultimodalMessages.Program> factory)
+    public Step08_MultimodalMessagesTest(WebApplicationFactory<Step08_MultimodalMessages.Server.Program> factory)
         : base(factory)
     {
     }
@@ -31,7 +32,6 @@ public sealed class Step08_MultimodalMessagesTest : IntegrationTestBase<Step08_M
         var clientMessages = new List<List<ChatMessage>>();
         var clientUpdates = new List<List<ChatResponseUpdate>>();
 
-        // Load the AG-UI logo image and encode it as base64
         var imagePath = Path.Combine(
             AttributeReader.GetProjectDirectory(),
             "Samples",
@@ -39,17 +39,8 @@ public sealed class Step08_MultimodalMessagesTest : IntegrationTestBase<Step08_M
             "ag-ui-logo.png");
         var imageBytes = await File.ReadAllBytesAsync(imagePath);
 
-        // Send a multimodal message with both text and an inline image
-        var messages = new List<ChatMessage>
-        {
-            new(ChatRole.User, [
-                new TextContent("Describe this image"),
-                new DataContent(imageBytes, "image/png")
-            ])
-        };
-        clientMessages.Add(messages.ToList());
-        var updates = await CollectUpdates(aguiClient, messages);
-        clientUpdates.Add(updates);
+        await Step08_MultimodalMessages.Client.SampleClient.RunAsync(
+            aguiClient, TextWriter.Null, imageBytes, clientMessages, clientUpdates);
 
         await VerifyAllCaptures(transport, server, clientMessages, clientUpdates);
     }

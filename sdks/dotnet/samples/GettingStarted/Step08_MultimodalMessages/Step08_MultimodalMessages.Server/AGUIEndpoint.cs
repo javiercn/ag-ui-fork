@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 
 using JsonOptions = Microsoft.AspNetCore.Http.Json.JsonOptions;
 
-namespace Step08_MultimodalMessages;
+namespace Step08_MultimodalMessages.Server;
 
 internal static class AGUIEndpoint
 {

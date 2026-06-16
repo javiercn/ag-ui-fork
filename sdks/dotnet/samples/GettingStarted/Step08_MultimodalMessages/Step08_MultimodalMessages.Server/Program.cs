@@ -2,7 +2,7 @@ using Azure.AI.OpenAI;
 using Azure.Identity;
 using Microsoft.Extensions.AI;
 
-namespace Step08_MultimodalMessages;
+namespace Step08_MultimodalMessages.Server;
 
 public class Program
 {

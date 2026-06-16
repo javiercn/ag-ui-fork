@@ -33,7 +33,8 @@
     <ProjectReference Include="..\..\samples\GettingStarted\Step06_RawEvents\Step06_RawEvents.Client\Step06_RawEvents.Client.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step07_ThinkingEvents\Step07_ThinkingEvents.Server\Step07_ThinkingEvents.Server.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step07_ThinkingEvents\Step07_ThinkingEvents.Client\Step07_ThinkingEvents.Client.csproj" />
-    <ProjectReference Include="..\..\samples\GettingStarted\Step08_MultimodalMessages\Step08_MultimodalMessages.csproj" />
+    <ProjectReference Include="..\..\samples\GettingStarted\Step08_MultimodalMessages\Step08_MultimodalMessages.Server\Step08_MultimodalMessages.Server.csproj" />
+    <ProjectReference Include="..\..\samples\GettingStarted\Step08_MultimodalMessages\Step08_MultimodalMessages.Client\Step08_MultimodalMessages.Client.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step09_InterruptsApproval\Step09_InterruptsApproval.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step10_InterruptsUserInput\Step10_InterruptsUserInput.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step11_Serialization\Step11_Serialization.csproj" />
