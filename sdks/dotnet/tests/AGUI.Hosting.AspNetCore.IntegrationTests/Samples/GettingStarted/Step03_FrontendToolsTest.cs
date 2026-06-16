@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using AGUI.Abstractions;
+﻿using AGUI.Abstractions;
 using AGUI.Client;
 using AGUI.Hosting.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -7,7 +6,8 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Step03_FrontendTools;
+using Step03_FrontendTools.Client;
+using Step03_FrontendTools.Server;
 using System.Runtime.CompilerServices;
 using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
@@ -18,38 +18,22 @@ using Xunit;
 
 namespace AGUI.Hosting.AspNetCore.IntegrationTests.Samples.GettingStarted;
 
-public sealed class Step03_FrontendToolsTest : IntegrationTestBase<Step03_FrontendTools.Program>
+public sealed class Step03_FrontendToolsTest : IntegrationTestBase<Step03_FrontendTools.Server.Program>
 {
-    public Step03_FrontendToolsTest(WebApplicationFactory<Step03_FrontendTools.Program> factory)
+    public Step03_FrontendToolsTest(WebApplicationFactory<Step03_FrontendTools.Server.Program> factory)
         : base(factory)
     {
-    }
-
-    [Description("Get the user's current location from GPS.")]
-    private static string GetUserLocation()
-    {
-        // Simulated client-side GPS access
-        return "Amsterdam, Netherlands (52.37°N, 4.90°E)";
     }
 
     [Fact]
     public async Task PostRun_WithFrontendToolCall_InvokesToolLocallyAndStreamsResult()
     {
-        // Define client tools
-        AITool[] clientTools = [AIFunctionFactory.Create(GetUserLocation)];
-
         var (aguiClient, transport, server) = CreateCapturingClient(turnCount: 2);
 
         var clientMessages = new List<List<ChatMessage>>();
         var clientUpdates = new List<List<ChatResponseUpdate>>();
 
-        // Single turn from the client's perspective: the AGUIChatClient internally handles
-        // the tool invocation loop (2 server round-trips: tool call + text response)
-        var messages = new List<ChatMessage> { new(ChatRole.User, "What are some fun things to do near me?") };
-        var options = new ChatOptions { Tools = clientTools.ToList<AITool>() };
-        clientMessages.Add(messages.ToList());
-        var updates = await CollectUpdates(aguiClient, messages, options);
-        clientUpdates.Add(updates);
+        await SampleClient.RunAsync(aguiClient, TextWriter.Null, clientMessages, clientUpdates);
 
         await VerifyAllCaptures(transport, server, clientMessages, clientUpdates);
     }
