@@ -2,9 +2,6 @@ using System.ComponentModel;
 using Azure.AI.OpenAI;
 using Azure.Identity;
 using Microsoft.Extensions.AI;
-using Microsoft.Extensions.Options;
-
-using JsonOptions = Microsoft.AspNetCore.Http.Json.JsonOptions;
 
 namespace Step09_InterruptsApproval.Server;
 
@@ -19,6 +16,9 @@ public class Program
         // delete_file is wrapped with ApprovalRequiredAIFunction so FunctionInvokingChatClient
         // produces ToolApprovalRequestContent (which the hosting layer renders as an
         // AG-UI RUN_FINISHED { outcome: interrupt }) instead of executing the function.
+        // On resume, ToChatRequestContext detects the tool-approval-shaped resume payload
+        // and injects the matching ToolApprovalRequestContent + ToolApprovalResponseContent
+        // pair so FICC executes the underlying function — no per-endpoint plumbing needed.
         var deleteFileTool = new ApprovalRequiredAIFunction(
             AIFunctionFactory.Create(DeleteFile, "delete_file", "Deletes a file from the system"));
 
@@ -46,9 +46,6 @@ public class Program
                 options.Tools ??= [];
                 options.Tools.Add(deleteFileTool);
             })
-            .Use((c, sp) => new ToolApprovalResumeChatClient(
-                c,
-                sp.GetRequiredService<IOptions<JsonOptions>>().Value.SerializerOptions))
             .UseFunctionInvocation();
 
         var app = builder.Build();

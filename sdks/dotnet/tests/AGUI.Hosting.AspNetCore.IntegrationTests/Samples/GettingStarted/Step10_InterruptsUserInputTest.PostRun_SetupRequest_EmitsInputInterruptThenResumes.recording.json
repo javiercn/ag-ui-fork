@@ -1,1 +1,39 @@
-[]
+[
+  [
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "interruptRequest",
+          "reason": "input_required",
+          "message": "Please enter your preferred username:",
+          "responseSchema": {
+            "type": "object",
+            "properties": {
+              "response": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "response"
+            ]
+          },
+          "requestId": "input_cc5b8cd1241e4d0c9fb48bf292f11e88"
+        }
+      ],
+      "modelId": "user-input-agent"
+    }
+  ],
+  [
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "Thank you! Your username 'johndoe42' has been registered."
+        }
+      ],
+      "modelId": "user-input-agent"
+    }
+  ]
+]

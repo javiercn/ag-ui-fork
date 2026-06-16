@@ -57,19 +57,35 @@ public static class RunAgentInputExtensions
             }
         }
 
-        // Translate AG-UI Resume entries into InterruptResponseContent on the message list
-        // so the inner pipeline (custom IChatClient, FICC, etc.) sees standard MEAI types.
+        // Translate AG-UI Resume entries into MEAI content on the message list so the
+        // inner pipeline (custom IChatClient, FICC, etc.) sees standard MEAI types.
+        // Tool-approval-shaped resume payloads (with a `toolCall` field) become a
+        // ToolApprovalRequestContent + ToolApprovalResponseContent pair so
+        // FunctionInvokingChatClient resumes the tool naturally; everything else becomes
+        // a generic InterruptResponseContent.
         if (input.Resume is { Count: > 0 } resumeEntries)
         {
-            var responseContents = new List<AIContent>(resumeEntries.Count);
+            var genericResponses = new List<AIContent>(resumeEntries.Count);
             foreach (var resume in resumeEntries)
             {
-                responseContents.Add(new InterruptResponseContent(resume.InterruptId)
+                if (TryDecodeToolApprovalResume(resume, jsonSerializerOptions,
+                    out var approvalRequest, out var approvalResponse))
+                {
+                    messages.Add(new ChatMessage(ChatRole.Assistant, [approvalRequest!]));
+                    messages.Add(new ChatMessage(ChatRole.User, [approvalResponse!]));
+                    continue;
+                }
+
+                genericResponses.Add(new InterruptResponseContent(resume.InterruptId)
                 {
                     Payload = resume.Payload,
                 });
             }
-            messages.Add(new ChatMessage(ChatRole.User, responseContents));
+
+            if (genericResponses.Count > 0)
+            {
+                messages.Add(new ChatMessage(ChatRole.User, genericResponses));
+            }
         }
 
         var chatOptions = new ChatOptions
@@ -90,6 +106,47 @@ public static class RunAgentInputExtensions
             jsonSerializerOptions,
             isContinuation,
             clientToolNames);
+    }
+
+    private static bool TryDecodeToolApprovalResume(
+        AGUIResume resume,
+        JsonSerializerOptions jsonSerializerOptions,
+        out ToolApprovalRequestContent? request,
+        out ToolApprovalResponseContent? response)
+    {
+        request = null;
+        response = null;
+
+        if (resume.Payload is not { ValueKind: JsonValueKind.Object } element
+            || !element.TryGetProperty("toolCall", out _))
+        {
+            return false;
+        }
+
+        AGUIToolApprovalResumePayload? payload;
+        try
+        {
+            payload = (AGUIToolApprovalResumePayload?)element.Deserialize(
+                jsonSerializerOptions.GetTypeInfo(typeof(AGUIToolApprovalResumePayload)));
+        }
+        catch (JsonException)
+        {
+            return false;
+        }
+
+        if (payload?.ToolCall is null)
+        {
+            return false;
+        }
+
+        var fcc = new FunctionCallContent(
+            callId: payload.ToolCall.CallId ?? string.Empty,
+            name: payload.ToolCall.Name ?? string.Empty,
+            arguments: payload.ToolCall.Arguments);
+
+        request = new ToolApprovalRequestContent(resume.InterruptId, fcc);
+        response = new ToolApprovalResponseContent(resume.InterruptId, payload.Approved, fcc);
+        return true;
     }
 
     /// <summary>
