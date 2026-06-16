@@ -16,11 +16,6 @@
     <Project Path="samples/AGUIWithCopilotSdk/AGUIWithCopilotSdkServer/AGUIWithCopilotSdkServer.csproj" />
     <Project Path="samples/AGUIWithCopilotSdk/AGUIWithCopilotSdkConsoleClient/AGUIWithCopilotSdkConsoleClient.csproj" />
   </Folder>
-  <Folder Name="/samples/AGUIWithMcpTools/">
-    <Project Path="samples/AGUIWithMcpTools/AGUIWithMcpToolsServer/AGUIWithMcpToolsServer.csproj" />
-    <Project Path="samples/AGUIWithMcpTools/AGUIWithMcpToolsConsoleClient/AGUIWithMcpToolsConsoleClient.csproj" />
-    <Project Path="samples/AGUIWithMcpTools/AGUIWithMcpToolsMcpServer/AGUIWithMcpToolsMcpServer.csproj" />
-  </Folder>
   <Folder Name="/samples/AGUIClientServer/">
     <Project Path="samples/AGUIClientServer/AGUIDojoServer/AGUIDojoServer.csproj" />
     <Project Path="samples/AGUIClientServer/AGUIDojoServerConsoleClient/AGUIDojoServerConsoleClient.csproj" />
