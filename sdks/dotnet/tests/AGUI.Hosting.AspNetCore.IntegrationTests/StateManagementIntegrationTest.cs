@@ -78,7 +78,7 @@ public sealed class StateManagementIntegrationTest : IntegrationTestBase
         RunAgentInput? capturedInput = null;
         var client = CreateClient((messages, options, ct) =>
         {
-            capturedInput = options?.AdditionalProperties?["agui_input"] as RunAgentInput;
+            capturedInput = options?.AdditionalProperties?[AGUIConstants.RunAgentInputKey] as RunAgentInput;
             return EmitEmptyResponse(ct);
         });
 
@@ -107,7 +107,7 @@ public sealed class StateManagementIntegrationTest : IntegrationTestBase
         RunAgentInput? capturedInput = null;
         var client = CreateClient((messages, options, ct) =>
         {
-            capturedInput = options?.AdditionalProperties?["agui_input"] as RunAgentInput;
+            capturedInput = options?.AdditionalProperties?[AGUIConstants.RunAgentInputKey] as RunAgentInput;
             return EmitEmptyResponse(ct);
         });
 
@@ -131,7 +131,7 @@ public sealed class StateManagementIntegrationTest : IntegrationTestBase
     {
         var client = CreateClient((messages, options, ct) =>
         {
-            var input = options?.AdditionalProperties?["agui_input"] as RunAgentInput;
+            var input = options?.AdditionalProperties?[AGUIConstants.RunAgentInputKey] as RunAgentInput;
             return EmitStateSnapshotFromInput(input?.State, ct);
         });
 

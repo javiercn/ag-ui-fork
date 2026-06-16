@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using AGUI.Abstractions;
+using AGUI.Hosting.AspNetCore;
 using Microsoft.Extensions.AI;
 
 namespace AGUIDojoServer.SharedState;
@@ -23,7 +24,7 @@ internal sealed class SharedStateAgent : DelegatingChatClient
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         // Extract AG-UI input to check for state
-        var agentInput = options?.AdditionalProperties?["agui_input"] as RunAgentInput;
+        var agentInput = options?.AdditionalProperties?[AGUIConstants.RunAgentInputKey] as RunAgentInput;
         if (agentInput?.State is not { ValueKind: not JsonValueKind.Undefined } state)
         {
             await foreach (var update in base.GetStreamingResponseAsync(chatMessages, options, cancellationToken).ConfigureAwait(false))

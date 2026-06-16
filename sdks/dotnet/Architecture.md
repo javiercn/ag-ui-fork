@@ -38,7 +38,7 @@ All packages are AOT-compatible. Every serializable type is registered in `AGUIJ
 The simplest AG-UI server is a single POST endpoint. Look at the Getting Started sample to see the pattern:
 
 1. The endpoint receives a `RunAgentInput` from the request body. This carries the thread ID, the run ID, the conversation messages, client-provided tool definitions, and optional state.
-2. You call `input.ToChatRequestContext(jsonSerializerOptions, streamOptions?)`. The returned `ChatRequestContext` carries the adapted `ChatMessage` list (`ctx.Messages`), a configured `ChatOptions` (`ctx.ChatOptions`, with the original input stashed under `AdditionalProperties["agui_input"]` and any client-declared tools already routed through the approval-flow pipeline), and the stream-converter options.
+2. You call `input.ToChatRequestContext(jsonSerializerOptions, streamOptions?)`. The returned `ChatRequestContext` carries the adapted `ChatMessage` list (`ctx.Messages`), a configured `ChatOptions` (`ctx.ChatOptions`, with the original input stashed under `AdditionalProperties[AGUIConstants.RunAgentInputKey]` and any client-declared tools already routed through the approval-flow pipeline), and the stream-converter options.
 3. You call `chatClient.GetStreamingResponseAsync(ctx.Messages, ctx.ChatOptions, ct)`. This produces an `IAsyncEnumerable<ChatResponseUpdate>`.
 4. You pipe that stream through `.AsAGUIEventStreamAsync(ctx, ct)`, which converts it to an `IAsyncEnumerable<BaseEvent>`.
 5. You return it as `TypedResults.ServerSentEvents(...)`.

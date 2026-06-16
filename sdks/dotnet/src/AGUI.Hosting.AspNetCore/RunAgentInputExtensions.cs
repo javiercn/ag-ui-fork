@@ -18,7 +18,7 @@ public static class RunAgentInputExtensions
     /// <summary>
     /// Adapts an AG-UI <see cref="RunAgentInput"/> into a <see cref="ChatRequestContext"/>
     /// containing a <see cref="ChatMessage"/> list, a <see cref="ChatOptions"/> with the
-    /// originating input stashed under <c>AdditionalProperties["agui_input"]</c>, the
+    /// originating input stashed under <c>AdditionalProperties[AGUIConstants.RunAgentInputKey]</c>, the
     /// supplied <see cref="JsonSerializerOptions"/>, and (optionally) caller-provided
     /// <see cref="AGUIStreamOptions"/>.
     /// </summary>
@@ -61,7 +61,7 @@ public static class RunAgentInputExtensions
         {
             AdditionalProperties = new AdditionalPropertiesDictionary
             {
-                ["agui_input"] = input,
+                [AGUIConstants.RunAgentInputKey] = input,
             },
         };
 

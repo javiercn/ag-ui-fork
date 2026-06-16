@@ -105,7 +105,7 @@ The `samples/AGUIClientServer/` directory contains a full Dojo server with multi
 Every AG-UI endpoint follows this shape:
 
 1. `MapPost(pattern, handler)` — receives `[FromBody] RunAgentInput`.
-2. Adapt to MEAI with `var ctx = input.ToChatRequestContext(jsonSerializerOptions, streamOptions?)`. The returned `ChatRequestContext` carries the converted `ChatMessage` list and a configured `ChatOptions` (with the input stashed under `AdditionalProperties["agui_input"]` and client tools already routed through the approval-flow pipeline).
+2. Adapt to MEAI with `var ctx = input.ToChatRequestContext(jsonSerializerOptions, streamOptions?)`. The returned `ChatRequestContext` carries the converted `ChatMessage` list and a configured `ChatOptions` (with the input stashed under `AdditionalProperties[AGUIConstants.RunAgentInputKey]` and client tools already routed through the approval-flow pipeline).
 3. Call `chatClient.GetStreamingResponseAsync(ctx.Messages, ctx.ChatOptions, cancellationToken)`.
 4. Pipe through `.AsAGUIEventStreamAsync(ctx, cancellationToken)` to get the AG-UI event stream.
 5. Return `TypedResults.ServerSentEvents(WrapAsSseItems(events, cancellationToken))`.

@@ -26,7 +26,7 @@ internal sealed class CapturingChatClient : IChatClient
 
         // Extract the RunAgentInput that the server endpoint deserialized
         RunAgentInput? runAgentInput = null;
-        if (options?.AdditionalProperties?.TryGetValue("agui_input", out var inputObj) is true)
+        if (options?.AdditionalProperties?.TryGetValue(AGUIConstants.RunAgentInputKey, out var inputObj) is true)
         {
             runAgentInput = inputObj as RunAgentInput;
         }

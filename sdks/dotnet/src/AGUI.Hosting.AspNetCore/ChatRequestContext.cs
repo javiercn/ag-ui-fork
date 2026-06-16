@@ -44,7 +44,7 @@ public sealed class ChatRequestContext
 
     /// <summary>
     /// Gets the originating AG-UI input. Also accessible via
-    /// <see cref="ChatOptions"/>.<c>AdditionalProperties["agui_input"]</c> for delegating
+    /// <see cref="ChatOptions"/>.<c>AdditionalProperties[AGUIConstants.RunAgentInputKey]</c> for delegating
     /// chat clients and server tools that only see the <see cref="ChatOptions"/>.
     /// </summary>
     public RunAgentInput Input { get; }
