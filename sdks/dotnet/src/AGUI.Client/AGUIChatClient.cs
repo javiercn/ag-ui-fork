@@ -75,7 +75,7 @@ public sealed class AGUIChatClient : DelegatingChatClient
             conversationId = options.ConversationId;
             innerOptions = options.Clone();
             innerOptions.AdditionalProperties ??= [];
-            innerOptions.AdditionalProperties["agui_thread_id"] = options.ConversationId;
+            innerOptions.AdditionalProperties[AGUIClientInternalKeys.ThreadId] = options.ConversationId;
             innerOptions.ConversationId = null;
         }
 
@@ -120,7 +120,7 @@ public sealed class AGUIChatClient : DelegatingChatClient
             messagesList = filtered;
             innerOptions = (innerOptions ?? options)?.Clone() ?? new ChatOptions();
             innerOptions.AdditionalProperties ??= [];
-            innerOptions.AdditionalProperties["agui_approval_responses"] = approvalResponses;
+            innerOptions.AdditionalProperties[AGUIClientInternalKeys.ApprovalResponses] = approvalResponses;
         }
 
         if (interruptResponses is { Count: > 0 })
@@ -139,7 +139,7 @@ public sealed class AGUIChatClient : DelegatingChatClient
             messagesList = filtered;
             innerOptions = (innerOptions ?? options)?.Clone() ?? new ChatOptions();
             innerOptions.AdditionalProperties ??= [];
-            innerOptions.AdditionalProperties["agui_interrupt_responses"] = interruptResponses;
+            innerOptions.AdditionalProperties[AGUIClientInternalKeys.InterruptResponses] = interruptResponses;
         }
 
         await foreach (var update in base.GetStreamingResponseAsync(messagesList, innerOptions, cancellationToken).ConfigureAwait(false))
@@ -147,7 +147,7 @@ public sealed class AGUIChatClient : DelegatingChatClient
             if (conversationId == null && firstUpdate == null)
             {
                 firstUpdate = update;
-                if (firstUpdate.AdditionalProperties?.TryGetValue("agui_thread_id", out string? threadId) is true)
+                if (firstUpdate.AdditionalProperties?.TryGetValue(AGUIClientInternalKeys.ThreadId, out string? threadId) is true)
                 {
                     conversationId = threadId;
                 }
@@ -158,7 +158,7 @@ public sealed class AGUIChatClient : DelegatingChatClient
             {
                 if (update.Contents[i] is FunctionCallContent functionCallContent)
                 {
-                    functionCallContent.AdditionalProperties?.Remove("agui_thread_id");
+                    functionCallContent.AdditionalProperties?.Remove(AGUIClientInternalKeys.ThreadId);
                 }
             }
 
@@ -302,7 +302,7 @@ public sealed class AGUIChatClient : DelegatingChatClient
                 {
                     update.AdditionalProperties = new AdditionalPropertiesDictionary
                     {
-                        ["agui_thread_id"] = update.ConversationId ?? threadId
+                        [AGUIClientInternalKeys.ThreadId] = update.ConversationId ?? threadId
                     };
                 }
 
@@ -314,7 +314,7 @@ public sealed class AGUIChatClient : DelegatingChatClient
                     {
                         // Client tool: store thread ID so we can recover it on next turn
                         fcc.AdditionalProperties ??= [];
-                        fcc.AdditionalProperties["agui_thread_id"] = update.ConversationId ?? threadId;
+                        fcc.AdditionalProperties[AGUIClientInternalKeys.ThreadId] = update.ConversationId ?? threadId;
                     }
                     else
                     {
@@ -397,7 +397,7 @@ public sealed class AGUIChatClient : DelegatingChatClient
 
             // Convert ToolApprovalResponseContent list (passed from AGUIChatClient) to resume payload
             if (input.Resume is null &&
-                options?.AdditionalProperties?.TryGetValue("agui_approval_responses", out List<ToolApprovalResponseContent>? approvalResponses) is true
+                options?.AdditionalProperties?.TryGetValue(AGUIClientInternalKeys.ApprovalResponses, out List<ToolApprovalResponseContent>? approvalResponses) is true
                 && approvalResponses is { Count: > 0 })
             {
                 var resumeList = new List<AGUIResume>(approvalResponses.Count);
@@ -440,7 +440,7 @@ public sealed class AGUIChatClient : DelegatingChatClient
             }
 
             // Convert InterruptResponseContent list to resume entries.
-            if (options?.AdditionalProperties?.TryGetValue("agui_interrupt_responses", out List<InterruptResponseContent>? interruptResponses) is true
+            if (options?.AdditionalProperties?.TryGetValue(AGUIClientInternalKeys.InterruptResponses, out List<InterruptResponseContent>? interruptResponses) is true
                 && interruptResponses is { Count: > 0 })
             {
                 var resumeList = input.Resume is { Count: > 0 } existing
@@ -466,7 +466,7 @@ public sealed class AGUIChatClient : DelegatingChatClient
         private static string? ExtractThreadIdFromOptions(ChatOptions? options)
         {
             if (options?.AdditionalProperties is null ||
-                !options.AdditionalProperties.TryGetValue("agui_thread_id", out string? threadId) ||
+                !options.AdditionalProperties.TryGetValue(AGUIClientInternalKeys.ThreadId, out string? threadId) ||
                 string.IsNullOrEmpty(threadId))
             {
                 return null;
@@ -489,7 +489,7 @@ public sealed class AGUIChatClient : DelegatingChatClient
             }
 
             if (content.AdditionalProperties is null ||
-                !content.AdditionalProperties.TryGetValue("agui_thread_id", out string? threadId) ||
+                !content.AdditionalProperties.TryGetValue(AGUIClientInternalKeys.ThreadId, out string? threadId) ||
                 string.IsNullOrEmpty(threadId))
             {
                 return null;

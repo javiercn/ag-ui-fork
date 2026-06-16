@@ -127,7 +127,7 @@ internal static class EventStreamConverter
                                 Metadata = interrupt.Metadata,
                             };
                             inputRequest.AdditionalProperties ??= new AdditionalPropertiesDictionary();
-                            inputRequest.AdditionalProperties["agui_interrupt"] = interrupt;
+                            inputRequest.AdditionalProperties[AGUIClientInternalKeys.Interrupt] = interrupt;
 
                             nonToolContents.Add(inputRequest);
                         }

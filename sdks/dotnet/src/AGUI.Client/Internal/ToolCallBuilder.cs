@@ -134,7 +134,7 @@ internal sealed class ToolCallBuilder
                 var approvalRequest = new ToolApprovalRequestContent(
                     interrupt.Id, fcc);
                 approvalRequest.AdditionalProperties ??= new AdditionalPropertiesDictionary();
-                approvalRequest.AdditionalProperties["agui_interrupt"] = interrupt;
+                approvalRequest.AdditionalProperties[AGUIClientInternalKeys.Interrupt] = interrupt;
 
                 updates.Add(new ChatResponseUpdate(ChatRole.Assistant, [approvalRequest])
                 {
