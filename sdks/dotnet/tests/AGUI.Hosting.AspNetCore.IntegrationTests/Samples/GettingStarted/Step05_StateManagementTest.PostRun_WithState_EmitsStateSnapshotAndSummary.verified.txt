@@ -123,7 +123,10 @@
         {
           type: RUN_FINISHED,
           threadId: thread_Id_1,
-          runId: run_Id_1
+          runId: run_Id_1,
+          outcome: {
+            type: success
+          }
         }
       ],
       chatResponseUpdates: [

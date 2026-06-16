@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using Step05_StateManagement;
 using VerifyXunit;
 using Xunit;
@@ -73,7 +74,13 @@ public sealed class Step05_StateManagementTest : IntegrationTestBase<Step05_Stat
             builder.ConfigureTestServices(services =>
             {
                 services.RemoveAll<IChatClient>();
-                services.AddSingleton<IChatClient>(serverCapture);
+                services.AddSingleton<IChatClient>(sp =>
+                {
+                    var jsonSerializerOptions = sp
+                        .GetRequiredService<IOptions<Microsoft.AspNetCore.Http.Json.JsonOptions>>()
+                        .Value.SerializerOptions;
+                    return new RecipeStateChatClient(serverCapture, jsonSerializerOptions);
+                });
             });
         });
 

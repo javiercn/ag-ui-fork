@@ -1,6 +1,9 @@
 using Azure.AI.OpenAI;
 using Azure.Identity;
 using Microsoft.Extensions.AI;
+using Microsoft.Extensions.Options;
+
+using JsonOptions = Microsoft.AspNetCore.Http.Json.JsonOptions;
 
 namespace Step05_StateManagement;
 
@@ -27,13 +30,19 @@ public class Program
                     new DefaultAzureCredential())
                 .GetChatClient(deploymentName)
                 .AsIChatClient())
-                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true);
+                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true)
+                .Use((inner, sp) => new RecipeStateChatClient(
+                    inner,
+                    sp.GetRequiredService<IOptions<JsonOptions>>().Value.SerializerOptions));
         }
         else
         {
             builder.Services.AddSingleton<FakeChatClient>();
             builder.Services.AddChatClient(sp => sp.GetRequiredService<FakeChatClient>())
-                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true);
+                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true)
+                .Use((inner, sp) => new RecipeStateChatClient(
+                    inner,
+                    sp.GetRequiredService<IOptions<JsonOptions>>().Value.SerializerOptions));
         }
 
         var app = builder.Build();
