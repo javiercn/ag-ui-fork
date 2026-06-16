@@ -15,6 +15,11 @@ public class Program
         builder.Services.ConfigureHttpJsonOptions(options =>
             options.SerializerOptions.TypeInfoResolverChain.Add(SampleJsonSerializerContext.Default));
 
+        var approveExpenseReport = new ApprovalRequiredAIFunction(
+            AIFunctionFactory.Create(
+                BackendTools.ApproveExpenseReport,
+                serializerOptions: SampleJsonSerializerContext.Default.Options));
+
         if (string.Equals(builder.Configuration["UseAzureOpenAI"], "true", StringComparison.OrdinalIgnoreCase))
         {
             var endpoint = builder.Configuration["AZURE_OPENAI_ENDPOINT"]
@@ -26,12 +31,26 @@ public class Program
                     new Uri(endpoint),
                     new DefaultAzureCredential())
                 .GetChatClient(deploymentName)
-                .AsIChatClient());
+                .AsIChatClient())
+                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true)
+                .Use((inner, _) => new ApprovalChatClient(inner, SampleJsonSerializerContext.Default.Options))
+                .ConfigureOptions(options =>
+                {
+                    options.Tools ??= [];
+                    options.Tools.Add(approveExpenseReport);
+                });
         }
         else
         {
             builder.Services.AddSingleton<FakeChatClient>();
-            builder.Services.AddChatClient(sp => sp.GetRequiredService<FakeChatClient>());
+            builder.Services.AddChatClient(sp => sp.GetRequiredService<FakeChatClient>())
+                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true)
+                .Use((inner, _) => new ApprovalChatClient(inner, SampleJsonSerializerContext.Default.Options))
+                .ConfigureOptions(options =>
+                {
+                    options.Tools ??= [];
+                    options.Tools.Add(approveExpenseReport);
+                });
         }
 
         var app = builder.Build();

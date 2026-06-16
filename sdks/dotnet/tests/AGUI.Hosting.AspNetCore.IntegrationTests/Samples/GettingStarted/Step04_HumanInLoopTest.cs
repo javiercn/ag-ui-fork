@@ -1,6 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System.Runtime.CompilerServices;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using AGUI.Abstractions;
 using AGUI.Client;
 using AGUI.Hosting.AspNetCore;
@@ -10,9 +12,6 @@ using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Step04_HumanInLoop;
-using System.Runtime.CompilerServices;
-using System.Text.Encodings.Web;
-using System.Text.RegularExpressions;
 using VerifyXunit;
 using Xunit;
 
@@ -25,52 +24,54 @@ public sealed class Step04_HumanInLoopTest : IntegrationTestBase<Step04_HumanInL
     {
     }
 
-    [Description("Handle an approval request by automatically approving it.")]
-    private static ApprovalResponse RequestApproval(
-        [Description("The approval request to process")] ApprovalRequest request)
-    {
-        // Auto-approve for testing purposes
-        return new ApprovalResponse
-        {
-            ApprovalId = request.ApprovalId,
-            Approved = true
-        };
-    }
-
     [Fact]
-    public async Task PostRun_WithApprovalRequired_ApprovesAndExecutesTool()
+    public async Task PostRun_WithApprovalRequired_RoundTripsThroughBothWrappers()
     {
-        // Define client tool: request_approval (auto-approves)
-        AITool[] clientTools = [AIFunctionFactory.Create(RequestApproval, serializerOptions: s_jsonOptions)];
-
-        var (aguiClient, transport, server) = CreateCapturingClient(turnCount: 2);
+        var (aguiClient, transport, server) = CreateCapturingClient();
 
         var clientMessages = new List<List<ChatMessage>>();
         var clientUpdates = new List<List<ChatResponseUpdate>>();
 
-        // Single call from client's perspective: AGUIChatClient handles the approval loop internally
-        // 1. Server returns request_approval tool call (wrapping ApproveExpenseReport)
-        // 2. Client auto-approves via FunctionInvokingChatClient
-        // 3. Server processes approval, executes tool, calls LLM
-        // 4. LLM returns confirmation text
-        var messages = new List<ChatMessage> { new(ChatRole.User, "Please approve expense report EXP-2024-001") };
-        var options = new ChatOptions { Tools = clientTools.ToList<AITool>() };
+        // Turn 1: user requests an approval-required action.
+        // Server-side ApprovalChatClient rewrites the inner ToolApprovalRequestContent into a
+        // synthetic request_approval FunctionCallContent; client-side ApprovalAGUIChatClient
+        // rewrites it back to ToolApprovalRequestContent for the calling code.
+        var messages = new List<ChatMessage>
+        {
+            new(ChatRole.User, "Please approve expense report EXP-2024-001"),
+        };
         clientMessages.Add(messages.ToList());
-        var updates = await CollectUpdates(aguiClient, messages, options);
+        var updates = await CollectUpdates(aguiClient, messages, options: null);
         clientUpdates.Add(updates);
+
+        var approvalRequest = updates
+            .SelectMany(u => u.Contents)
+            .OfType<ToolApprovalRequestContent>()
+            .Single();
+
+        // Turn 2: simulate the user approving the action and resume the conversation.
+        // The ToolApprovalResponseContent travels back as a synthetic request_approval result;
+        // the server-side wrapper recovers ToolApprovalRequestContent + ToolApprovalResponseContent
+        // so MEAI's FunctionInvokingChatClient executes the underlying tool.
+        var turn2Messages = new List<ChatMessage>(messages)
+        {
+            new(ChatRole.Assistant, [approvalRequest]),
+            new(ChatRole.User, [approvalRequest.CreateResponse(approved: true)]),
+        };
+        clientMessages.Add(turn2Messages.ToList());
+        var turn2Updates = await CollectUpdates(aguiClient, turn2Messages, options: null);
+        clientUpdates.Add(turn2Updates);
 
         await VerifyAllCaptures(transport, server, clientMessages, clientUpdates);
     }
 
-    private (AGUIChatClient Client, CapturingAGUITransport Transport, CapturingChatClient Server) CreateCapturingClient(
-        int turnCount = 1,
+    private (IChatClient Client, CapturingAGUITransport Transport, CapturingChatClient Server) CreateCapturingClient(
         [CallerMemberName] string testName = "")
     {
         var serverCapture = new CapturingChatClient();
         var recording = LoadRecording(testName);
         var hasRecording = recording.Count > 0 && recording[0].Count > 0;
 
-        // Pre-create FakeChatClient with recorded handlers.
         var fakeClient = new FakeChatClient();
         if (hasRecording)
         {
@@ -87,11 +88,22 @@ public sealed class Step04_HumanInLoopTest : IntegrationTestBase<Step04_HumanInL
         {
             builder.ConfigureTestServices(services =>
             {
-                // Remove ALL IChatClient registrations.
-                // Step04 does NOT use FunctionInvokingChatClient on the server
-                // (approval-required tools are handled manually by the endpoint).
                 services.RemoveAll<IChatClient>();
-                services.AddSingleton<IChatClient>(serverCapture);
+                services.AddSingleton<IChatClient>(sp =>
+                {
+                    return new ChatClientBuilder(serverCapture)
+                        .ConfigureOptions(options =>
+                        {
+                            options.Tools ??= [];
+                            options.Tools.Add(new ApprovalRequiredAIFunction(
+                                AIFunctionFactory.Create(
+                                    BackendTools.ApproveExpenseReport,
+                                    serializerOptions: s_jsonOptions)));
+                        })
+                        .Use((inner, _) => new ApprovalChatClient(inner, s_jsonOptions))
+                        .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true)
+                        .Build(sp);
+                });
             });
         });
 
@@ -99,9 +111,22 @@ public sealed class Step04_HumanInLoopTest : IntegrationTestBase<Step04_HumanInL
 
         var transport = new AGUIHttpTransport(httpClient, "/");
         var transportCapture = new CapturingAGUITransport(transport);
-        var aguiClient = new AGUIChatClient(transportCapture);
+        var aguiClient = new ApprovalAGUIChatClient(
+            new AGUIChatClient(transportCapture),
+            s_jsonOptions);
 
         return (aguiClient, transportCapture, serverCapture);
+    }
+
+    private static async Task<List<ChatResponseUpdate>> CollectUpdates(
+        IChatClient client, IList<ChatMessage> messages, ChatOptions? options)
+    {
+        var updates = new List<ChatResponseUpdate>();
+        await foreach (var update in client.GetStreamingResponseAsync(messages, options).ConfigureAwait(false))
+        {
+            updates.Add(update);
+        }
+        return updates;
     }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators
@@ -157,7 +182,8 @@ public sealed class Step04_HumanInLoopTest : IntegrationTestBase<Step04_HumanInL
 
         options.TypeInfoResolverChain.Add(AIJsonUtilities.DefaultOptions.TypeInfoResolver!);
         options.TypeInfoResolverChain.Add(AGUIJsonSerializerContext.Default);
-        options.TypeInfoResolverChain.Add(SampleJsonSerializerContext.Default);        AGUIServiceCollectionExtensions.RegisterInterruptContentTypes(options);
+        options.TypeInfoResolverChain.Add(SampleJsonSerializerContext.Default);
+        AGUIServiceCollectionExtensions.RegisterInterruptContentTypes(options);
         return options;
     }
 
@@ -191,22 +217,18 @@ public sealed class Step04_HumanInLoopTest : IntegrationTestBase<Step04_HumanInL
             {
                 client = new
                 {
-                    chatMessages = i < clientMessages.Count
-                        ? clientMessages[i]
-                        : null,
+                    chatMessages = i < clientMessages.Count ? clientMessages[i] : null,
                     runAgentInput = wire.Input,
                     events = wire.Events,
-                    chatResponseUpdates = i < clientUpdates.Count
-                        ? clientUpdates[i]
-                        : null
+                    chatResponseUpdates = i < clientUpdates.Count ? clientUpdates[i] : null,
                 },
                 server = srv != null ? new
                 {
                     runAgentInput = srv.RunAgentInput,
                     chatMessages = srv.Messages,
                     chatResponseUpdates = srv.Updates,
-                    events = serverDerivedEvents
-                } : null
+                    events = serverDerivedEvents,
+                } : null,
             });
         }
 
@@ -237,7 +259,7 @@ public sealed class Step04_HumanInLoopTest : IntegrationTestBase<Step04_HumanInL
                             "run_" => (runMap, "run_Id"),
                             "call_" => (toolCallIdMap, "call_Id"),
                             "msg_" => (msgIdMap, "msg_Id"),
-                            _ => throw new InvalidOperationException()
+                            _ => throw new InvalidOperationException(),
                         };
                         if (!map.TryGetValue(suffix, out var index))
                         {

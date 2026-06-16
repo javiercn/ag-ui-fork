@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\AGUI.Abstractions\AGUI.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\src\AGUI.Client\AGUI.Client.csproj" />
     <ProjectReference Include="..\..\..\src\AGUI.Hosting.AspNetCore\AGUI.Hosting.AspNetCore.csproj" />
   </ItemGroup>
 

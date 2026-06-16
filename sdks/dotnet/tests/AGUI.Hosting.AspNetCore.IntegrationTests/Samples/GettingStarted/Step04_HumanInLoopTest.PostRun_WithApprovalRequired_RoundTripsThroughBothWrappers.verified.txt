@@ -1,0 +1,806 @@
+﻿[
+  {
+    client: {
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: Please approve expense report EXP-2024-001
+            }
+          ]
+        }
+      ],
+      runAgentInput: {
+        threadId: thread_Id_1,
+        runId: run_Id_1,
+        messages: [
+          {
+            role: user,
+            content: Please approve expense report EXP-2024-001
+          }
+        ]
+      },
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_1,
+          runId: run_Id_1
+        },
+        {
+          type: TOOL_CALL_START,
+          toolCallId: call_Id_1,
+          toolCallName: request_approval,
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: request_approval,
+                arguments: {
+                  request: {
+                    approval_id: ficc_call_expense_001,
+                    function_name: ApproveExpenseReport,
+                    function_arguments: {
+                      expenseReportId: EXP-2024-001
+                    },
+                    message: Approve execution of 'ApproveExpenseReport'?
+                  }
+                },
+                informationalOnly: false,
+                callId: call_Id_1,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: toolCalls,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: TOOL_CALL_ARGS,
+          toolCallId: call_Id_1,
+          delta: {"request":{"approval_id":"ficc_call_expense_001","function_name":"ApproveExpenseReport","function_arguments":{"expenseReportId":"EXP-2024-001"},"message":"Approve execution of 'ApproveExpenseReport'?"}},
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: request_approval,
+                arguments: {
+                  request: {
+                    approval_id: ficc_call_expense_001,
+                    function_name: ApproveExpenseReport,
+                    function_arguments: {
+                      expenseReportId: EXP-2024-001
+                    },
+                    message: Approve execution of 'ApproveExpenseReport'?
+                  }
+                },
+                informationalOnly: false,
+                callId: call_Id_1,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: toolCalls,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: TOOL_CALL_END,
+          toolCallId: call_Id_1,
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: request_approval,
+                arguments: {
+                  request: {
+                    approval_id: ficc_call_expense_001,
+                    function_name: ApproveExpenseReport,
+                    function_arguments: {
+                      expenseReportId: EXP-2024-001
+                    },
+                    message: Approve execution of 'ApproveExpenseReport'?
+                  }
+                },
+                informationalOnly: false,
+                callId: call_Id_1,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: toolCalls,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_1,
+          runId: run_Id_1,
+          outcome: {
+            type: success
+          }
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: assistant,
+          additionalProperties: {
+            agui_thread_id: thread_Id_1
+          },
+          responseId: run_Id_1,
+          conversationId: thread_Id_1
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: toolApprovalRequest,
+              toolCall: {
+                $type: functionCall,
+                name: ApproveExpenseReport,
+                arguments: {
+                  expenseReportId: EXP-2024-001
+                },
+                informationalOnly: false,
+                callId: call_Id_1
+              },
+              requestId: ficc_call_expense_001
+            }
+          ],
+          responseId: run_Id_1,
+          createdAt: {Scrubbed}
+        },
+        {
+          role: assistant,
+          responseId: run_Id_1,
+          conversationId: thread_Id_1,
+          finishReason: stop
+        }
+      ]
+    },
+    server: {
+      runAgentInput: {
+        threadId: thread_Id_1,
+        runId: run_Id_1,
+        messages: [
+          {
+            role: user,
+            content: Please approve expense report EXP-2024-001
+          }
+        ]
+      },
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: Please approve expense report EXP-2024-001
+            }
+          ]
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: Assistant,
+          contents: [
+            {
+              $type: toolApprovalRequest,
+              toolCall: {
+                $type: functionCall,
+                name: ApproveExpenseReport,
+                arguments: {
+                  expenseReportId: EXP-2024-001
+                },
+                informationalOnly: false,
+                callId: call_Id_1
+              },
+              requestId: ficc_call_expense_001
+            }
+          ],
+          finishReason: toolCalls,
+          modelId: gpt-4o-mini
+        }
+      ],
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_1,
+          runId: run_Id_1
+        },
+        {
+          type: TOOL_CALL_START,
+          toolCallId: call_Id_1,
+          toolCallName: ApproveExpenseReport,
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: toolApprovalRequest,
+                toolCall: {
+                  $type: functionCall,
+                  name: ApproveExpenseReport,
+                  arguments: {
+                    expenseReportId: EXP-2024-001
+                  },
+                  informationalOnly: false,
+                  callId: call_Id_1
+                },
+                requestId: ficc_call_expense_001
+              }
+            ],
+            finishReason: toolCalls,
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: TOOL_CALL_ARGS,
+          toolCallId: call_Id_1,
+          delta:
+{
+  "expenseReportId": "EXP-2024-001"
+},
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: toolApprovalRequest,
+                toolCall: {
+                  $type: functionCall,
+                  name: ApproveExpenseReport,
+                  arguments: {
+                    expenseReportId: EXP-2024-001
+                  },
+                  informationalOnly: false,
+                  callId: call_Id_1
+                },
+                requestId: ficc_call_expense_001
+              }
+            ],
+            finishReason: toolCalls,
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: TOOL_CALL_END,
+          toolCallId: call_Id_1,
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: toolApprovalRequest,
+                toolCall: {
+                  $type: functionCall,
+                  name: ApproveExpenseReport,
+                  arguments: {
+                    expenseReportId: EXP-2024-001
+                  },
+                  informationalOnly: false,
+                  callId: call_Id_1
+                },
+                requestId: ficc_call_expense_001
+              }
+            ],
+            finishReason: toolCalls,
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_1,
+          runId: run_Id_1,
+          outcome: {
+            type: interrupt,
+            interrupts: [
+              {
+                id: ficc_call_expense_001,
+                reason: tool_call,
+                message: Approval required for tool call: ApproveExpenseReport,
+                toolCallId: call_Id_1,
+                responseSchema: {
+                  type: object,
+                  properties: {
+                    approved: {
+                      type: boolean
+                    }
+                  },
+                  required: [
+                    approved
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    client: {
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: Please approve expense report EXP-2024-001
+            }
+          ]
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: toolApprovalRequest,
+              toolCall: {
+                $type: functionCall,
+                name: ApproveExpenseReport,
+                arguments: {
+                  expenseReportId: EXP-2024-001
+                },
+                informationalOnly: false,
+                callId: call_Id_1
+              },
+              requestId: ficc_call_expense_001
+            }
+          ]
+        },
+        {
+          role: user,
+          contents: [
+            {
+              $type: toolApprovalResponse,
+              approved: true,
+              toolCall: {
+                $type: functionCall,
+                name: ApproveExpenseReport,
+                arguments: {
+                  expenseReportId: EXP-2024-001
+                },
+                informationalOnly: false,
+                callId: call_Id_1
+              },
+              requestId: ficc_call_expense_001
+            }
+          ]
+        }
+      ],
+      runAgentInput: {
+        threadId: thread_Id_2,
+        runId: run_Id_2,
+        messages: [
+          {
+            role: user,
+            content: Please approve expense report EXP-2024-001
+          },
+          {
+            role: assistant,
+            toolCalls: [
+              {
+                id: call_Id_1,
+                type: function,
+                function: {
+                  name: request_approval,
+                  arguments: {"request":{"approval_id":"ficc_call_expense_001","function_name":"ApproveExpenseReport","function_arguments":{"expenseReportId":"EXP-2024-001"},"message":"Approve execution of \u0027ApproveExpenseReport\u0027?"}}
+                }
+              }
+            ],
+            content: 
+          },
+          {
+            role: tool,
+            toolCallId: call_Id_1,
+            content:
+{
+  "approval_id": "ficc_call_expense_001",
+  "approved": true
+}
+          }
+        ]
+      },
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_2,
+          runId: run_Id_2
+        },
+        {
+          type: TOOL_CALL_START,
+          parentMessageId: Guid_1,
+          toolCallId: call_Id_1,
+          toolCallName: ApproveExpenseReport,
+          rawEvent: {
+            authorName: null,
+            role: assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: ApproveExpenseReport,
+                arguments: {
+                  expenseReportId: EXP-2024-001
+                },
+                informationalOnly: false,
+                callId: call_Id_1,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: Guid_1,
+            messageId: Guid_1,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: null,
+            continuationToken: null
+          }
+        },
+        {
+          type: TOOL_CALL_ARGS,
+          toolCallId: call_Id_1,
+          delta: {"expenseReportId":"EXP-2024-001"},
+          rawEvent: {
+            authorName: null,
+            role: assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: ApproveExpenseReport,
+                arguments: {
+                  expenseReportId: EXP-2024-001
+                },
+                informationalOnly: false,
+                callId: call_Id_1,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: Guid_1,
+            messageId: Guid_1,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: null,
+            continuationToken: null
+          }
+        },
+        {
+          type: TOOL_CALL_END,
+          toolCallId: call_Id_1,
+          rawEvent: {
+            authorName: null,
+            role: assistant,
+            contents: [
+              {
+                $type: functionCall,
+                name: ApproveExpenseReport,
+                arguments: {
+                  expenseReportId: EXP-2024-001
+                },
+                informationalOnly: false,
+                callId: call_Id_1,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: Guid_1,
+            messageId: Guid_1,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: null,
+            continuationToken: null
+          }
+        },
+        {
+          type: TOOL_CALL_RESULT,
+          messageId: call_Id_1,
+          toolCallId: call_Id_1,
+          content: "Expense report EXP-2024-001 has been approved and processed.",
+          rawEvent: {
+            authorName: null,
+            role: tool,
+            contents: [
+              {
+                $type: functionResult,
+                result: Expense report EXP-2024-001 has been approved and processed.,
+                callId: call_Id_1,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: Guid_2,
+            messageId: Guid_2,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: null,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_START,
+          messageId: msg_Id_1,
+          role: assistant,
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text: Expense report EXP-2024-001 has been approved and processed.,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: msg_Id_1,
+          delta: Expense report EXP-2024-001 has been approved and processed.,
+          rawEvent: {
+            authorName: null,
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text: Expense report EXP-2024-001 has been approved and processed.,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: gpt-4o-mini,
+            continuationToken: null
+          }
+        },
+        {
+          type: TEXT_MESSAGE_END,
+          messageId: msg_Id_1
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_2,
+          runId: run_Id_2,
+          outcome: {
+            type: success
+          }
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: assistant,
+          additionalProperties: {
+            agui_thread_id: thread_Id_2
+          },
+          responseId: run_Id_2,
+          conversationId: thread_Id_2
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: functionCall,
+              name: ApproveExpenseReport,
+              arguments: {
+                expenseReportId: EXP-2024-001
+              },
+              informationalOnly: true,
+              callId: call_Id_1
+            }
+          ],
+          responseId: run_Id_2,
+          conversationId: thread_Id_2,
+          createdAt: {Scrubbed}
+        },
+        {
+          role: tool,
+          contents: [
+            {
+              $type: functionResult,
+              result: "Expense report EXP-2024-001 has been approved and processed.",
+              callId: call_Id_1
+            }
+          ],
+          responseId: run_Id_2,
+          conversationId: thread_Id_2
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text: Expense report EXP-2024-001 has been approved and processed.
+            }
+          ],
+          responseId: run_Id_2,
+          messageId: msg_Id_1,
+          conversationId: thread_Id_2,
+          createdAt: {Scrubbed}
+        },
+        {
+          role: assistant,
+          responseId: run_Id_2,
+          conversationId: thread_Id_2,
+          finishReason: stop
+        }
+      ]
+    },
+    server: {
+      runAgentInput: {
+        threadId: thread_Id_2,
+        runId: run_Id_2,
+        messages: [
+          {
+            role: user,
+            content: Please approve expense report EXP-2024-001
+          },
+          {
+            role: assistant,
+            toolCalls: [
+              {
+                id: call_Id_1,
+                type: function,
+                function: {
+                  name: request_approval,
+                  arguments: {"request":{"approval_id":"ficc_call_expense_001","function_name":"ApproveExpenseReport","function_arguments":{"expenseReportId":"EXP-2024-001"},"message":"Approve execution of \u0027ApproveExpenseReport\u0027?"}}
+                }
+              }
+            ],
+            content: 
+          },
+          {
+            role: tool,
+            toolCallId: call_Id_1,
+            content:
+{
+  "approval_id": "ficc_call_expense_001",
+  "approved": true
+}
+          }
+        ]
+      },
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: Please approve expense report EXP-2024-001
+            }
+          ]
+        },
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: functionCall,
+              name: ApproveExpenseReport,
+              arguments: {
+                expenseReportId: EXP-2024-001
+              },
+              informationalOnly: true,
+              callId: call_Id_1
+            }
+          ],
+          messageId: Guid_1
+        },
+        {
+          role: tool,
+          contents: [
+            {
+              $type: functionResult,
+              result: Expense report EXP-2024-001 has been approved and processed.,
+              callId: call_Id_1
+            }
+          ],
+          messageId: Guid_2
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: Assistant,
+          contents: [
+            {
+              $type: text,
+              text: Expense report EXP-2024-001 has been approved and processed.
+            }
+          ],
+          modelId: gpt-4o-mini
+        }
+      ],
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_2,
+          runId: run_Id_2
+        },
+        {
+          type: TEXT_MESSAGE_START,
+          messageId: msg_Id_2,
+          role: assistant,
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text: Expense report EXP-2024-001 has been approved and processed.
+              }
+            ],
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: msg_Id_2,
+          delta: Expense report EXP-2024-001 has been approved and processed.,
+          rawEvent: {
+            role: Assistant,
+            contents: [
+              {
+                $type: text,
+                text: Expense report EXP-2024-001 has been approved and processed.
+              }
+            ],
+            modelId: gpt-4o-mini
+          }
+        },
+        {
+          type: TEXT_MESSAGE_END,
+          messageId: msg_Id_2
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_2,
+          runId: run_Id_2,
+          outcome: {
+            type: success
+          }
+        }
+      ]
+    }
+  }
+]
