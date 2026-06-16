@@ -2,7 +2,7 @@ using Azure.AI.OpenAI;
 using Azure.Identity;
 using Microsoft.Extensions.AI;
 
-namespace Step11_Serialization;
+namespace Step11_Serialization.Server;
 
 public class Program
 {

@@ -10,15 +10,16 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Step11_Serialization;
+using Step11_Serialization.Client;
+using Step11_Serialization.Server;
 using VerifyXunit;
 using Xunit;
 
 namespace AGUI.Hosting.AspNetCore.IntegrationTests.Samples.GettingStarted;
 
-public sealed class Step11_SerializationTest : IntegrationTestBase<Step11_Serialization.Program>
+public sealed class Step11_SerializationTest : IntegrationTestBase<Step11_Serialization.Server.Program>
 {
-    public Step11_SerializationTest(WebApplicationFactory<Step11_Serialization.Program> factory)
+    public Step11_SerializationTest(WebApplicationFactory<Step11_Serialization.Server.Program> factory)
         : base(factory)
     {
     }
@@ -31,30 +32,11 @@ public sealed class Step11_SerializationTest : IntegrationTestBase<Step11_Serial
         var clientMessages = new List<List<ChatMessage>>();
         var clientUpdates = new List<List<ChatResponseUpdate>>();
 
-        // Turn 1: Send initial message
-        var messages1 = new List<ChatMessage> { new(ChatRole.User, "Hello, tell me about serialization") };
-        clientMessages.Add(messages1.ToList());
-        var turn1Updates = await CollectUpdates(aguiClient, messages1);
-        clientUpdates.Add(turn1Updates);
+        await Step11_Serialization.Client.SampleClient.RunAsync(
+            aguiClient, TextWriter.Null, clientMessages, clientUpdates);
 
-        // Extract the threadId and runId from Turn 1 for parentRunId on Turn 2
-        var turn1ThreadId = turn1Updates.First(u => u.ConversationId != null).ConversationId!;
+        var turn1Updates = clientUpdates[0];
         var turn1RunId = turn1Updates.First(u => u.ResponseId != null).ResponseId!;
-
-        // Turn 2: Send only the new message with parentRunId (not the full history).
-        // The server will look up previous messages from the history store using parentRunId.
-        var messages2 = new List<ChatMessage> { new(ChatRole.User, "Tell me more about event compaction") };
-        var turn2Options = new ChatOptions
-        {
-            ConversationId = turn1ThreadId,
-            AdditionalProperties = new AdditionalPropertiesDictionary
-            {
-                ["agui_parent_run_id"] = turn1RunId
-            }
-        };
-        clientMessages.Add(messages2.ToList());
-        var turn2Updates = await CollectUpdates(aguiClient, messages2, turn2Options);
-        clientUpdates.Add(turn2Updates);
 
         // Verify the events from both turns can round-trip through JSON serialization
         var allEvents = transport.Turns.SelectMany(t => t.Events).ToList();

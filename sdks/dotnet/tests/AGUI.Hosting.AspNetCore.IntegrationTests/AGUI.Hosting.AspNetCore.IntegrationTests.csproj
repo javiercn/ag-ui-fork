@@ -39,7 +39,8 @@
     <ProjectReference Include="..\..\samples\GettingStarted\Step09_InterruptsApproval\Step09_InterruptsApproval.Client\Step09_InterruptsApproval.Client.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step10_InterruptsUserInput\Step10_InterruptsUserInput.Server\Step10_InterruptsUserInput.Server.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step10_InterruptsUserInput\Step10_InterruptsUserInput.Client\Step10_InterruptsUserInput.Client.csproj" />
-    <ProjectReference Include="..\..\samples\GettingStarted\Step11_Serialization\Step11_Serialization.csproj" />
+    <ProjectReference Include="..\..\samples\GettingStarted\Step11_Serialization\Step11_Serialization.Server\Step11_Serialization.Server.csproj" />
+    <ProjectReference Include="..\..\samples\GettingStarted\Step11_Serialization\Step11_Serialization.Client\Step11_Serialization.Client.csproj" />
   </ItemGroup>
 
 </Project>
