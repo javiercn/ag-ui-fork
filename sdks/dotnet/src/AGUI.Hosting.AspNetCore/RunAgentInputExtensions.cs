@@ -57,6 +57,21 @@ public static class RunAgentInputExtensions
             }
         }
 
+        // Translate AG-UI Resume entries into InterruptResponseContent on the message list
+        // so the inner pipeline (custom IChatClient, FICC, etc.) sees standard MEAI types.
+        if (input.Resume is { Count: > 0 } resumeEntries)
+        {
+            var responseContents = new List<AIContent>(resumeEntries.Count);
+            foreach (var resume in resumeEntries)
+            {
+                responseContents.Add(new InterruptResponseContent(resume.InterruptId)
+                {
+                    Payload = resume.Payload,
+                });
+            }
+            messages.Add(new ChatMessage(ChatRole.User, responseContents));
+        }
+
         var chatOptions = new ChatOptions
         {
             AdditionalProperties = new AdditionalPropertiesDictionary

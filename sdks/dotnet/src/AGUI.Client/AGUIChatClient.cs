@@ -85,6 +85,7 @@ public sealed class AGUIChatClient : DelegatingChatClient
         // Check the last message for fresh approval responses — older ones were already processed.
         var messagesList = messages.ToList();
         List<ToolApprovalResponseContent>? approvalResponses = null;
+        List<InterruptResponseContent>? interruptResponses = null;
         var lastMsg = messagesList.Count > 0 ? messagesList[messagesList.Count - 1] : null;
         if (lastMsg is not null)
         {
@@ -94,6 +95,11 @@ public sealed class AGUIChatClient : DelegatingChatClient
                 {
                     approvalResponses ??= new List<ToolApprovalResponseContent>();
                     approvalResponses.Add(response);
+                }
+                else if (content is InterruptResponseContent interruptResponse)
+                {
+                    interruptResponses ??= new List<InterruptResponseContent>();
+                    interruptResponses.Add(interruptResponse);
                 }
             }
         }
@@ -115,6 +121,25 @@ public sealed class AGUIChatClient : DelegatingChatClient
             innerOptions = (innerOptions ?? options)?.Clone() ?? new ChatOptions();
             innerOptions.AdditionalProperties ??= [];
             innerOptions.AdditionalProperties["agui_approval_responses"] = approvalResponses;
+        }
+
+        if (interruptResponses is { Count: > 0 })
+        {
+            var filtered = new List<ChatMessage>();
+            foreach (var message in messagesList)
+            {
+                if (message.Contents.Any(c => c is InterruptRequestContent || c is InterruptResponseContent))
+                {
+                    continue;
+                }
+
+                filtered.Add(message);
+            }
+
+            messagesList = filtered;
+            innerOptions = (innerOptions ?? options)?.Clone() ?? new ChatOptions();
+            innerOptions.AdditionalProperties ??= [];
+            innerOptions.AdditionalProperties["agui_interrupt_responses"] = interruptResponses;
         }
 
         await foreach (var update in base.GetStreamingResponseAsync(messagesList, innerOptions, cancellationToken).ConfigureAwait(false))
@@ -403,6 +428,27 @@ public sealed class AGUIChatClient : DelegatingChatClient
                                 Result = toolResult
                             },
                             jsonSerializerOptions.GetTypeInfo(typeof(AGUIToolApprovalResumePayload)))
+                    });
+                }
+
+                input.Resume = resumeList;
+            }
+
+            // Convert InterruptResponseContent list to resume entries.
+            if (options?.AdditionalProperties?.TryGetValue("agui_interrupt_responses", out List<InterruptResponseContent>? interruptResponses) is true
+                && interruptResponses is { Count: > 0 })
+            {
+                var resumeList = input.Resume is { Count: > 0 } existing
+                    ? new List<AGUIResume>(existing)
+                    : new List<AGUIResume>(interruptResponses.Count);
+
+                foreach (var ir in interruptResponses)
+                {
+                    resumeList.Add(new AGUIResume
+                    {
+                        InterruptId = ir.RequestId,
+                        Status = ResumeStatus.Resolved,
+                        Payload = ir.Payload,
                     });
                 }
 

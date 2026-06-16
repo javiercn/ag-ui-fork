@@ -55,8 +55,10 @@ public static class ChatResponseUpdateAGUIExtensions
         // Track tool call IDs → tool names for correlating results with registered mappings.
         Dictionary<string, string>? callIdToToolName = null;
 
-        // Accumulate tool approval interrupts so we can emit a single RunFinished with all of them.
-        List<AGUIInterrupt>? pendingApprovalInterrupts = null;
+        // Accumulate interrupts so we can emit a single RunFinished with all of them.
+        // Includes both tool-approval interrupts (from ToolApprovalRequestContent) and
+        // generic input interrupts (from InterruptRequestContent).
+        List<AGUIInterrupt>? pendingInterrupts = null;
 
         await foreach (var chatResponse in updates.WithCancellation(cancellationToken).ConfigureAwait(false))
         {
@@ -258,14 +260,40 @@ public static class ChatResponseUpdateAGUIExtensions
                         }
 
                         // Accumulate the interrupt — we'll emit a single RunFinished with all interrupts at the end
-                        pendingApprovalInterrupts ??= new List<AGUIInterrupt>();
-                        pendingApprovalInterrupts.Add(new AGUIInterrupt
+                        pendingInterrupts ??= new List<AGUIInterrupt>();
+                        pendingInterrupts.Add(new AGUIInterrupt
                         {
                             Id = ar.RequestId,
                             Reason = InterruptReasons.ToolCall,
                             ToolCallId = toolCall.CallId,
                             Message = $"Approval required for tool call: {toolCall.Name}",
                             ResponseSchema = AGUIToolApprovalSchema,
+                        });
+                        break;
+
+                    case InterruptRequestContent ireq:
+                        // Close any open text/reasoning streams before accumulating the interrupt.
+                        if (messageTracker.Close(raw) is { } ireqTextEndEvt)
+                        {
+                            yield return ireqTextEndEvt;
+                        }
+
+                        foreach (var reasonIreqCloseEvt in reasoningTracker.Close())
+                        {
+                            yield return reasonIreqCloseEvt;
+                        }
+
+                        // Accumulate the interrupt — we'll emit a single RunFinished with all interrupts at the end.
+                        pendingInterrupts ??= new List<AGUIInterrupt>();
+                        pendingInterrupts.Add(new AGUIInterrupt
+                        {
+                            Id = ireq.RequestId,
+                            Reason = ireq.Reason ?? InterruptReasons.InputRequired,
+                            Message = ireq.Message,
+                            ToolCallId = ireq.ToolCallId,
+                            ResponseSchema = ireq.ResponseSchema,
+                            ExpiresAt = ireq.ExpiresAt,
+                            Metadata = ireq.Metadata,
                         });
                         break;
 
@@ -329,10 +357,10 @@ public static class ChatResponseUpdateAGUIExtensions
         }
 
         // Emit accumulated tool approval interrupts as a single RunFinished
-        if (pendingApprovalInterrupts is { Count: > 0 })
+        if (pendingInterrupts is { Count: > 0 })
         {
             yield return RunFinishedEvent.Create(threadId, runId,
-                new RunFinishedInterruptOutcome { Interrupts = pendingApprovalInterrupts });
+                new RunFinishedInterruptOutcome { Interrupts = pendingInterrupts });
             runFinishedEmitted = true;
         }
 
