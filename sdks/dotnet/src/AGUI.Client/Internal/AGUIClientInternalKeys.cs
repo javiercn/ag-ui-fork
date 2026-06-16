@@ -28,11 +28,4 @@ internal static class AGUIClientInternalKeys
     /// <see cref="AGUI.Abstractions.AGUIResume"/> entries.
     /// </summary>
     internal const string InterruptResponses = "agui_interrupt_responses";
-
-    /// <summary>
-    /// Stashes the originating <see cref="AGUI.Abstractions.AGUIInterrupt"/> on a produced
-    /// approval/input request content so downstream code can read it from
-    /// <c>AdditionalProperties</c> without re-parsing the wire event.
-    /// </summary>
-    internal const string Interrupt = "agui_interrupt";
 }

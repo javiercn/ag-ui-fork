@@ -126,8 +126,6 @@ internal static class EventStreamConverter
                                 ExpiresAt = interrupt.ExpiresAt,
                                 Metadata = interrupt.Metadata,
                             };
-                            inputRequest.AdditionalProperties ??= new AdditionalPropertiesDictionary();
-                            inputRequest.AdditionalProperties[AGUIClientInternalKeys.Interrupt] = interrupt;
 
                             nonToolContents.Add(inputRequest);
                         }

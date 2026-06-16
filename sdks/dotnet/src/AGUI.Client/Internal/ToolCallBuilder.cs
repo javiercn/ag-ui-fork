@@ -132,9 +132,10 @@ internal sealed class ToolCallBuilder
             {
                 // This tool call is interrupted — replace with ToolApprovalRequestContent
                 var approvalRequest = new ToolApprovalRequestContent(
-                    interrupt.Id, fcc);
-                approvalRequest.AdditionalProperties ??= new AdditionalPropertiesDictionary();
-                approvalRequest.AdditionalProperties[AGUIClientInternalKeys.Interrupt] = interrupt;
+                    interrupt.Id, fcc)
+                {
+                    RawRepresentation = interrupt,
+                };
 
                 updates.Add(new ChatResponseUpdate(ChatRole.Assistant, [approvalRequest])
                 {
