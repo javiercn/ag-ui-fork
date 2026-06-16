@@ -7,8 +7,8 @@ internal static class RunStartedEventExtensions
 {
     extension(RunStartedEvent)
     {
-        public static RunStartedEvent Create(string threadId, string runId) =>
-            new() { ThreadId = threadId, RunId = runId };
+        public static RunStartedEvent Create(string threadId, string runId, string? parentRunId = null) =>
+            new() { ThreadId = threadId, RunId = runId, ParentRunId = parentRunId };
     }
 }
 

@@ -76,7 +76,7 @@ public static class ChatResponseUpdateAGUIExtensions
                 else if (!runStartedEmitted)
                 {
                     runStartedEmitted = true;
-                    yield return RunStartedEvent.Create(threadId, runId);
+                    yield return RunStartedEvent.Create(threadId, runId, context.Input.ParentRunId);
                 }
 
                 yield return rawEvent;
@@ -87,7 +87,7 @@ public static class ChatResponseUpdateAGUIExtensions
             if (!runStartedEmitted)
             {
                 runStartedEmitted = true;
-                yield return RunStartedEvent.Create(threadId, runId);
+                yield return RunStartedEvent.Create(threadId, runId, context.Input.ParentRunId);
             }
 
             // Serialize the raw ChatResponseUpdate once for attaching to emitted events
@@ -353,7 +353,7 @@ public static class ChatResponseUpdateAGUIExtensions
         // Emit RunStartedEvent if no updates were processed (empty stream)
         if (!runStartedEmitted)
         {
-            yield return RunStartedEvent.Create(threadId, runId);
+            yield return RunStartedEvent.Create(threadId, runId, context.Input.ParentRunId);
         }
 
         // Emit accumulated tool approval interrupts as a single RunFinished
