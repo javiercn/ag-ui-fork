@@ -1,3 +1,4 @@
+using AGUI.Abstractions;
 using AGUI.Client;
 using Microsoft.Extensions.AI;
 
@@ -23,9 +24,10 @@ public static class SampleClient
         var turn1 = await StreamAsync(chatClient, messages, options: null, output, cancellationToken).ConfigureAwait(false);
         updatesPerTurn?.Add(turn1);
 
-        // Turn 2: follow-up that references the previous run via parentRunId; only the new
-        // message goes on the wire. The server reconstructs the combined history from the
-        // run lineage encoded in agui_parent_run_id.
+        // Turn 2: branch from the previous run by setting RunAgentInput.ParentRunId
+        // through ChatOptions.RawRepresentationFactory — the AG-UI-native way to set
+        // wire-level fields. ConversationId carries the threadId so the run stays
+        // on the same thread.
         var conversationId = turn1.FirstOrDefault(u => u.ConversationId != null)?.ConversationId;
         var parentRunId = turn1.FirstOrDefault(u => u.ResponseId != null)?.ResponseId;
 
@@ -36,9 +38,9 @@ public static class SampleClient
         var followUpOptions = new ChatOptions
         {
             ConversationId = conversationId,
-            AdditionalProperties = new AdditionalPropertiesDictionary
+            RawRepresentationFactory = _ => new RunAgentInput
             {
-                ["agui_parent_run_id"] = parentRunId ?? string.Empty,
+                ParentRunId = parentRunId,
             },
         };
         messagesPerTurn?.Add(followUp.ToList());

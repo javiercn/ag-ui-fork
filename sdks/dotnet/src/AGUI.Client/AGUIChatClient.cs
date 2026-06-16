@@ -382,6 +382,11 @@ public sealed class AGUIChatClient : DelegatingChatClient
                 {
                     input.State = providedInput.State;
                 }
+
+                if (!string.IsNullOrEmpty(providedInput.ParentRunId))
+                {
+                    input.ParentRunId = providedInput.ParentRunId;
+                }
             }
 
             // Convert M.E.AI tools to AG-UI format
@@ -453,14 +458,6 @@ public sealed class AGUIChatClient : DelegatingChatClient
                 }
 
                 input.Resume = resumeList;
-            }
-
-            // Set parentRunId from AdditionalProperties if provided
-            if (input.ParentRunId is null &&
-                options?.AdditionalProperties?.TryGetValue("agui_parent_run_id", out string? parentRunId) is true
-                && !string.IsNullOrEmpty(parentRunId))
-            {
-                input.ParentRunId = parentRunId;
             }
 
             return input;
