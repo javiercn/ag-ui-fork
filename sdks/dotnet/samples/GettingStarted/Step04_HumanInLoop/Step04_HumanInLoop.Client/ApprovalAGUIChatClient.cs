@@ -2,10 +2,10 @@ using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Microsoft.Extensions.AI;
 
-namespace Step04_HumanInLoop;
+namespace Step04_HumanInLoop.Client;
 
 /// <summary>
-/// Client-side counterpart of <see cref="ApprovalChatClient"/>. Wraps an
+/// Client-side counterpart of the server-side ApprovalChatClient. Wraps an
 /// <see cref="IChatClient"/> (typically the AG-UI <c>AGUIChatClient</c>) so calling code on
 /// the client side sees standard MEAI <see cref="ToolApprovalRequestContent"/> /
 /// <see cref="ToolApprovalResponseContent"/> instead of the synthetic
@@ -13,6 +13,8 @@ namespace Step04_HumanInLoop;
 /// </summary>
 internal sealed class ApprovalAGUIChatClient : DelegatingChatClient
 {
+    public const string ApprovalToolName = "request_approval";
+
     private readonly JsonSerializerOptions _jsonSerializerOptions;
 
     public ApprovalAGUIChatClient(IChatClient innerClient, JsonSerializerOptions jsonSerializerOptions)
@@ -133,7 +135,7 @@ internal sealed class ApprovalAGUIChatClient : DelegatingChatClient
 
         return new FunctionCallContent(
             callId: originalCall.CallId,
-            name: ApprovalChatClient.ApprovalToolName,
+            name: ApprovalToolName,
             arguments: new Dictionary<string, object?>
             {
                 ["request"] = JsonSerializer.SerializeToElement(
@@ -159,7 +161,7 @@ internal sealed class ApprovalAGUIChatClient : DelegatingChatClient
 
     private ChatResponseUpdate RewriteIncomingApprovals(ChatResponseUpdate update)
     {
-        if (!update.Contents.OfType<FunctionCallContent>().Any(c => c.Name == ApprovalChatClient.ApprovalToolName))
+        if (!update.Contents.OfType<FunctionCallContent>().Any(c => c.Name == ApprovalToolName))
         {
             return update;
         }
@@ -167,7 +169,7 @@ internal sealed class ApprovalAGUIChatClient : DelegatingChatClient
         var rewritten = new List<AIContent>(update.Contents.Count);
         foreach (var content in update.Contents)
         {
-            if (content is FunctionCallContent { Name: ApprovalChatClient.ApprovalToolName } syntheticCall
+            if (content is FunctionCallContent { Name: ApprovalToolName } syntheticCall
                 && DecodeApprovalRequest(syntheticCall.Arguments) is { } payload)
             {
                 var originalArgs = payload.FunctionArguments is { } argsElement

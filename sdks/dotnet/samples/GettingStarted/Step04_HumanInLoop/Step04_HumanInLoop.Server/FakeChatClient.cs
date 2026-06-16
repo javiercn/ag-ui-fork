@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.AI;
 
-namespace Step04_HumanInLoop;
+namespace Step04_HumanInLoop.Server;
 
 internal sealed class FakeChatClient : IChatClient
 {
@@ -39,15 +39,25 @@ internal sealed class FakeChatClient : IChatClient
         ChatOptions? options = null,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        if (_handlers.Count == 0)
+        if (_handlers.Count > 0)
         {
-            throw new InvalidOperationException("No handler enqueued on FakeChatClient.");
+            var handler = _handlers.Dequeue();
+            await foreach (var update in handler(messages).WithCancellation(cancellationToken).ConfigureAwait(false))
+            {
+                yield return update;
+            }
+            yield break;
         }
 
-        var handler = _handlers.Dequeue();
-        await foreach (var update in handler(messages).WithCancellation(cancellationToken).ConfigureAwait(false))
+        // No handler enqueued: return a deterministic canned response so the sample
+        // is runnable end-to-end without LLM credentials. Tests always pre-enqueue.
+        var lastUserText = messages.LastOrDefault(m => m.Role == ChatRole.User)?.Text ?? string.Empty;
+        yield return new ChatResponseUpdate
         {
-            yield return update;
-        }
+            Role = ChatRole.Assistant,
+            Contents = [new TextContent($"(fake) You said: \"{lastUserText}\"")],
+            ModelId = "fake-model",
+        };
+        await Task.CompletedTask.ConfigureAwait(false);
     }
 }

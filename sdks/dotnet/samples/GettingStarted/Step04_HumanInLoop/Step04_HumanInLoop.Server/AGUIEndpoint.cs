@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 
 using JsonOptions = Microsoft.AspNetCore.Http.Json.JsonOptions;
 
-namespace Step04_HumanInLoop;
+namespace Step04_HumanInLoop.Server;
 
 internal static class AGUIEndpoint
 {

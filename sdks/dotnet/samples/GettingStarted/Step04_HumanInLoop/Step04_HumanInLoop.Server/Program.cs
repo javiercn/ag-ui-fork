@@ -2,7 +2,7 @@ using Azure.AI.OpenAI;
 using Azure.Identity;
 using Microsoft.Extensions.AI;
 
-namespace Step04_HumanInLoop;
+namespace Step04_HumanInLoop.Server;
 
 public class Program
 {

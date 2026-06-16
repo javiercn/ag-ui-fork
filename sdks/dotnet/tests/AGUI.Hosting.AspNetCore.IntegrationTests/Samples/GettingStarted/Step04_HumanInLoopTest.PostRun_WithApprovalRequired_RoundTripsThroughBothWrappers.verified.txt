@@ -416,11 +416,7 @@
           {
             role: tool,
             toolCallId: call_Id_1,
-            content:
-{
-  "approval_id": "ficc_call_expense_001",
-  "approved": true
-}
+            content: {"approval_id":"ficc_call_expense_001","approved":true}
           }
         ]
       },
@@ -695,11 +691,7 @@
           {
             role: tool,
             toolCallId: call_Id_1,
-            content:
-{
-  "approval_id": "ficc_call_expense_001",
-  "approved": true
-}
+            content: {"approval_id":"ficc_call_expense_001","approved":true}
           }
         ]
       },

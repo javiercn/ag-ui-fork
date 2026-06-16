@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Step04_HumanInLoop;
+namespace Step04_HumanInLoop.Server;
 
 [JsonSerializable(typeof(ApprovalRequest))]
 [JsonSerializable(typeof(ApprovalResponse))]

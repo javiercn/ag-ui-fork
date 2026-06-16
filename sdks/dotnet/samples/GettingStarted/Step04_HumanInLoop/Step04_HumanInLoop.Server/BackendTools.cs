@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Step04_HumanInLoop;
+namespace Step04_HumanInLoop.Server;
 
 internal static class BackendTools
 {

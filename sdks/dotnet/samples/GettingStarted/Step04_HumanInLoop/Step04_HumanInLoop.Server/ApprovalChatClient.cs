@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Microsoft.Extensions.AI;
 
-namespace Step04_HumanInLoop;
+namespace Step04_HumanInLoop.Server;
 
 /// <summary>
 /// A stateless <see cref="DelegatingChatClient"/> that bridges MEAI's

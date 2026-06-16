@@ -11,15 +11,16 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Step04_HumanInLoop;
+using Step04_HumanInLoop.Client;
+using Step04_HumanInLoop.Server;
 using VerifyXunit;
 using Xunit;
 
 namespace AGUI.Hosting.AspNetCore.IntegrationTests.Samples.GettingStarted;
 
-public sealed class Step04_HumanInLoopTest : IntegrationTestBase<Step04_HumanInLoop.Program>
+public sealed class Step04_HumanInLoopTest : IntegrationTestBase<Step04_HumanInLoop.Server.Program>
 {
-    public Step04_HumanInLoopTest(WebApplicationFactory<Step04_HumanInLoop.Program> factory)
+    public Step04_HumanInLoopTest(WebApplicationFactory<Step04_HumanInLoop.Server.Program> factory)
         : base(factory)
     {
     }
@@ -32,40 +33,13 @@ public sealed class Step04_HumanInLoopTest : IntegrationTestBase<Step04_HumanInL
         var clientMessages = new List<List<ChatMessage>>();
         var clientUpdates = new List<List<ChatResponseUpdate>>();
 
-        // Turn 1: user requests an approval-required action.
-        // Server-side ApprovalChatClient rewrites the inner ToolApprovalRequestContent into a
-        // synthetic request_approval FunctionCallContent; client-side ApprovalAGUIChatClient
-        // rewrites it back to ToolApprovalRequestContent for the calling code.
-        var messages = new List<ChatMessage>
-        {
-            new(ChatRole.User, "Please approve expense report EXP-2024-001"),
-        };
-        clientMessages.Add(messages.ToList());
-        var updates = await CollectUpdates(aguiClient, messages, options: null);
-        clientUpdates.Add(updates);
-
-        var approvalRequest = updates
-            .SelectMany(u => u.Contents)
-            .OfType<ToolApprovalRequestContent>()
-            .Single();
-
-        // Turn 2: simulate the user approving the action and resume the conversation.
-        // The ToolApprovalResponseContent travels back as a synthetic request_approval result;
-        // the server-side wrapper recovers ToolApprovalRequestContent + ToolApprovalResponseContent
-        // so MEAI's FunctionInvokingChatClient executes the underlying tool.
-        var turn2Messages = new List<ChatMessage>(messages)
-        {
-            new(ChatRole.Assistant, [approvalRequest]),
-            new(ChatRole.User, [approvalRequest.CreateResponse(approved: true)]),
-        };
-        clientMessages.Add(turn2Messages.ToList());
-        var turn2Updates = await CollectUpdates(aguiClient, turn2Messages, options: null);
-        clientUpdates.Add(turn2Updates);
+        await Step04_HumanInLoop.Client.SampleClient.RunAsync(
+            aguiClient, TextWriter.Null, clientMessages, clientUpdates);
 
         await VerifyAllCaptures(transport, server, clientMessages, clientUpdates);
     }
 
-    private (IChatClient Client, CapturingAGUITransport Transport, CapturingChatClient Server) CreateCapturingClient(
+    private (AGUIChatClient Client, CapturingAGUITransport Transport, CapturingChatClient Server) CreateCapturingClient(
         [CallerMemberName] string testName = "")
     {
         var serverCapture = new CapturingChatClient();
@@ -111,22 +85,9 @@ public sealed class Step04_HumanInLoopTest : IntegrationTestBase<Step04_HumanInL
 
         var transport = new AGUIHttpTransport(httpClient, "/");
         var transportCapture = new CapturingAGUITransport(transport);
-        var aguiClient = new ApprovalAGUIChatClient(
-            new AGUIChatClient(transportCapture),
-            s_jsonOptions);
+        var aguiClient = new AGUIChatClient(transportCapture);
 
         return (aguiClient, transportCapture, serverCapture);
-    }
-
-    private static async Task<List<ChatResponseUpdate>> CollectUpdates(
-        IChatClient client, IList<ChatMessage> messages, ChatOptions? options)
-    {
-        var updates = new List<ChatResponseUpdate>();
-        await foreach (var update in client.GetStreamingResponseAsync(messages, options).ConfigureAwait(false))
-        {
-            updates.Add(update);
-        }
-        return updates;
     }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators
@@ -182,7 +143,7 @@ public sealed class Step04_HumanInLoopTest : IntegrationTestBase<Step04_HumanInL
 
         options.TypeInfoResolverChain.Add(AIJsonUtilities.DefaultOptions.TypeInfoResolver!);
         options.TypeInfoResolverChain.Add(AGUIJsonSerializerContext.Default);
-        options.TypeInfoResolverChain.Add(SampleJsonSerializerContext.Default);
+        options.TypeInfoResolverChain.Add(Step04_HumanInLoop.Server.SampleJsonSerializerContext.Default);
         AGUIServiceCollectionExtensions.RegisterInterruptContentTypes(options);
         return options;
     }
