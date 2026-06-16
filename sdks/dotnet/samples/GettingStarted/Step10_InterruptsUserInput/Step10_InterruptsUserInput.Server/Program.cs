@@ -1,5 +1,3 @@
-using Azure.AI.OpenAI;
-using Azure.Identity;
 using Microsoft.Extensions.AI;
 
 namespace Step10_InterruptsUserInput.Server;
@@ -12,24 +10,8 @@ public class Program
 
         builder.Services.AddAGUI();
 
-        if (string.Equals(builder.Configuration["UseAzureOpenAI"], "true", StringComparison.OrdinalIgnoreCase))
-        {
-            var endpoint = builder.Configuration["AZURE_OPENAI_ENDPOINT"]
-                ?? throw new InvalidOperationException("AZURE_OPENAI_ENDPOINT is not set.");
-            var deploymentName = builder.Configuration["AZURE_OPENAI_DEPLOYMENT_NAME"]
-                ?? throw new InvalidOperationException("AZURE_OPENAI_DEPLOYMENT_NAME is not set.");
-
-            builder.Services.AddChatClient(new AzureOpenAIClient(
-                    new Uri(endpoint),
-                    new DefaultAzureCredential())
-                .GetChatClient(deploymentName)
-                .AsIChatClient());
-        }
-        else
-        {
-            builder.Services.AddSingleton<FakeChatClient>();
-            builder.Services.AddChatClient(sp => sp.GetRequiredService<FakeChatClient>());
-        }
+        builder.Services.AddSingleton<UserInputChatClient>();
+        builder.Services.AddChatClient(sp => (IChatClient)sp.GetRequiredService<UserInputChatClient>());
 
         var app = builder.Build();
 

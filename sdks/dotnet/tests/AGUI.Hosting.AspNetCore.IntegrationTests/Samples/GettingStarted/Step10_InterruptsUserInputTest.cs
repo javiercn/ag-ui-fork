@@ -43,20 +43,7 @@ public sealed class Step10_InterruptsUserInputTest : IntegrationTestBase<Step10_
         [CallerMemberName] string testName = "")
     {
         var serverCapture = new CapturingChatClient();
-        var recording = LoadRecording(testName);
-        var hasRecording = recording.Count > 0 && recording[0].Count > 0;
-
-        var fakeClient = new FakeChatClient();
-        if (hasRecording)
-        {
-            for (int i = 0; i < recording.Count; i++)
-            {
-                var callUpdates = recording[i];
-                fakeClient.Enqueue(_ => ReplayUpdates(callUpdates));
-            }
-        }
-
-        serverCapture.SetInner(fakeClient);
+        serverCapture.SetInner(new UserInputChatClient());
 
         var factory = Factory.WithWebHostBuilder(builder =>
         {

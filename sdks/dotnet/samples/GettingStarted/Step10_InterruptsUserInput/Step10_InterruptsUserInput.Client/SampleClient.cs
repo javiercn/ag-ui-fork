@@ -14,7 +14,7 @@ public static class SampleClient
         List<List<ChatResponseUpdate>>? updatesPerTurn = null,
         CancellationToken cancellationToken = default)
     {
-        // Turn 1: setup request — server emits a user-input interrupt asking for a username.
+        // Turn 1: ask to set up the account; the server pauses with an InterruptRequestContent.
         var messages = new List<ChatMessage>
         {
             new(ChatRole.User, "Please setup my account"),
@@ -22,53 +22,58 @@ public static class SampleClient
         messagesPerTurn?.Add(messages.ToList());
         await output.WriteLineAsync("> Please setup my account").ConfigureAwait(false);
 
-        var turn1 = await StreamAsync(chatClient, messages, options: null, output, cancellationToken).ConfigureAwait(false);
+        var turn1 = await StreamAsync(chatClient, messages, output, cancellationToken).ConfigureAwait(false);
         updatesPerTurn?.Add(turn1);
 
-        // Turn 2: provide the requested input via state and resume.
+        var interrupt = turn1
+            .SelectMany(u => u.Contents)
+            .OfType<InterruptRequestContent>()
+            .FirstOrDefault();
+        if (interrupt is null)
+        {
+            return;
+        }
+
+        // Turn 2: append the interrupt + an InterruptResponseContent. The AGUIChatClient
+        // encodes the response as RunAgentInput.Resume[] on the wire.
+        var responsePayload = JsonSerializer.SerializeToElement(new { response = "johndoe42" });
+        var responseContent = new InterruptResponseContent(interrupt.RequestId) { Payload = responsePayload };
+
         var turn2Messages = new List<ChatMessage>(messages)
         {
-            new(ChatRole.Assistant, "I need some additional information to complete the setup."),
+            new(ChatRole.Assistant, [interrupt]),
+            new(ChatRole.User, [responseContent]),
         };
-
-        var resumeState = new
-        {
-            interruptResponse = new
-            {
-                response = "johndoe42",
-                prompt = "Please enter your preferred username:",
-            },
-        };
-        var turn2Options = new ChatOptions
-        {
-            RawRepresentationFactory = _ => new RunAgentInput
-            {
-                State = JsonSerializer.SerializeToElement(resumeState),
-            },
-        };
-
         messagesPerTurn?.Add(turn2Messages.ToList());
         await output.WriteLineAsync("> [user input: johndoe42]").ConfigureAwait(false);
 
-        var turn2 = await StreamAsync(chatClient, turn2Messages, turn2Options, output, cancellationToken).ConfigureAwait(false);
+        var turn2 = await StreamAsync(chatClient, turn2Messages, output, cancellationToken).ConfigureAwait(false);
         updatesPerTurn?.Add(turn2);
     }
 
     private static async Task<List<ChatResponseUpdate>> StreamAsync(
         IChatClient chatClient,
         IList<ChatMessage> messages,
-        ChatOptions? options,
         TextWriter output,
         CancellationToken cancellationToken)
     {
         var updates = new List<ChatResponseUpdate>();
         await foreach (var update in chatClient.GetStreamingResponseAsync(
-            messages, options, cancellationToken).ConfigureAwait(false))
+            messages, options: null, cancellationToken).ConfigureAwait(false))
         {
             updates.Add(update);
-            if (!string.IsNullOrEmpty(update.Text))
+
+            foreach (var content in update.Contents)
             {
-                await output.WriteAsync(update.Text).ConfigureAwait(false);
+                switch (content)
+                {
+                    case InterruptRequestContent ireq:
+                        await output.WriteLineAsync($"[interrupt: {ireq.Reason}] {ireq.Message}").ConfigureAwait(false);
+                        break;
+                    case TextContent { Text: { Length: > 0 } text }:
+                        await output.WriteAsync(text).ConfigureAwait(false);
+                        break;
+                }
             }
         }
         await output.WriteLineAsync().ConfigureAwait(false);

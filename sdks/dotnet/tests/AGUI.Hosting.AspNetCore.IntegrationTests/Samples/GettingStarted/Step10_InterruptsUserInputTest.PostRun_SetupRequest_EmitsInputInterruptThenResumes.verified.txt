@@ -29,20 +29,6 @@
           runId: run_Id_1
         },
         {
-          type: TEXT_MESSAGE_START,
-          messageId: msg_Id_1,
-          role: assistant
-        },
-        {
-          type: TEXT_MESSAGE_CONTENT,
-          messageId: msg_Id_1,
-          delta: I need some additional information to complete the setup.
-        },
-        {
-          type: TEXT_MESSAGE_END,
-          messageId: msg_Id_1
-        },
-        {
           type: RUN_FINISHED,
           threadId: thread_Id_1,
           runId: run_Id_1,
@@ -50,14 +36,19 @@
             type: interrupt,
             interrupts: [
               {
-                id: input_Id_2,
-                reason: input_Id_3,
+                id: input_Id_1,
+                reason: input_Id_2,
                 message: Please enter your preferred username:,
-                metadata: {
-                  type: user_input,
-                  prompt: Please enter your preferred username:,
-                  inputType: text,
-                  required: true
+                responseSchema: {
+                  type: object,
+                  properties: {
+                    response: {
+                      type: string
+                    }
+                  },
+                  required: [
+                    response
+                  ]
                 }
               }
             ]
@@ -77,39 +68,36 @@
           role: assistant,
           contents: [
             {
-              $type: text,
-              text: I need some additional information to complete the setup.
-            }
-          ],
-          responseId: run_Id_1,
-          messageId: msg_Id_1,
-          conversationId: thread_Id_1,
-          createdAt: {Scrubbed}
-        },
-        {
-          role: assistant,
-          contents: [
-            {
               $type: interruptRequest,
-              reason: input_Id_3,
+              reason: input_Id_2,
               message: Please enter your preferred username:,
-              metadata: {
-                type: user_input,
-                prompt: Please enter your preferred username:,
-                inputType: text,
-                required: true
+              responseSchema: {
+                type: object,
+                properties: {
+                  response: {
+                    type: string
+                  }
+                },
+                required: [
+                  response
+                ]
               },
-              requestId: input_Id_2,
+              requestId: input_Id_1,
               additionalProperties: {
                 agui_interrupt: {
-                  id: input_Id_2,
-                  reason: input_Id_3,
+                  id: input_Id_1,
+                  reason: input_Id_2,
                   message: Please enter your preferred username:,
-                  metadata: {
-                    type: user_input,
-                    prompt: Please enter your preferred username:,
-                    inputType: text,
-                    required: true
+                  responseSchema: {
+                    type: object,
+                    properties: {
+                      response: {
+                        type: string
+                      }
+                    },
+                    required: [
+                      response
+                    ]
                   }
                 }
               }
@@ -117,6 +105,87 @@
           ],
           responseId: run_Id_1,
           conversationId: thread_Id_1
+        }
+      ]
+    },
+    server: {
+      runAgentInput: {
+        threadId: thread_Id_1,
+        runId: run_Id_1,
+        messages: [
+          {
+            role: user,
+            content: Please setup my account
+          }
+        ]
+      },
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: Please setup my account
+            }
+          ]
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: interruptRequest,
+              reason: input_Id_2,
+              message: Please enter your preferred username:,
+              responseSchema: {
+                type: object,
+                properties: {
+                  response: {
+                    type: string
+                  }
+                },
+                required: [
+                  response
+                ]
+              },
+              requestId: input_Id_1
+            }
+          ],
+          modelId: user-input-agent
+        }
+      ],
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_1,
+          runId: run_Id_1
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_1,
+          runId: run_Id_1,
+          outcome: {
+            type: interrupt,
+            interrupts: [
+              {
+                id: input_Id_1,
+                reason: input_Id_2,
+                message: Please enter your preferred username:,
+                responseSchema: {
+                  type: object,
+                  properties: {
+                    response: {
+                      type: string
+                    }
+                  },
+                  required: [
+                    response
+                  ]
+                }
+              }
+            ]
+          }
         }
       ]
     }
@@ -137,8 +206,51 @@
           role: assistant,
           contents: [
             {
-              $type: text,
-              text: I need some additional information to complete the setup.
+              $type: interruptRequest,
+              reason: input_Id_2,
+              message: Please enter your preferred username:,
+              responseSchema: {
+                type: object,
+                properties: {
+                  response: {
+                    type: string
+                  }
+                },
+                required: [
+                  response
+                ]
+              },
+              requestId: input_Id_1,
+              additionalProperties: {
+                agui_interrupt: {
+                  id: input_Id_1,
+                  reason: input_Id_2,
+                  message: Please enter your preferred username:,
+                  responseSchema: {
+                    type: object,
+                    properties: {
+                      response: {
+                        type: string
+                      }
+                    },
+                    required: [
+                      response
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          role: user,
+          contents: [
+            {
+              $type: interruptResponse,
+              payload: {
+                response: johndoe42
+              },
+              requestId: input_Id_1
             }
           ]
         }
@@ -150,18 +262,17 @@
           {
             role: user,
             content: Please setup my account
-          },
-          {
-            role: assistant,
-            content: I need some additional information to complete the setup.
           }
         ],
-        state: {
-          interruptResponse: {
-            response: johndoe42,
-            prompt: Please enter your preferred username:
+        resume: [
+          {
+            interruptId: input_Id_1,
+            status: resolved,
+            payload: {
+              response: johndoe42
+            }
           }
-        }
+        ]
       },
       events: [
         {
@@ -171,17 +282,57 @@
         },
         {
           type: TEXT_MESSAGE_START,
-          messageId: msg_Id_4,
-          role: assistant
+          messageId: msg_Id_3,
+          role: assistant,
+          rawEvent: {
+            authorName: null,
+            role: assistant,
+            contents: [
+              {
+                $type: text,
+                text: Thank you! Your username 'johndoe42' has been registered.,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: user-input-agent,
+            continuationToken: null
+          }
         },
         {
           type: TEXT_MESSAGE_CONTENT,
-          messageId: msg_Id_4,
-          delta: Thank you! You provided 'johndoe42' for 'Please enter your preferred username:'. Processing your input...
+          messageId: msg_Id_3,
+          delta: Thank you! Your username 'johndoe42' has been registered.,
+          rawEvent: {
+            authorName: null,
+            role: assistant,
+            contents: [
+              {
+                $type: text,
+                text: Thank you! Your username 'johndoe42' has been registered.,
+                annotations: null,
+                additionalProperties: null
+              }
+            ],
+            additionalProperties: null,
+            responseId: null,
+            messageId: null,
+            conversationId: null,
+            createdAt: {Scrubbed},
+            finishReason: null,
+            modelId: user-input-agent,
+            continuationToken: null
+          }
         },
         {
           type: TEXT_MESSAGE_END,
-          messageId: msg_Id_4
+          messageId: msg_Id_3
         },
         {
           type: RUN_FINISHED,
@@ -206,11 +357,11 @@
           contents: [
             {
               $type: text,
-              text: Thank you! You provided 'johndoe42' for 'Please enter your preferred username:'. Processing your input...
+              text: Thank you! Your username 'johndoe42' has been registered.
             }
           ],
           responseId: run_Id_2,
-          messageId: msg_Id_4,
+          messageId: msg_Id_3,
           conversationId: thread_Id_2,
           createdAt: {Scrubbed}
         },
@@ -219,6 +370,111 @@
           responseId: run_Id_2,
           conversationId: thread_Id_2,
           finishReason: stop
+        }
+      ]
+    },
+    server: {
+      runAgentInput: {
+        threadId: thread_Id_2,
+        runId: run_Id_2,
+        messages: [
+          {
+            role: user,
+            content: Please setup my account
+          }
+        ],
+        resume: [
+          {
+            interruptId: input_Id_1,
+            status: resolved,
+            payload: {
+              response: johndoe42
+            }
+          }
+        ]
+      },
+      chatMessages: [
+        {
+          role: user,
+          contents: [
+            {
+              $type: text,
+              text: Please setup my account
+            }
+          ]
+        },
+        {
+          role: user,
+          contents: [
+            {
+              $type: interruptResponse,
+              payload: {
+                response: johndoe42
+              },
+              requestId: input_Id_1
+            }
+          ]
+        }
+      ],
+      chatResponseUpdates: [
+        {
+          role: assistant,
+          contents: [
+            {
+              $type: text,
+              text: Thank you! Your username 'johndoe42' has been registered.
+            }
+          ],
+          modelId: user-input-agent
+        }
+      ],
+      events: [
+        {
+          type: RUN_STARTED,
+          threadId: thread_Id_2,
+          runId: run_Id_2
+        },
+        {
+          type: TEXT_MESSAGE_START,
+          messageId: msg_Id_4,
+          role: assistant,
+          rawEvent: {
+            role: assistant,
+            contents: [
+              {
+                $type: text,
+                text: Thank you! Your username 'johndoe42' has been registered.
+              }
+            ],
+            modelId: user-input-agent
+          }
+        },
+        {
+          type: TEXT_MESSAGE_CONTENT,
+          messageId: msg_Id_4,
+          delta: Thank you! Your username 'johndoe42' has been registered.,
+          rawEvent: {
+            role: assistant,
+            contents: [
+              {
+                $type: text,
+                text: Thank you! Your username 'johndoe42' has been registered.
+              }
+            ],
+            modelId: user-input-agent
+          }
+        },
+        {
+          type: TEXT_MESSAGE_END,
+          messageId: msg_Id_4
+        },
+        {
+          type: RUN_FINISHED,
+          threadId: thread_Id_2,
+          runId: run_Id_2,
+          outcome: {
+            type: success
+          }
         }
       ]
     }
