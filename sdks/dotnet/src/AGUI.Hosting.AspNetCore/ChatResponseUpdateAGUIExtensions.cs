@@ -50,6 +50,7 @@ public static class ChatResponseUpdateAGUIExtensions
         bool runStartedEmitted = false;
         bool runFinishedEmitted = false;
         var messageTracker = new TextMessageTracker();
+        var reasoningTracker = new ReasoningMessageTracker();
 
         // Track tool call IDs → tool names for correlating results with registered mappings.
         Dictionary<string, string>? callIdToToolName = null;
@@ -95,7 +96,41 @@ public static class ChatResponseUpdateAGUIExtensions
             {
                 switch (content)
                 {
+                    case TextReasoningContent reasoningContent:
+                        if (messageTracker.Close(raw) is { } reasonTextEndEvt)
+                        {
+                            yield return reasonTextEndEvt;
+                        }
+
+                        if (reasoningContent.ProtectedData is { Length: > 0 } encrypted)
+                        {
+                            yield return new ReasoningEncryptedValueEvent
+                            {
+                                Subtype = "message",
+                                EntityId = chatResponse.MessageId ?? string.Empty,
+                                EncryptedValue = encrypted,
+                                RawEvent = raw,
+                            };
+                        }
+
+                        if (!string.IsNullOrEmpty(reasoningContent.Text))
+                        {
+                            var reasoningMessageId = chatResponse.MessageId ?? AGUIIdGenerator.NewMessageId();
+                            foreach (var openEvt in reasoningTracker.Open(reasoningMessageId))
+                            {
+                                yield return openEvt;
+                            }
+
+                            yield return reasoningTracker.EmitDelta(reasoningContent.Text);
+                        }
+                        break;
+
                     case TextContent textContent:
+                        foreach (var reasonCloseEvt in reasoningTracker.Close())
+                        {
+                            yield return reasonCloseEvt;
+                        }
+
                         effectiveMessageId ??= chatResponse.MessageId ?? AGUIIdGenerator.NewMessageId();
 
                         if (!messageTracker.IsMessageId(effectiveMessageId))
@@ -135,6 +170,11 @@ public static class ChatResponseUpdateAGUIExtensions
                             yield return fccEndEvt;
                         }
 
+                        foreach (var reasonFccCloseEvt in reasoningTracker.Close())
+                        {
+                            yield return reasonFccCloseEvt;
+                        }
+
                         yield return ToolCallStartEvent.Create(fcc.CallId, fcc.Name, chatResponse.MessageId, raw);
 
                         var args = JsonSerializer.Serialize(fcc.Arguments, jsonSerializerOptions.GetTypeInfo(typeof(IDictionary<string, object?>)));
@@ -169,6 +209,11 @@ public static class ChatResponseUpdateAGUIExtensions
                             break;
                         }
 
+                        foreach (var reasonFrcCloseEvt in reasoningTracker.Close())
+                        {
+                            yield return reasonFrcCloseEvt;
+                        }
+
                         var result = SerializeResultContent(frc, jsonSerializerOptions) ?? "";
                         yield return ToolCallResultEvent.Create(frc.CallId, result, raw);
 
@@ -190,6 +235,11 @@ public static class ChatResponseUpdateAGUIExtensions
                         if (messageTracker.Close(raw) is { } arEndEvt)
                         {
                             yield return arEndEvt;
+                        }
+
+                        foreach (var reasonArCloseEvt in reasoningTracker.Close())
+                        {
+                            yield return reasonArCloseEvt;
                         }
 
                         // Emit the tool call events so spec-compliant clients can see the proposal
@@ -230,6 +280,11 @@ public static class ChatResponseUpdateAGUIExtensions
                                 yield return intEndEvt;
                             }
 
+                            foreach (var reasonIntCloseEvt in reasoningTracker.Close())
+                            {
+                                yield return reasonIntCloseEvt;
+                            }
+
                             yield return RunFinishedEvent.Create(threadId, runId,
                                 new RunFinishedInterruptOutcome { Interrupts = [interrupt] });
 
@@ -260,6 +315,11 @@ public static class ChatResponseUpdateAGUIExtensions
         if (messageTracker.Close() is { } finalEndEvt)
         {
             yield return finalEndEvt;
+        }
+
+        foreach (var finalReasoningCloseEvt in reasoningTracker.Close())
+        {
+            yield return finalReasoningCloseEvt;
         }
 
         // Emit RunStartedEvent if no updates were processed (empty stream)

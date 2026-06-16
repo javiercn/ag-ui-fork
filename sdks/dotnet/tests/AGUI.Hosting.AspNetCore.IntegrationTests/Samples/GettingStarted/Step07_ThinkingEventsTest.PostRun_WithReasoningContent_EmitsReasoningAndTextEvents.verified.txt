@@ -30,7 +30,7 @@
         },
         {
           type: REASONING_START,
-          messageId: 
+          messageId: msg_Id_1
         },
         {
           type: REASONING_MESSAGE_START,
@@ -48,7 +48,7 @@
         },
         {
           type: REASONING_END,
-          messageId: 
+          messageId: msg_Id_1
         },
         {
           type: TEXT_MESSAGE_START,
