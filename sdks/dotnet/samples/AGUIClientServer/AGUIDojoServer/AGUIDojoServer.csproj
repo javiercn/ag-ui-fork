@@ -23,12 +23,4 @@
     <ProjectReference Include="..\..\..\src\AGUI.Hosting.AspNetCore\AGUI.Hosting.AspNetCore.csproj" />
   </ItemGroup>
 
-  <!-- Agent Framework references for subgraphs/workflow support -->
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\agent-framework\dotnet\src\Microsoft.Agents.AI.Abstractions\Microsoft.Agents.AI.Abstractions.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\agent-framework\dotnet\src\Microsoft.Agents.AI.Workflows\Microsoft.Agents.AI.Workflows.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\agent-framework\dotnet\src\Microsoft.Agents.AI\Microsoft.Agents.AI.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\agent-framework\dotnet\src\Microsoft.Agents.AI.Hosting\Microsoft.Agents.AI.Hosting.csproj" />
-  </ItemGroup>
-
 </Project>

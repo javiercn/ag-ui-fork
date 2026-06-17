@@ -6,11 +6,8 @@ using AGUIDojoServer.AgenticUI;
 using AGUIDojoServer.BackendToolRendering;
 using AGUIDojoServer.PredictiveStateUpdates;
 using AGUIDojoServer.SharedState;
-using AGUIDojoServer.Subgraphs;
 using Azure.AI.OpenAI;
 using Azure.Identity;
-using Microsoft.Agents.AI;
-using Microsoft.Agents.AI.Workflows;
 using Microsoft.Extensions.AI;
 using ChatClient = OpenAI.Chat.ChatClient;
 
@@ -20,7 +17,6 @@ internal static class ChatClientAgentFactory
 {
     private static AzureOpenAIClient? s_azureOpenAIClient;
     private static string? s_deploymentName;
-    private static CheckpointManager? s_checkpointManager;
 
     public static void Initialize(IConfiguration configuration)
     {
@@ -30,8 +26,6 @@ internal static class ChatClientAgentFactory
         s_azureOpenAIClient = new AzureOpenAIClient(
             new Uri(endpoint),
             new DefaultAzureCredential());
-
-        s_checkpointManager = CheckpointManager.CreateJson(new InMemoryJsonCheckpointStore());
     }
 
     private static IChatClient CreateBaseChatClient()
@@ -216,15 +210,5 @@ internal static class ChatClientAgentFactory
     {
         // Simply return success - the document is tracked via state updates
         return "Document written successfully";
-    }
-
-    public static AIAgent CreateSubgraphs(JsonSerializerOptions options)
-    {
-        // Create the travel agent workflow with supervisor-based routing
-        var workflowAgent = TravelAgentWorkflowFactory.Create()
-            .AsAIAgent();
-
-        // Wrap with the compatibility adapter for AG-UI dojo client
-        return new AGUIClientCompatibilityAdapter(workflowAgent, options);
     }
 }

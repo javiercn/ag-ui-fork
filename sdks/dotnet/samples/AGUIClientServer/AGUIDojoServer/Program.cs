@@ -1,5 +1,4 @@
 using AGUIDojoServer;
-using AGUIDojoServer.Subgraphs;
 using Microsoft.Extensions.Options;
 
 using JsonOptions = Microsoft.AspNetCore.Http.Json.JsonOptions;
@@ -41,11 +40,6 @@ app.MapDojoEndpoint("/predictive_state_updates",
     serverTools: ChatClientAgentFactory.CreatePredictiveStateUpdatesTools(jsonOptions.Value.SerializerOptions),
     systemPrompt: ChatClientAgentFactory.PredictiveStateUpdatesSystemPrompt,
     configureStreamOptions: json => ChatClientAgentFactory.CreatePredictiveStateUpdatesStreamOptions(json));
-
-// Subgraphs: Uses agent-framework workflow exposed as AIAgent
-// Pipeline: AIAgent → RunStreamingAsync → AsChatResponseUpdatesAsync → MapAgentFrameworkEvents → AG-UI events
-var subgraphsSessionStore = new DebugAgentSessionStore();
-app.MapAGUIAgent("/subgraphs", ChatClientAgentFactory.CreateSubgraphs(jsonOptions.Value.SerializerOptions), subgraphsSessionStore, useSession: true);
 
 await app.RunAsync();
 
