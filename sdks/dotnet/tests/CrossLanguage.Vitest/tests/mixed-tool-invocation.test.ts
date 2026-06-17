@@ -61,7 +61,7 @@ describe("TS HttpAgent → C# AG-UI server (mixed client + server tools)", () =>
 
     // Turn 1: both tools are surfaced as TOOL_CALLs; neither is resolved yet.
     const turn1: BaseEvent[] = [];
-    await agent.runAgent({ tools: [getUserLocation] }, { onEvent: ({ event }) => turn1.push(event) });
+    await agent.runAgent({ tools: [getUserLocation] }, { onEvent: ({ event }) => { turn1.push(event); } });
 
     const weatherCall = findToolCall(turn1, "get_weather");
     const locationCall = findToolCall(turn1, "get_user_location");
@@ -93,7 +93,7 @@ describe("TS HttpAgent → C# AG-UI server (mixed client + server tools)", () =>
 
     // Turn 2: the server resolves get_weather transparently and returns the summary.
     const turn2: BaseEvent[] = [];
-    await agent.runAgent({ tools: [getUserLocation] }, { onEvent: ({ event }) => turn2.push(event) });
+    await agent.runAgent({ tools: [getUserLocation] }, { onEvent: ({ event }) => { turn2.push(event); } });
 
     const types2 = turn2.map((e) => e.type);
     expect(types2).toContain(EventType.RUN_FINISHED);

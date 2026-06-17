@@ -51,6 +51,82 @@ test("[MS Agent Framework .NET] Agentic Chat sends and receives a message", asyn
 
 This proves the pattern already works. We need to **expand it** to cover all the scenarios that other servers test.
 
+## Recording Fixtures Against a Real LLM
+
+The cross-language Vitest fixtures (`tests/CrossLanguage.Vitest/fixtures/*.json`) are
+deterministic, but they can be **recorded from a real LLM** so we know the C# server is
+compliant with actual model output — the same principle as the .NET integration tests.
+
+### Topology
+
+AIMock is the LLM stand-in; it sits between the C# server and the real model, not between
+the client and the server:
+
+```
+Record:   TS Client ──AG-UI──► C# Server ──OpenAI──► AIMock (proxy + save) ──► real LLM
+Replay:   TS Client ──AG-UI──► C# Server ──OpenAI──► AIMock (match fixture, no network)
+```
+
+The fixture captures the **LLM's OpenAI chat-completion response**, not the C# server's
+AG-UI output. The client↔server AG-UI exchange is re-derived live and deterministically on
+every replay run, so replay still exercises the real C# mapping each time — only the LLM is
+frozen.
+
+### How it works
+
+`helpers/llmock.ts` exposes a `record` option that calls AIMock's `enableRecording`. When a
+request has no matching fixture, AIMock proxies it to the configured upstream, saves the
+collapsed response under `fixtures/recorded/` (gitignored), and relays it back. Because the
+C# server speaks plain OpenAI to AIMock (`POST /v1/chat/completions`), AIMock joins the
+upstream base with the path — so pointing the upstream at Azure's OpenAI **v1** surface
+(`https://<resource>.cognitiveservices.azure.com/openai`) yields
+`.../openai/v1/chat/completions`. Auth is forwarded verbatim: the C# server presents the
+`OPENAI_API_KEY` as a bearer token, so an Entra ID (AAD) token works against Azure.
+
+`helpers/record-config.ts` resolves recording from the environment (see below) and mints an
+AAD token via `az account get-access-token` when `OPENAI_API_KEY` isn't supplied.
+
+### Environment variables
+
+| Variable | Purpose |
+| --- | --- |
+| `AIMOCK_RECORD=true` | Enable recording (proxy unmatched calls). |
+| `AZURE_OPENAI_ENDPOINT` | Azure resource endpoint; upstream becomes `<endpoint>/openai`. |
+| `AIMOCK_RECORD_UPSTREAM` | Explicit upstream base (overrides the Azure derivation). |
+| `OPENAI_CHAT_MODEL_ID` | Model / Azure deployment (default `gpt-5-mini` in record mode). |
+| `OPENAI_API_KEY` | Explicit key/token; otherwise an AAD token is minted via `az`. |
+
+### Workflow (PowerShell)
+
+```powershell
+cd sdks/dotnet/tests/CrossLanguage.Vitest
+$env:AIMOCK_RECORD = "true"
+$env:AZURE_OPENAI_ENDPOINT = "https://<resource>.cognitiveservices.azure.com"
+$env:OPENAI_CHAT_MODEL_ID = "gpt-5-mini"
+# az login first; an AAD token is minted automatically.
+npx vitest run tests/<scenario>.test.ts
+```
+
+Recording **fills gaps**: committed fixtures are still loaded first, so delete a committed
+fixture (or omit it) to force its scenario to re-record. Captured files land in
+`fixtures/recorded/` for you to curate into the named `fixtures/*.json`.
+
+### Multi-turn scenarios need two passes
+
+AIMock's recorder keys a fixture only on the **last user message** (`buildFixtureMatch`),
+with no turn disambiguation, and caches each capture in memory. In a multi-turn flow the
+last user message is identical across turns, so the turn-1 capture would shadow turn 2.
+A fixture only gets turn-gated when it carries a `sequenceIndex`. So:
+
+1. **Pass 1** — record turn 1, then curate the capture into the committed fixture with
+   `"sequenceIndex": 0`.
+2. **Pass 2** — re-run recording. Turn 1 now replays from the committed fixture; turn 2 has
+   a higher match count, skips the `sequenceIndex: 0` entry, proxies to the LLM, and is
+   captured. Curate it in as `"sequenceIndex": 1`.
+
+Single-turn scenarios need only one pass. After curating, clear `OPENAI_API_KEY`/
+`AIMOCK_RECORD` and re-run to confirm the scenario replays offline and green.
+
 ## Approach
 
 ### Scenario A: Expand Dojo E2E Tests for C# Server

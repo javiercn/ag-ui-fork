@@ -1,18 +1,32 @@
 {
   "fixtures": [
     {
-      "match": { "userMessage": "current city and the forecast for Berlin", "sequenceIndex": 0 },
+      "match": {
+        "userMessage": "What is my current city and the forecast for Berlin?",
+        "sequenceIndex": 0
+      },
       "response": {
         "toolCalls": [
-          { "name": "get_weather", "arguments": "{\"location\":\"Berlin\"}" },
-          { "name": "get_user_location", "arguments": "{}" }
+          {
+            "name": "get_user_location",
+            "arguments": "{}",
+            "id": "call_F9sq8dx9MTAUZSewpVPTROsk"
+          },
+          {
+            "name": "get_weather",
+            "arguments": "{\"location\": \"Berlin\"}",
+            "id": "call_XHrYFpdLMi6841ix1cwXZyy6"
+          }
         ]
       }
     },
     {
-      "match": { "userMessage": "current city and the forecast for Berlin", "sequenceIndex": 1 },
+      "match": {
+        "userMessage": "What is my current city and the forecast for Berlin?",
+        "sequenceIndex": 1
+      },
       "response": {
-        "content": "You are in Tokyo, Japan, and it is 72\u00b0F and sunny in Berlin."
+        "content": "Your current city is Tokyo, Japan.\n\nForecast for Berlin (current conditions):\n- Conditions: Sunny\n- Temperature: 72°F (≈22°C)\n- Feels like: 70°F (≈21°C)\n- Humidity: 50%\n- Wind: 10 mph (≈16 km/h)\n\nWould you like the hourly/daily forecast, a different unit (Celsius), or anything else?"
       }
     }
   ]
