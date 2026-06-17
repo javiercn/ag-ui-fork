@@ -185,6 +185,20 @@ export const menuIntegrations = [
     ],
   },
   {
+    id: "ag-ui-dotnet",
+    name: "AG-UI .NET SDK",
+    features: [
+      "agentic_chat",
+      "v1_agentic_chat",
+      "backend_tool_rendering",
+      "human_in_the_loop",
+      "agentic_generative_ui",
+      "predictive_state_updates",
+      "shared_state",
+      "tool_based_generative_ui",
+    ],
+  },
+  {
     id: "microsoft-agent-framework-python",
     name: "Microsoft Agent Framework (Python)",
     features: [

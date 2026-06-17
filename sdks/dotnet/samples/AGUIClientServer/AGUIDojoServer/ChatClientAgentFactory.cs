@@ -6,8 +6,8 @@ using AGUIDojoServer.AgenticUI;
 using AGUIDojoServer.BackendToolRendering;
 using AGUIDojoServer.PredictiveStateUpdates;
 using AGUIDojoServer.SharedState;
-using Azure.AI.OpenAI;
-using Azure.Identity;
+using System.ClientModel;
+using OpenAI;
 using Microsoft.Extensions.AI;
 using ChatClient = OpenAI.Chat.ChatClient;
 
@@ -15,22 +15,29 @@ namespace AGUIDojoServer;
 
 internal static class ChatClientAgentFactory
 {
-    private static AzureOpenAIClient? s_azureOpenAIClient;
-    private static string? s_deploymentName;
+    private static OpenAIClient? s_openAIClient;
+    private static string? s_modelName;
 
     public static void Initialize(IConfiguration configuration)
     {
-        string endpoint = configuration["AZURE_OPENAI_ENDPOINT"] ?? throw new InvalidOperationException("AZURE_OPENAI_ENDPOINT is not set.");
-        s_deploymentName = configuration["AZURE_OPENAI_DEPLOYMENT_NAME"] ?? throw new InvalidOperationException("AZURE_OPENAI_DEPLOYMENT_NAME is not set.");
+        s_modelName = configuration["OPENAI_CHAT_MODEL_ID"] ?? "gpt-4o";
+        string? apiKey = configuration["OPENAI_API_KEY"];
+        string? baseUrl = configuration["OPENAI_BASE_URL"];
 
-        s_azureOpenAIClient = new AzureOpenAIClient(
-            new Uri(endpoint),
-            new DefaultAzureCredential());
+        var options = new OpenAIClientOptions();
+        if (!string.IsNullOrEmpty(baseUrl))
+        {
+            options.Endpoint = new Uri(baseUrl);
+        }
+
+        s_openAIClient = new OpenAIClient(
+            new ApiKeyCredential(apiKey ?? string.Empty),
+            options);
     }
 
     private static IChatClient CreateBaseChatClient()
     {
-        ChatClient chatClient = s_azureOpenAIClient!.GetChatClient(s_deploymentName!);
+        ChatClient chatClient = s_openAIClient!.GetChatClient(s_modelName!);
         return chatClient.AsIChatClient()
             .AsBuilder()
             .UseFunctionInvocation()
@@ -113,7 +120,7 @@ internal static class ChatClientAgentFactory
 
     public static IChatClient CreateSharedState(JsonSerializerOptions options)
     {
-        ChatClient chatClient = s_azureOpenAIClient!.GetChatClient(s_deploymentName!);
+        ChatClient chatClient = s_openAIClient!.GetChatClient(s_modelName!);
         var innerClient = chatClient.AsIChatClient()
             .AsBuilder()
             .UseFunctionInvocation()

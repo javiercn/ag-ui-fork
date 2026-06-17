@@ -400,6 +400,20 @@ export const agentsIntegrations = {
       }
     ),
 
+  "ag-ui-dotnet": async () =>
+    mapAgents(
+      (path) => new HttpAgent({ url: `${envVars.aguiDotnetUrl}/${path}` }),
+      {
+        agentic_chat: "agentic_chat",
+        backend_tool_rendering: "backend_tool_rendering",
+        human_in_the_loop: "human_in_the_loop",
+        agentic_generative_ui: "agentic_generative_ui",
+        shared_state: "shared_state",
+        tool_based_generative_ui: "tool_based_generative_ui",
+        predictive_state_updates: "predictive_state_updates",
+      }
+    ),
+
   a2a: async () => {
     // A2A agents: building management, finance, it agents
     const agentUrls = [
