@@ -1,0 +1,19 @@
+{
+  "fixtures": [
+    {
+      "match": { "userMessage": "current city and the forecast for Berlin", "sequenceIndex": 0 },
+      "response": {
+        "toolCalls": [
+          { "name": "get_weather", "arguments": "{\"location\":\"Berlin\"}" },
+          { "name": "get_user_location", "arguments": "{}" }
+        ]
+      }
+    },
+    {
+      "match": { "userMessage": "current city and the forecast for Berlin", "sequenceIndex": 1 },
+      "response": {
+        "content": "You are in Tokyo, Japan, and it is 72\u00b0F and sunny in Berlin."
+      }
+    }
+  ]
+}
