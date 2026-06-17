@@ -19,7 +19,7 @@
           "arguments": {
             "expenseReportId": "EXP-2024-001"
           },
-          "informationalOnly": false,
+          "informationalOnly": true,
           "callId": "call_Id_1",
           "annotations": null,
           "additionalProperties": null
@@ -48,7 +48,7 @@
           "arguments": {
             "expenseReportId": "EXP-2024-001"
           },
-          "informationalOnly": false,
+          "informationalOnly": true,
           "callId": "call_Id_1",
           "annotations": null,
           "additionalProperties": null
@@ -76,7 +76,7 @@
           "arguments": {
             "expenseReportId": "EXP-2024-001"
           },
-          "informationalOnly": false,
+          "informationalOnly": true,
           "callId": "call_Id_1",
           "annotations": null,
           "additionalProperties": null
@@ -119,55 +119,415 @@
   },
   {
     "type": "TEXT_MESSAGE_START",
-    "messageId": "msg_Id_2",
+    "messageId": "chatcmpl-Id_2",
     "role": "assistant",
     "rawEvent": {
       "authorName": null,
-      "role": "Assistant",
+      "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "Expense report EXP-2024-001 has been approved and processed.",
+          "text": "",
           "annotations": null,
           "additionalProperties": null
         }
       ],
       "additionalProperties": null,
-      "responseId": null,
-      "messageId": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
       "conversationId": null,
       "finishReason": null,
-      "modelId": "gpt-4o-mini",
+      "modelId": "",
       "continuationToken": null
     }
   },
   {
     "type": "TEXT_MESSAGE_CONTENT",
-    "messageId": "msg_Id_2",
-    "delta": "Expense report EXP-2024-001 has been approved and processed.",
+    "messageId": "chatcmpl-Id_2",
+    "delta": "Done",
     "rawEvent": {
       "authorName": null,
-      "role": "Assistant",
+      "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "Expense report EXP-2024-001 has been approved and processed.",
+          "text": "Done",
           "annotations": null,
           "additionalProperties": null
         }
       ],
       "additionalProperties": null,
-      "responseId": null,
-      "messageId": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
       "conversationId": null,
       "finishReason": null,
-      "modelId": "gpt-4o-mini",
+      "modelId": "",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": " \u2014",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " \u2014",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": " expense",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " expense",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": " report",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " report",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": " EXP",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " EXP",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": "-",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "-",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": "202",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "202",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": "4",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "4",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": "-",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "-",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": "001",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "001",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": " has",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " has",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": " been",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " been",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": " approved",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " approved",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": " and",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " and",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": " processed",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " processed",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": ".",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": ".",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "",
       "continuationToken": null
     }
   },
   {
     "type": "TEXT_MESSAGE_END",
-    "messageId": "msg_Id_2"
+    "messageId": "chatcmpl-Id_2"
   },
   {
     "type": "RUN_FINISHED",

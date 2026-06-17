@@ -37,7 +37,7 @@ internal sealed class CapturingChatClient : IChatClient
             yield return update;
         }
 
-        _calls.Add(new ServerCallCapture(runAgentInput, messagesList, updates));
+        _calls.Add(new ServerCallCapture(runAgentInput, messagesList, options, updates));
     }
 
     public Task<ChatResponse> GetResponseAsync(

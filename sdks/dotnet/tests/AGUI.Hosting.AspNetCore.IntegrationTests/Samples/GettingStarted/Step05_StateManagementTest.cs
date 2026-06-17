@@ -47,34 +47,51 @@ public sealed class Step05_StateManagementTest : IntegrationTestBase<Step05_Stat
         var recording = LoadRecording(testName, s_jsonOptions);
         var hasRecording = recording.Count > 0 && recording[0].Count > 0;
 
-        var fakeClient = new FakeChatClient();
-        if (hasRecording)
+        var httpClient = Factory.WithWebHostBuilder(builder =>
         {
-            for (int i = 0; i < recording.Count; i++)
+            if (hasRecording)
             {
-                var callUpdates = recording[i];
-                fakeClient.Enqueue(_ => ReplayUpdates(callUpdates));
+                builder.ConfigureServices(services =>
+                {
+                    var fakeClient = new FakeChatClient();
+                    foreach (var turnUpdates in recording)
+                    {
+                        var captured = turnUpdates;
+                        fakeClient.Enqueue(_ => ReplayUpdates(captured));
+                    }
+
+                    services.AddSingleton(fakeClient);
+                });
             }
-        }
 
-        serverCapture.SetInner(fakeClient);
-
-        var factory = Factory.WithWebHostBuilder(builder =>
-        {
             builder.ConfigureTestServices(services =>
             {
-                services.RemoveAll<IChatClient>();
-                services.AddSingleton<IChatClient>(sp =>
+                var descriptor = services.FirstOrDefault(d => d.ServiceType == typeof(IChatClient));
+                if (descriptor != null)
                 {
-                    var jsonSerializerOptions = sp
-                        .GetRequiredService<IOptions<Microsoft.AspNetCore.Http.Json.JsonOptions>>()
-                        .Value.SerializerOptions;
-                    return new RecipeStateChatClient(serverCapture, jsonSerializerOptions);
-                });
-            });
-        });
+                    services.Remove(descriptor);
+                }
 
-        var httpClient = factory.CreateClient();
+                if (hasRecording)
+                {
+                    services.AddSingleton<IChatClient>(sp =>
+                    {
+                        serverCapture.SetInner(sp.GetRequiredService<FakeChatClient>());
+                        return serverCapture;
+                    });
+                }
+                else
+                {
+                    // Record mode: wrap the app's real pipeline (Azure OpenAI +
+                    // RecipeStateChatClient) so a real LLM run with state events is captured.
+                    services.AddSingleton<IChatClient>(sp =>
+                    {
+                        serverCapture.SetInner((IChatClient)descriptor!.ImplementationFactory!(sp));
+                        return serverCapture;
+                    });
+                }
+            });
+        }).CreateClient();
 
         var transport = new AGUIHttpTransport(httpClient, "/");
         var transportCapture = new CapturingAGUITransport(transport);
@@ -108,6 +125,7 @@ public sealed class Step05_StateManagementTest : IntegrationTestBase<Step05_Stat
         options.TypeInfoResolverChain.Add(AIJsonUtilities.DefaultOptions.TypeInfoResolver!);
         options.TypeInfoResolverChain.Add(AGUIJsonSerializerContext.Default);
         options.TypeInfoResolverChain.Add(SampleJsonSerializerContext.Default);        AGUIServiceCollectionExtensions.RegisterInterruptContentTypes(options);
+        options.Converters.Add(new ChatResponseUpdateCaptureConverter());
         return options;
     }
 
@@ -153,7 +171,7 @@ public sealed class Step05_StateManagementTest : IntegrationTestBase<Step05_Stat
                 server = srv != null ? new
                 {
                     runAgentInput = srv.RunAgentInput,
-                    chatMessages = srv.Messages,
+                    chatMessages = new { messages = srv.Messages, options = DescribeChatOptions(srv.Options) },
                     chatResponseUpdates = srv.Updates,
                     events = serverDerivedEvents
                 } : null

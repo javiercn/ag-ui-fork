@@ -265,6 +265,7 @@ public sealed class Step11_SerializationTest : IntegrationTestBase<Step11_Serial
         options.TypeInfoResolverChain.Add(AIJsonUtilities.DefaultOptions.TypeInfoResolver!);
         options.TypeInfoResolverChain.Add(AGUIJsonSerializerContext.Default);
         AGUIServiceCollectionExtensions.RegisterInterruptContentTypes(options);
+        options.Converters.Add(new ChatResponseUpdateCaptureConverter());
 
         return options;
     }
@@ -312,7 +313,7 @@ public sealed class Step11_SerializationTest : IntegrationTestBase<Step11_Serial
                 server = srv != null ? new
                 {
                     runAgentInput = srv.RunAgentInput,
-                    chatMessages = srv.Messages,
+                    chatMessages = new { messages = srv.Messages, options = DescribeChatOptions(srv.Options) },
                     chatResponseUpdates = srv.Updates,
                     events = serverDerivedEvents
                 } : null,

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Azure.AI.OpenAI;
 using Azure.Identity;
 using Microsoft.Extensions.AI;
@@ -6,6 +7,19 @@ namespace Step04_HumanInLoop.Server;
 
 public class Program
 {
+    // ApprovalChatClient serializes opaque function-call arguments (IDictionary&lt;string, object?&gt;),
+    // which the source-generated SampleJsonSerializerContext does not cover. Chain the AI resolver
+    // (for the dictionary/content types) ahead of the sample context (for the approval payloads).
+    private static readonly JsonSerializerOptions s_approvalJson = CreateApprovalJson();
+
+    private static JsonSerializerOptions CreateApprovalJson()
+    {
+        var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+        options.TypeInfoResolverChain.Add(AIJsonUtilities.DefaultOptions.TypeInfoResolver!);
+        options.TypeInfoResolverChain.Add(SampleJsonSerializerContext.Default);
+        return options;
+    }
+
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -32,25 +46,25 @@ public class Program
                     new DefaultAzureCredential())
                 .GetChatClient(deploymentName)
                 .AsIChatClient())
-                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true)
-                .Use((inner, _) => new ApprovalChatClient(inner, SampleJsonSerializerContext.Default.Options))
                 .ConfigureOptions(options =>
                 {
                     options.Tools ??= [];
                     options.Tools.Add(approveExpenseReport);
-                });
+                })
+                .Use((inner, _) => new ApprovalChatClient(inner, s_approvalJson))
+                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true);
         }
         else
         {
             builder.Services.AddSingleton<FakeChatClient>();
             builder.Services.AddChatClient(sp => sp.GetRequiredService<FakeChatClient>())
-                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true)
-                .Use((inner, _) => new ApprovalChatClient(inner, SampleJsonSerializerContext.Default.Options))
                 .ConfigureOptions(options =>
                 {
                     options.Tools ??= [];
                     options.Tools.Add(approveExpenseReport);
-                });
+                })
+                .Use((inner, _) => new ApprovalChatClient(inner, s_approvalJson))
+                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true);
         }
 
         var app = builder.Build();

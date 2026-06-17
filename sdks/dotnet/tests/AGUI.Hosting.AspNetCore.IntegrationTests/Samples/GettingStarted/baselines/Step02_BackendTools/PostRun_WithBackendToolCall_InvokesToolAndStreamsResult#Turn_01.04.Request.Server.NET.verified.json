@@ -1,11 +1,13 @@
-﻿[
-  {
-    "role": "user",
-    "contents": [
-      {
-        "$type": "text",
-        "text": "Find Italian restaurants in Seattle"
-      }
-    ]
-  }
-]
+﻿{
+  "messages": [
+    {
+      "role": "user",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "Find Italian restaurants in Seattle"
+        }
+      ]
+    }
+  ]
+}

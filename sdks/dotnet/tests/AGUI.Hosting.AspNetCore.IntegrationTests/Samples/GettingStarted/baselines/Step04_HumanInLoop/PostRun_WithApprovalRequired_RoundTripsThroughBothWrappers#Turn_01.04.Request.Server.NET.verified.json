@@ -1,11 +1,13 @@
-﻿[
-  {
-    "role": "user",
-    "contents": [
-      {
-        "$type": "text",
-        "text": "Please approve expense report EXP-2024-001"
-      }
-    ]
-  }
-]
+﻿{
+  "messages": [
+    {
+      "role": "user",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "Please approve expense report EXP-2024-001"
+        }
+      ]
+    }
+  ]
+}

@@ -25,7 +25,7 @@ public sealed class Step06_RawEventsTest : IntegrationTestBase<Step06_RawEvents.
     }
 
     [Fact]
-    public async Task PostRun_EmitsRawTelemetryEventsAroundResponse()
+    public async Task PostRun_ForwardsLlmUsageAsRawEvents()
     {
         var (aguiClient, transport, server) = CreateCapturingClient();
 
@@ -45,30 +45,54 @@ public sealed class Step06_RawEventsTest : IntegrationTestBase<Step06_RawEvents.
         var recording = LoadRecording(testName, s_jsonOptions);
         var hasRecording = recording.Count > 0 && recording[0].Count > 0;
 
-        var fakeClient = new FakeChatClient();
-        if (hasRecording)
+        var httpClient = Factory.WithWebHostBuilder(builder =>
         {
-            for (int i = 0; i < recording.Count; i++)
+            if (hasRecording)
             {
-                var callUpdates = recording[i];
-                fakeClient.Enqueue(_ => ReplayUpdates(callUpdates));
+                // Replay mode: the recording holds the production pipeline's output, including
+                // the usage raw events forwarded by UsageRawEventsChatClient (carried on each
+                // update's RawRepresentation). Replay it through a FakeChatClient.
+                builder.ConfigureServices(services =>
+                {
+                    var fakeClient = new FakeChatClient();
+                    foreach (var turnUpdates in recording)
+                    {
+                        var captured = turnUpdates;
+                        fakeClient.Enqueue(_ => ReplayUpdates(captured));
+                    }
+
+                    services.AddSingleton(fakeClient);
+                });
             }
-        }
 
-        serverCapture.SetInner(fakeClient);
-
-        var factory = Factory.WithWebHostBuilder(builder =>
-        {
             builder.ConfigureTestServices(services =>
             {
-                services.RemoveAll<IChatClient>();
-                services.AddSingleton<IChatClient>(sp => new TelemetryRawEventsChatClient(
-                    serverCapture,
-                    sp.GetRequiredService<TelemetrySource>()));
-            });
-        });
+                var descriptor = services.FirstOrDefault(d => d.ServiceType == typeof(IChatClient));
+                if (descriptor != null)
+                {
+                    services.Remove(descriptor);
+                }
 
-        var httpClient = factory.CreateClient();
+                if (hasRecording)
+                {
+                    services.AddSingleton<IChatClient>(sp =>
+                    {
+                        serverCapture.SetInner(sp.GetRequiredService<FakeChatClient>());
+                        return serverCapture;
+                    });
+                }
+                else
+                {
+                    // Record mode: wrap the app's real pipeline (Azure OpenAI +
+                    // UsageRawEventsChatClient) so a real LLM run with usage raw events is captured.
+                    services.AddSingleton<IChatClient>(sp =>
+                    {
+                        serverCapture.SetInner((IChatClient)descriptor!.ImplementationFactory!(sp));
+                        return serverCapture;
+                    });
+                }
+            });
+        }).CreateClient();
 
         var transport = new AGUIHttpTransport(httpClient, "/");
         var transportCapture = new CapturingAGUITransport(transport);
@@ -102,6 +126,7 @@ public sealed class Step06_RawEventsTest : IntegrationTestBase<Step06_RawEvents.
         options.TypeInfoResolverChain.Add(AIJsonUtilities.DefaultOptions.TypeInfoResolver!);
         options.TypeInfoResolverChain.Add(AGUIJsonSerializerContext.Default);
         AGUIServiceCollectionExtensions.RegisterInterruptContentTypes(options);
+        options.Converters.Add(new ChatResponseUpdateCaptureConverter());
         return options;
     }
 
@@ -147,7 +172,7 @@ public sealed class Step06_RawEventsTest : IntegrationTestBase<Step06_RawEvents.
                 server = srv != null ? new
                 {
                     runAgentInput = srv.RunAgentInput,
-                    chatMessages = srv.Messages,
+                    chatMessages = new { messages = srv.Messages, options = DescribeChatOptions(srv.Options) },
                     chatResponseUpdates = srv.Updates,
                     events = serverDerivedEvents
                 } : null

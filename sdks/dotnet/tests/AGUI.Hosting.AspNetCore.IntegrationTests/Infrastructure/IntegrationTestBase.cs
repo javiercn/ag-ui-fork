@@ -196,6 +196,54 @@ public abstract class IntegrationTestBase<TEntryPoint> : IClassFixture<WebApplic
         await Verifier.Verify(targets, settings);
     }
 
+    /// <summary>
+    /// Projects a <see cref="ChatOptions"/> into a serializable shape for the NET request
+    /// capture points, surfacing the protocol-relevant fields (tools, instructions, and any
+    /// additional properties). The internal AG-UI <see cref="RunAgentInput"/> stashed under
+    /// <c>AdditionalProperties["agui_input"]</c> is omitted because it is already captured
+    /// verbatim at the AGUI request capture points (and would otherwise be circular/huge).
+    /// </summary>
+    protected static object? DescribeChatOptions(ChatOptions? options)
+    {
+        if (options is null)
+        {
+            return null;
+        }
+
+        var tools = options.Tools?
+            .Select(t => new { type = t.GetType().Name, name = t.Name, description = t.Description })
+            .ToList();
+
+        Dictionary<string, object?>? additionalProperties = null;
+        if (options.AdditionalProperties is { Count: > 0 })
+        {
+            foreach (var kvp in options.AdditionalProperties)
+            {
+                if (kvp.Key == AGUI.Hosting.AspNetCore.AGUIConstants.RunAgentInputKey)
+                {
+                    continue;
+                }
+
+                additionalProperties ??= new Dictionary<string, object?>(StringComparer.Ordinal);
+                additionalProperties[kvp.Key] = kvp.Value;
+            }
+        }
+
+        var hasTools = tools is { Count: > 0 };
+        if (options.Instructions is null && !hasTools && additionalProperties is null)
+        {
+            // Nothing protocol-relevant beyond the (excluded) AG-UI input; omit to avoid noise.
+            return null;
+        }
+
+        return new
+        {
+            instructions = options.Instructions,
+            tools = hasTools ? tools : null,
+            additionalProperties,
+        };
+    }
+
     private static void ScrubIds(System.Text.StringBuilder builder, Dictionary<string, Dictionary<string, int>> idMaps)
     {
         var text = builder.ToString();

@@ -6,7 +6,12 @@
       "agui_thread_id": "thread_Id_1"
     },
     "responseId": "run_Id_1",
-    "conversationId": "thread_Id_1"
+    "conversationId": "thread_Id_1",
+    "rawRepresentation": {
+      "type": "RUN_STARTED",
+      "threadId": "thread_Id_1",
+      "runId": "run_Id_1"
+    }
   },
   {
     "role": "assistant",
@@ -21,14 +26,48 @@
       }
     ],
     "responseId": "run_Id_1",
-    "conversationId": "thread_Id_1"
+    "conversationId": "thread_Id_1",
+    "rawRepresentation": {
+      "type": "TOOL_CALL_END",
+      "toolCallId": "call_Id_1",
+      "rawEvent": {
+        "authorName": null,
+        "role": "Assistant",
+        "contents": [
+          {
+            "$type": "functionCall",
+            "name": "GetUserLocation",
+            "arguments": {},
+            "informationalOnly": false,
+            "callId": "call_Id_1",
+            "annotations": null,
+            "additionalProperties": null
+          }
+        ],
+        "additionalProperties": null,
+        "responseId": null,
+        "messageId": null,
+        "conversationId": null,
+        "finishReason": "toolCalls",
+        "modelId": "gpt-4o-mini",
+        "continuationToken": null
+      }
+    }
   },
   {
     "role": "assistant",
     "contents": [],
     "responseId": "run_Id_1",
     "conversationId": "thread_Id_1",
-    "finishReason": "stop"
+    "finishReason": "stop",
+    "rawRepresentation": {
+      "type": "RUN_FINISHED",
+      "threadId": "thread_Id_1",
+      "runId": "run_Id_1",
+      "outcome": {
+        "type": "success"
+      }
+    }
   },
   {
     "role": "tool",
@@ -50,7 +89,12 @@
       "agui_thread_id": "thread_Id_2"
     },
     "responseId": "run_Id_2",
-    "conversationId": "thread_Id_1"
+    "conversationId": "thread_Id_1",
+    "rawRepresentation": {
+      "type": "RUN_STARTED",
+      "threadId": "thread_Id_2",
+      "runId": "run_Id_2"
+    }
   },
   {
     "role": "assistant",
@@ -62,7 +106,31 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "msg_Id_1",
-    "conversationId": "thread_Id_1"
+    "conversationId": "thread_Id_1",
+    "rawRepresentation": {
+      "type": "TEXT_MESSAGE_CONTENT",
+      "messageId": "msg_Id_1",
+      "delta": "Based on your location in Amsterdam, Netherlands,",
+      "rawEvent": {
+        "authorName": null,
+        "role": "Assistant",
+        "contents": [
+          {
+            "$type": "text",
+            "text": "Based on your location in Amsterdam, Netherlands,",
+            "annotations": null,
+            "additionalProperties": null
+          }
+        ],
+        "additionalProperties": null,
+        "responseId": null,
+        "messageId": null,
+        "conversationId": null,
+        "finishReason": null,
+        "modelId": "gpt-4o-mini",
+        "continuationToken": null
+      }
+    }
   },
   {
     "role": "assistant",
@@ -74,13 +142,45 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "msg_Id_2",
-    "conversationId": "thread_Id_1"
+    "conversationId": "thread_Id_1",
+    "rawRepresentation": {
+      "type": "TEXT_MESSAGE_CONTENT",
+      "messageId": "msg_Id_2",
+      "delta": " here are some great things to do nearby:\n\n1. Visit the Rijksmuseum\n2. Take a canal cruise\n3. Explore the Jordaan neighborhood",
+      "rawEvent": {
+        "authorName": null,
+        "role": "Assistant",
+        "contents": [
+          {
+            "$type": "text",
+            "text": " here are some great things to do nearby:\n\n1. Visit the Rijksmuseum\n2. Take a canal cruise\n3. Explore the Jordaan neighborhood",
+            "annotations": null,
+            "additionalProperties": null
+          }
+        ],
+        "additionalProperties": null,
+        "responseId": null,
+        "messageId": null,
+        "conversationId": null,
+        "finishReason": "stop",
+        "modelId": "gpt-4o-mini",
+        "continuationToken": null
+      }
+    }
   },
   {
     "role": "assistant",
     "contents": [],
     "responseId": "run_Id_2",
     "conversationId": "thread_Id_1",
-    "finishReason": "stop"
+    "finishReason": "stop",
+    "rawRepresentation": {
+      "type": "RUN_FINISHED",
+      "threadId": "thread_Id_2",
+      "runId": "run_Id_2",
+      "outcome": {
+        "type": "success"
+      }
+    }
   }
 ]

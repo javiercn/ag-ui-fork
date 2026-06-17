@@ -12,8 +12,6 @@ public class Program
 
         builder.Services.AddAGUI();
 
-        builder.Services.AddSingleton<TelemetrySource>();
-
         if (string.Equals(builder.Configuration["UseAzureOpenAI"], "true", StringComparison.OrdinalIgnoreCase))
         {
             var endpoint = builder.Configuration["AZURE_OPENAI_ENDPOINT"]
@@ -27,18 +25,18 @@ public class Program
                 .GetChatClient(deploymentName)
                 .AsIChatClient())
                 .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true)
-                .Use((inner, sp) => new TelemetryRawEventsChatClient(
+                .Use((inner, _) => new UsageRawEventsChatClient(
                     inner,
-                    sp.GetRequiredService<TelemetrySource>()));
+                    AIJsonUtilities.DefaultOptions));
         }
         else
         {
             builder.Services.AddSingleton<FakeChatClient>();
             builder.Services.AddChatClient(sp => sp.GetRequiredService<FakeChatClient>())
                 .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true)
-                .Use((inner, sp) => new TelemetryRawEventsChatClient(
+                .Use((inner, _) => new UsageRawEventsChatClient(
                     inner,
-                    sp.GetRequiredService<TelemetrySource>()));
+                    AIJsonUtilities.DefaultOptions));
         }
 
         var app = builder.Build();

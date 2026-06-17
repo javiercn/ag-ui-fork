@@ -6,7 +6,12 @@
       "agui_thread_id": "thread_Id_1"
     },
     "responseId": "run_Id_1",
-    "conversationId": "thread_Id_1"
+    "conversationId": "thread_Id_1",
+    "rawRepresentation": {
+      "type": "RUN_STARTED",
+      "threadId": "thread_Id_1",
+      "runId": "run_Id_1"
+    }
   },
   {
     "role": "assistant",
@@ -30,6 +35,32 @@
       }
     ],
     "responseId": "run_Id_1",
-    "conversationId": "thread_Id_1"
+    "conversationId": "thread_Id_1",
+    "rawRepresentation": {
+      "type": "RUN_FINISHED",
+      "threadId": "thread_Id_1",
+      "runId": "run_Id_1",
+      "outcome": {
+        "type": "interrupt",
+        "interrupts": [
+          {
+            "id": "call_Id_1",
+            "reason": "input_required",
+            "message": "What username would you like to use?",
+            "responseSchema": {
+              "type": "object",
+              "properties": {
+                "response": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "response"
+              ]
+            }
+          }
+        ]
+      }
+    }
   }
 ]
