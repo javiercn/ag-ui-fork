@@ -111,18 +111,47 @@ Recording **fills gaps**: committed fixtures are still loaded first, so delete a
 fixture (or omit it) to force its scenario to re-record. Captured files land in
 `fixtures/recorded/` for you to curate into the named `fixtures/*.json`.
 
-### Multi-turn scenarios need two passes
+### Multi-turn scenarios: match the tool-result turn, not the user message
 
-AIMock's recorder keys a fixture only on the **last user message** (`buildFixtureMatch`),
-with no turn disambiguation, and caches each capture in memory. In a multi-turn flow the
-last user message is identical across turns, so the turn-1 capture would shadow turn 2.
-A fixture only gets turn-gated when it carries a `sequenceIndex`. So:
+After a tool call the client replays the **same conversation** with the tool result
+appended — the last *user* message is unchanged. So a turn-2 fixture matched on
+`userMessage` would re-match the turn-1 fixture and loop. AIMock's documented fix
+(`write-fixtures` skill, gotcha #5) is to match the **tool-result turn**:
 
-1. **Pass 1** — record turn 1, then curate the capture into the committed fixture with
-   `"sequenceIndex": 0`.
-2. **Pass 2** — re-run recording. Turn 1 now replays from the committed fixture; turn 2 has
-   a higher match count, skips the `sequenceIndex: 0` entry, proxies to the LLM, and is
-   captured. Curate it in as `"sequenceIndex": 1`.
+- Programmatically: `predicate: (req) => req.messages.at(-1)?.role === "tool"`.
+- In JSON fixtures (our case, since `predicate` is a function): the **`toolCallId`** field —
+  "exact match on `tool_call_id` of the last `role: "tool"` message".
+
+List the specific tool-result fixture **first** so it wins on turn 2; turn 1 (no tool
+message) falls through to the `userMessage` fixture. This is turn-count-independent — no
+`sequenceIndex` needed. The committed `mixed-tool-invocation.json` uses exactly this shape:
+
+```jsonc
+{
+  "fixtures": [
+    // Turn 2: the continuation's last tool result is get_weather's (resolved server-side
+    // via FICC), so match its call id and return the final text.
+    { "match": { "toolCallId": "call_XHrYFpdLMi6841ix1cwXZyy6" },
+      "response": { "content": "Your current city is Tokyo, Japan. ... Berlin ..." } },
+    // Turn 1: first request, no tool result yet — surface both tool calls.
+    { "match": { "userMessage": "What is my current city and the forecast for Berlin?" },
+      "response": { "toolCalls": [ /* get_user_location, get_weather */ ] } }
+  ]
+}
+```
+
+#### Capturing both turns from the LLM (two passes)
+
+The *recorder* still keys every capture on the last user message (`buildFixtureMatch`) and
+caches it in memory, so a single record pass only captures turn 1 (it then shadows turn 2).
+To capture turn 2's real response:
+
+1. **Pass 1** — record turn 1, then curate the capture into the committed fixture as
+   `{ "userMessage": ..., "sequenceIndex": 0 }` (temporary — gates it to the first occurrence).
+2. **Pass 2** — re-run recording. Turn 1 replays; turn 2 is the 2nd occurrence, skips the
+   `sequenceIndex: 0` entry, proxies to the LLM, and is captured.
+3. **Finalize** — rewrite the committed fixture into the turn-count-independent form above
+   (turn-2 `toolCallId` first, turn-1 `userMessage` second, drop `sequenceIndex`).
 
 Single-turn scenarios need only one pass. After curating, clear `OPENAI_API_KEY`/
 `AIMOCK_RECORD` and re-run to confirm the scenario replays offline and green.
