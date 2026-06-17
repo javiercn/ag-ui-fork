@@ -20,7 +20,13 @@ OpenAIClient openAiClient = new(
 
 IChatClient baseChatClient = openAiClient.GetChatClient(modelId).AsIChatClient();
 IChatClient chatClient = baseChatClient.AsBuilder()
-    .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true)
+    .UseFunctionInvocation(configure: fic =>
+    {
+        fic.TerminateOnUnknownCalls = true;
+        // Let parallel server-side tool calls execute concurrently when the model
+        // surfaces more than one in a single assistant turn (parallel_tool_calls).
+        fic.AllowConcurrentInvocation = true;
+    })
     .Build();
 
 builder.Services.AddSingleton(chatClient);
@@ -35,6 +41,7 @@ app.MapBackendToolRendering("/backend_tool_rendering");
 app.MapSharedState("/shared_state");
 app.MapPredictiveState("/predictive_state_updates");
 app.MapHumanInTheLoop("/human_in_the_loop");
+app.MapParallelToolCalls("/parallel_tool_calls");
 
 await app.RunAsync().ConfigureAwait(false);
 
