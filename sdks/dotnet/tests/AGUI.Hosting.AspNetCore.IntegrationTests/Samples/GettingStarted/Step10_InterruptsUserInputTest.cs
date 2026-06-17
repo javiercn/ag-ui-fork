@@ -43,18 +43,62 @@ public sealed class Step10_InterruptsUserInputTest : IntegrationTestBase<Step10_
         [CallerMemberName] string testName = "")
     {
         var serverCapture = new CapturingChatClient();
-        serverCapture.SetInner(new UserInputChatClient());
+        var recording = LoadRecording(testName, s_jsonOptions);
+        var hasRecording = recording.Count > 0 && recording[0].Count > 0;
 
-        var factory = Factory.WithWebHostBuilder(builder =>
+        var httpClient = Factory.WithWebHostBuilder(builder =>
         {
+            if (hasRecording)
+            {
+                // Replay mode: feed the recorded (post-conversion) updates back through a
+                // FakeChatClient that stands in for the whole server pipeline.
+                builder.ConfigureServices(services =>
+                {
+                    var chatClient = new FakeChatClient();
+                    for (int i = 0; i < turnCount; i++)
+                    {
+                        if (i < recording.Count)
+                        {
+                            var turnUpdates = recording[i];
+                            chatClient.Enqueue(_ => ReplayUpdates(turnUpdates));
+                        }
+                    }
+
+                    services.AddSingleton(chatClient);
+                });
+            }
+
             builder.ConfigureTestServices(services =>
             {
-                services.RemoveAll<IChatClient>();
-                services.AddSingleton<IChatClient>(serverCapture);
-            });
-        });
+                if (hasRecording)
+                {
+                    services.AddSingleton<IChatClient>(sp =>
+                    {
+                        var fake = sp.GetRequiredService<FakeChatClient>();
+                        serverCapture.SetInner(fake);
+                        return serverCapture;
+                    });
+                }
+                else
+                {
+                    // Record mode: wrap whatever the app registered (e.g. the Azure OpenAI
+                    // pipeline with the request_user_input tool + UserInputToolChatClient) so a
+                    // real LLM run is captured for future replay.
+                    var descriptor = services.FirstOrDefault(d => d.ServiceType == typeof(IChatClient));
+                    if (descriptor != null)
+                    {
+                        services.Remove(descriptor);
+                    }
 
-        var httpClient = factory.CreateClient();
+                    services.AddSingleton<IChatClient>(sp =>
+                    {
+                        var inner = (IChatClient)descriptor!.ImplementationFactory!(sp);
+                        serverCapture.SetInner(inner);
+                        return serverCapture;
+                    });
+                }
+            });
+        }).CreateClient();
 
         var transport = new AGUIHttpTransport(httpClient, "/");
         var transportCapture = new CapturingAGUITransport(transport);

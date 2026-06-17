@@ -124,7 +124,7 @@ public abstract class IntegrationTestBase<TEntryPoint> : IClassFixture<WebApplic
     //   07 Response Client AGUI  client.events               (wire -> client)
     //   08 Response Client NET   client.chatResponseUpdates  (client -> app)
     private static readonly Regex s_idScrubber = new(
-        @"(?<![a-zA-Z_])(chatcmpl-|thread_|run_|call_|msg_|approval_|ficc_|input_)[A-Za-z0-9_]+"
+        @"(?<![a-zA-Z_])(chatcmpl-|thread_|run_|call_|msg_|approval_|ficc_)[A-Za-z0-9_]+"
             + @"|\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b"
             + @"|\b[0-9a-f]{32}\b",
         RegexOptions.Compiled);

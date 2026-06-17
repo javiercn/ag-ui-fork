@@ -9,7 +9,7 @@
   ],
   "resume": [
     {
-      "interruptId": "input_Id_2",
+      "interruptId": "call_Id_1",
       "status": "resolved",
       "payload": {
         "response": "johndoe42"

@@ -13,11 +13,11 @@
     "contents": [
       {
         "$type": "text",
-        "text": "Thank you! Your username \u0027johndoe42\u0027 has been registered."
+        "text": "Your account has been created with the username johndoe42."
       }
     ],
     "responseId": "run_Id_2",
-    "messageId": "msg_Id_2",
+    "messageId": "chatcmpl-Id_2",
     "conversationId": "thread_Id_2"
   },
   {

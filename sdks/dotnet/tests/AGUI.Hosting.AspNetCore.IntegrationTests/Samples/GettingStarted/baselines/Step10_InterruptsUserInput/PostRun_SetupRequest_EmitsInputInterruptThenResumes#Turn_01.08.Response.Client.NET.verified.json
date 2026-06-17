@@ -13,8 +13,8 @@
     "contents": [
       {
         "$type": "interruptRequest",
-        "reason": "input_Id_1",
-        "message": "Please enter your preferred username:",
+        "reason": "input_required",
+        "message": "What username would you like to use?",
         "responseSchema": {
           "type": "object",
           "properties": {
@@ -26,7 +26,7 @@
             "response"
           ]
         },
-        "requestId": "input_Id_2"
+        "requestId": "call_Id_1"
       }
     ],
     "responseId": "run_Id_1",

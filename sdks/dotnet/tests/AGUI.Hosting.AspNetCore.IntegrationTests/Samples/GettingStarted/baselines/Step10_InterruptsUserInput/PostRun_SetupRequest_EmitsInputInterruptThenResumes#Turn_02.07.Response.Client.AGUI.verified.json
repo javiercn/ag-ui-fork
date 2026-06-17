@@ -6,7 +6,7 @@
   },
   {
     "type": "TEXT_MESSAGE_START",
-    "messageId": "msg_Id_2",
+    "messageId": "chatcmpl-Id_2",
     "role": "assistant",
     "rawEvent": {
       "authorName": null,
@@ -14,47 +14,47 @@
       "contents": [
         {
           "$type": "text",
-          "text": "Thank you! Your username \u0027johndoe42\u0027 has been registered.",
+          "text": "Your account has been created with the username johndoe42.",
           "annotations": null,
           "additionalProperties": null
         }
       ],
       "additionalProperties": null,
-      "responseId": null,
-      "messageId": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
       "conversationId": null,
-      "finishReason": null,
-      "modelId": "user-input-agent",
+      "finishReason": "stop",
+      "modelId": "gpt-5-mini-2025-08-07",
       "continuationToken": null
     }
   },
   {
     "type": "TEXT_MESSAGE_CONTENT",
-    "messageId": "msg_Id_2",
-    "delta": "Thank you! Your username \u0027johndoe42\u0027 has been registered.",
+    "messageId": "chatcmpl-Id_2",
+    "delta": "Your account has been created with the username johndoe42.",
     "rawEvent": {
       "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "Thank you! Your username \u0027johndoe42\u0027 has been registered.",
+          "text": "Your account has been created with the username johndoe42.",
           "annotations": null,
           "additionalProperties": null
         }
       ],
       "additionalProperties": null,
-      "responseId": null,
-      "messageId": null,
+      "responseId": "chatcmpl-Id_2",
+      "messageId": "chatcmpl-Id_2",
       "conversationId": null,
-      "finishReason": null,
-      "modelId": "user-input-agent",
+      "finishReason": "stop",
+      "modelId": "gpt-5-mini-2025-08-07",
       "continuationToken": null
     }
   },
   {
     "type": "TEXT_MESSAGE_END",
-    "messageId": "msg_Id_2"
+    "messageId": "chatcmpl-Id_2"
   },
   {
     "type": "RUN_FINISHED",
