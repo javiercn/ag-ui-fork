@@ -31,6 +31,7 @@
     {
       "role": "tool",
       "toolCallId": "call_Id_1",
+      "id": "call_Id_1",
       "content": "\u0022Tokyo, Japan\u0022"
     }
   ],

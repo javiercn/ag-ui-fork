@@ -23,6 +23,7 @@
     {
       "role": "tool",
       "toolCallId": "call_Id_1",
+      "id": "call_Id_1",
       "content": "\u0022Amsterdam, Netherlands (52.37\u00B0N, 4.90\u00B0E)\u0022"
     }
   ],

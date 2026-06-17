@@ -191,47 +191,34 @@ public static class AGUIChatMessageExtensions
             }
             else if (message.Role == ChatRole.Tool)
             {
-                var functionResult = message.Contents.OfType<FunctionResultContent>().FirstOrDefault();
-                string content;
-                if (functionResult?.Result is string stringResult)
+                var functionResults = message.Contents.OfType<FunctionResultContent>().ToList();
+                if (functionResults.Count == 0)
                 {
-                    content = stringResult;
-                }
-                else if (functionResult?.Result is JsonElement jsonElement)
-                {
-                    content = jsonElement.GetRawText();
-                }
-                else if (functionResult?.Result is not null)
-                {
-                    if (functionResult.Result is IDictionary<string, object?>)
+                    // No structured result; fall back to the raw message text under its message id.
+                    yield return new AGUIToolMessage
                     {
-                        content = JsonSerializer.Serialize(
-                            functionResult.Result,
-                            AGUIJsonSerializerContext.Default.GetTypeInfo(typeof(IDictionary<string, object?>))!);
-                    }
-                    else
-                    {
-                        var resultTypeInfo = AGUIJsonSerializerContext.Default.GetTypeInfo(functionResult.Result.GetType());
-                        if (resultTypeInfo is not null)
-                        {
-                            content = JsonSerializer.Serialize(functionResult.Result, resultTypeInfo);
-                        }
-                        else
-                        {
-                            content = functionResult.Result.ToString() ?? string.Empty;
-                        }
-                    }
+                        Id = message.MessageId,
+                        Content = message.Text ?? string.Empty
+                    };
                 }
                 else
                 {
-                    content = message.Text ?? string.Empty;
+                    // AG-UI models each tool result as a separate ToolMessage keyed on its tool
+                    // call id (the response side likewise sets TOOL_CALL_RESULT.messageId =
+                    // toolCallId). MEAI batches parallel tool results into a single tool
+                    // ChatMessage, so emit one AGUIToolMessage per result to preserve them all.
+                    foreach (var functionResult in functionResults)
+                    {
+                        yield return new AGUIToolMessage
+                        {
+                            Id = functionResult.CallId,
+                            ToolCallId = functionResult.CallId,
+                            Content = SerializeFunctionResult(functionResult, message.Text)
+                        };
+                    }
                 }
 
-                aguiMessage = new AGUIToolMessage
-                {
-                    ToolCallId = functionResult?.CallId,
-                    Content = content
-                };
+                continue;
             }
             else
             {
@@ -258,4 +245,26 @@ public static class AGUIChatMessageExtensions
         string.Equals(role, AGUIRoles.Developer, StringComparison.OrdinalIgnoreCase) ? s_developerChatRole :
         string.Equals(role, AGUIRoles.Tool, StringComparison.OrdinalIgnoreCase) ? ChatRole.Tool :
         throw new InvalidOperationException($"Unknown chat role: {role}");
+
+    private static string SerializeFunctionResult(FunctionResultContent functionResult, string? fallbackText)
+    {
+        switch (functionResult.Result)
+        {
+            case string stringResult:
+                return stringResult;
+            case JsonElement jsonElement:
+                return jsonElement.GetRawText();
+            case IDictionary<string, object?>:
+                return JsonSerializer.Serialize(
+                    functionResult.Result,
+                    AGUIJsonSerializerContext.Default.GetTypeInfo(typeof(IDictionary<string, object?>))!);
+            case not null:
+                var resultTypeInfo = AGUIJsonSerializerContext.Default.GetTypeInfo(functionResult.Result.GetType());
+                return resultTypeInfo is not null
+                    ? JsonSerializer.Serialize(functionResult.Result, resultTypeInfo)
+                    : functionResult.Result.ToString() ?? string.Empty;
+            default:
+                return fallbackText ?? string.Empty;
+        }
+    }
 }

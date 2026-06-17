@@ -129,7 +129,90 @@ public sealed class AGUIChatMessageExtensionsTest
         var toolMsg = Assert.IsType<AGUIToolMessage>(aguiMessages[0]);
         Assert.Equal("tc_1", toolMsg.ToolCallId);
         Assert.Equal("72°F, sunny", toolMsg.Content);
-        Assert.Equal("tool-msg-1", toolMsg.Id);
+        // Tool messages are keyed on the tool call id in both directions (the response side
+        // likewise sets TOOL_CALL_RESULT.messageId = toolCallId), so the AG-UI message id is the
+        // call id rather than the dropped/echoed ChatMessage.MessageId.
+        Assert.Equal("tc_1", toolMsg.Id);
+    }
+
+    [Fact]
+    public void AsAGUIMessages_ToolMessageWithMultipleResults_EmitsOneMessagePerResult()
+    {
+        // MEAI batches parallel tool results into a single tool ChatMessage carrying multiple
+        // FunctionResultContents. The conversion must emit one AGUIToolMessage per result —
+        // dropping the extras (the old FirstOrDefault behavior) loses tool output.
+        var chatMessages = new ChatMessage[]
+        {
+            new ChatMessage(ChatRole.Tool,
+            [
+                new FunctionResultContent("call_weather", "Paris: 22°C, sunny"),
+                new FunctionResultContent("call_time", "Asia/Tokyo: 2026-06-18 18:30")
+            ])
+            {
+                MessageId = "tool-msg-batch"
+            }
+        };
+
+        var aguiMessages = chatMessages.AsAGUIMessages().OfType<AGUIToolMessage>().ToList();
+
+        Assert.Equal(2, aguiMessages.Count);
+
+        var weather = Assert.Single(aguiMessages, m => m.ToolCallId == "call_weather");
+        var time = Assert.Single(aguiMessages, m => m.ToolCallId == "call_time");
+
+        // Each message is keyed on its own call id (distinct), never on the shared MessageId.
+        Assert.Equal("call_weather", weather.Id);
+        Assert.Equal("call_time", time.Id);
+        Assert.Equal("Paris: 22°C, sunny", weather.Content);
+        Assert.Equal("Asia/Tokyo: 2026-06-18 18:30", time.Content);
+    }
+
+    [Fact]
+    public void AsChatMessages_MultipleToolMessages_MapToOneFunctionResultEach()
+    {
+        // AG-UI models each tool result as a separate ToolMessage on the wire. Mapping them
+        // 1:1 to tool ChatMessages (one FunctionResultContent each) is the OpenAI-valid shape:
+        // the provider emits one tool message per tool_call_id, so no grouping is required.
+        var aguiMessages = new AGUIMessage[]
+        {
+            new AGUIToolMessage { Id = "call_weather", ToolCallId = "call_weather", Content = "Paris: 22°C, sunny" },
+            new AGUIToolMessage { Id = "call_time", ToolCallId = "call_time", Content = "Asia/Tokyo: 2026-06-18 18:30" },
+        };
+
+        var chatMessages = aguiMessages.AsChatMessages().ToList();
+
+        Assert.Equal(2, chatMessages.Count);
+        Assert.All(chatMessages, m =>
+        {
+            Assert.Equal(ChatRole.Tool, m.Role);
+            Assert.Single(m.Contents.OfType<FunctionResultContent>());
+        });
+        Assert.Equal("call_weather", chatMessages[0].Contents.OfType<FunctionResultContent>().Single().CallId);
+        Assert.Equal("call_time", chatMessages[1].Contents.OfType<FunctionResultContent>().Single().CallId);
+    }
+
+    [Fact]
+    public void AsAGUIMessages_ParallelToolResults_RoundTripPreservesBothResults()
+    {
+        // Full parallel roundtrip: a single tool ChatMessage with two results -> two AG-UI tool
+        // messages -> two tool ChatMessages, with both call ids preserved end to end.
+        var chatMessages = new ChatMessage[]
+        {
+            new ChatMessage(ChatRole.Tool,
+            [
+                new FunctionResultContent("call_weather", "Paris: 22°C, sunny"),
+                new FunctionResultContent("call_time", "Asia/Tokyo: 2026-06-18 18:30")
+            ])
+        };
+
+        var roundTripped = chatMessages.AsAGUIMessages().AsChatMessages().ToList();
+
+        var callIds = roundTripped
+            .SelectMany(m => m.Contents.OfType<FunctionResultContent>())
+            .Select(r => r.CallId)
+            .OrderBy(id => id, System.StringComparer.Ordinal)
+            .ToList();
+        Assert.Equal(["call_time", "call_weather"], callIds);
     }
 
     [Fact]

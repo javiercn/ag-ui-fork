@@ -23,6 +23,7 @@
     {
       "role": "tool",
       "toolCallId": "call_Id_1",
+      "id": "call_Id_1",
       "content": "{\u0022approval_Id_1\u0022:\u0022ficc_Id_1\u0022,\u0022approved\u0022:true}"
     }
   ]
