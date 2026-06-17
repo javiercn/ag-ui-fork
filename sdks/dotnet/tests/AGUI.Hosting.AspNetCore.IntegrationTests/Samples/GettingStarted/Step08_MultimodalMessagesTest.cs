@@ -53,28 +53,51 @@ public sealed class Step08_MultimodalMessagesTest : IntegrationTestBase<Step08_M
         var recording = LoadRecording(testName, s_jsonOptions);
         var hasRecording = recording.Count > 0 && recording[0].Count > 0;
 
-        var fakeClient = new FakeChatClient();
-        if (hasRecording)
+        var httpClient = Factory.WithWebHostBuilder(builder =>
         {
-            for (int i = 0; i < recording.Count; i++)
+            if (hasRecording)
             {
-                var callUpdates = recording[i];
-                fakeClient.Enqueue(_ => ReplayUpdates(callUpdates));
+                builder.ConfigureServices(services =>
+                {
+                    var fakeClient = new FakeChatClient();
+                    foreach (var turnUpdates in recording)
+                    {
+                        var captured = turnUpdates;
+                        fakeClient.Enqueue(_ => ReplayUpdates(captured));
+                    }
+
+                    services.AddSingleton(fakeClient);
+                });
             }
-        }
 
-        serverCapture.SetInner(fakeClient);
-
-        var factory = Factory.WithWebHostBuilder(builder =>
-        {
             builder.ConfigureTestServices(services =>
             {
-                services.RemoveAll<IChatClient>();
-                services.AddSingleton<IChatClient>(serverCapture);
-            });
-        });
+                var descriptor = services.FirstOrDefault(d => d.ServiceType == typeof(IChatClient));
+                if (descriptor != null)
+                {
+                    services.Remove(descriptor);
+                }
 
-        var httpClient = factory.CreateClient();
+                if (hasRecording)
+                {
+                    services.AddSingleton<IChatClient>(sp =>
+                    {
+                        serverCapture.SetInner(sp.GetRequiredService<FakeChatClient>());
+                        return serverCapture;
+                    });
+                }
+                else
+                {
+                    // Record mode: wrap the app's real Azure OpenAI pipeline so a real LLM
+                    // run is captured for deterministic replay.
+                    services.AddSingleton<IChatClient>(sp =>
+                    {
+                        serverCapture.SetInner((IChatClient)descriptor!.ImplementationFactory!(sp));
+                        return serverCapture;
+                    });
+                }
+            });
+        }).CreateClient();
 
         var transport = new AGUIHttpTransport(httpClient, "/");
         var transportCapture = new CapturingAGUITransport(transport);

@@ -13,11 +13,551 @@
     "contents": [
       {
         "$type": "text",
-        "text": "The image shows the AG-UI logo, a geometric crystal or diamond shape rendered in black. The design features angular facets that create a three-dimensional appearance, with clean lines forming a symmetrical polyhedron. It represents the AG-UI protocol\u0027s visual identity."
+        "text": "The"
       }
     ],
     "responseId": "run_Id_1",
-    "messageId": "msg_Id_2",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " image"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " shows"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " a"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " black"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": ","
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " minimalist"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": ","
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " geometric"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " design"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " resembling"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " a"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " diamond"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " or"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " gemstone"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " shape"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "."
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " It"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " consists"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " of"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " triangular"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " sections"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": ","
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " outlined"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " to"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " give"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " it"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " a"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " fac"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "eted"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " appearance"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": ","
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " like"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " a"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " cut"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " gem"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "."
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " The"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " overall"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " design"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " is"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " simplistic"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " and"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " styl"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "ized"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "."
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_1",
     "conversationId": "thread_Id_1"
   },
   {
