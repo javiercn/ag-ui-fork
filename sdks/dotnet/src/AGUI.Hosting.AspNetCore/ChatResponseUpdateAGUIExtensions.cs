@@ -252,6 +252,15 @@ public static class ChatResponseUpdateAGUIExtensions
 
                         yield return ToolCallEndEvent.Create(toolCall.CallId, raw);
 
+                        // A client tool is owned and gated by the client, never the server. Always
+                        // surface its call as a plain TOOL_CALL (the run finishes with success) so
+                        // the client executes it — including when the model re-invokes it on a
+                        // continuation (where it arrives wrapped as an approval request).
+                        if (clientToolNames.Contains(toolCall.Name))
+                        {
+                            break;
+                        }
+
                         // In mixed invocation (first turn), don't accumulate interrupts.
                         // The stream will finish with RUN_FINISHED(success) instead.
                         if (clientToolNames.Count > 0 && !isContinuation)

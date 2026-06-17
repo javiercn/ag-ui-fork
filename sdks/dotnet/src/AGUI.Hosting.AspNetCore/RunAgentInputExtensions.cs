@@ -286,9 +286,12 @@ public static class RunAgentInputExtensions
             chatMessages.Add(new ChatMessage(ChatRole.User, approvalResponses));
         }
 
-        // (Re)declare the client tools so the model still knows their schema. Each client tool
-        // with a pre-computed result is registered as a proxy returning that result, keeping it
-        // invocable without contacting the client again.
+        // (Re)declare the client tools, wrapped in ApprovalRequiredAIFunction so a *new* call the
+        // model makes on this continuation stops FunctionInvokingChatClient (rather than being
+        // answered server-side with a stale cached value). The response mapping unwraps such a
+        // client-tool approval back into a plain TOOL_CALL so the client executes it freshly. A
+        // client tool that already produced a result is registered as a proxy returning that
+        // result, so the *original* already-approved call still resolves server-side.
         chatOptions.Tools ??= new List<AITool>();
         foreach (var tool in clientTools)
         {
@@ -310,7 +313,11 @@ public static class RunAgentInputExtensions
                     () => proxyResult,
                     tool.Name,
                     description);
-                chatOptions.Tools.Add(proxy);
+                chatOptions.Tools.Add(new ApprovalRequiredAIFunction(proxy));
+            }
+            else if (tool is AIFunction aiFunction)
+            {
+                chatOptions.Tools.Add(new ApprovalRequiredAIFunction(aiFunction));
             }
             else
             {

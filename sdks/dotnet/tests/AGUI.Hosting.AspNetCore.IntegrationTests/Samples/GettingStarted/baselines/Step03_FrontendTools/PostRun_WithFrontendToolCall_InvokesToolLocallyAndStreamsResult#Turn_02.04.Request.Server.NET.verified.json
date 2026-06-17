@@ -35,7 +35,7 @@
   "options": {
     "tools": [
       {
-        "type": "ReflectionAIFunction",
+        "type": "ApprovalRequiredAIFunction",
         "name": "GetUserLocation",
         "description": ""
       }
