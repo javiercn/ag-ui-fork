@@ -1,1 +1,39 @@
-[  [    {      "role": "assistant",      "contents": [        {          "$type": "interruptRequest",          "reason": "input_required",          "message": "Please enter your preferred username:",          "responseSchema": {            "type": "object",            "properties": {              "response": {                "type": "string"              }            },            "required": [              "response"            ]          },          "requestId": "input_e743ffce85fd4c919f8c588a4bca6d1f"        }      ],      "modelId": "user-input-agent"    }  ],  [    {      "role": "assistant",      "contents": [        {          "$type": "text",          "text": "Thank you! Your username 'johndoe42' has been registered."        }      ],      "modelId": "user-input-agent"    }  ]]
+[
+  [
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "interruptRequest",
+          "reason": "input_required",
+          "message": "Please enter your preferred username:",
+          "responseSchema": {
+            "type": "object",
+            "properties": {
+              "response": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "response"
+            ]
+          },
+          "requestId": "input_012f80fa9360493e94cb64c274802214"
+        }
+      ],
+      "modelId": "user-input-agent"
+    }
+  ],
+  [
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "Thank you! Your username 'johndoe42' has been registered."
+        }
+      ],
+      "modelId": "user-input-agent"
+    }
+  ]
+]
