@@ -58,6 +58,24 @@ internal sealed class FakeChatClient : IChatClient
             Contents = [new TextContent($"(fake) You said: \"{lastUserText}\"")],
             ModelId = "fake-model",
         };
+
+        // Surface token-usage just like a real model would on the final update, so the
+        // UsageRawEventsChatClient turns it into an AG-UI RawEvent and the sample
+        // demonstrates raw telemetry end-to-end even without LLM credentials.
+        yield return new ChatResponseUpdate
+        {
+            Role = ChatRole.Assistant,
+            ModelId = "fake-model",
+            Contents =
+            [
+                new UsageContent(new UsageDetails
+                {
+                    InputTokenCount = 9,
+                    OutputTokenCount = 12,
+                    TotalTokenCount = 21,
+                }),
+            ],
+        };
         await Task.CompletedTask.ConfigureAwait(false);
     }
 }
