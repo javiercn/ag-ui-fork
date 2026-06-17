@@ -41,6 +41,8 @@
     <ProjectReference Include="..\..\samples\GettingStarted\Step10_InterruptsUserInput\Step10_InterruptsUserInput.Client\Step10_InterruptsUserInput.Client.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step11_Serialization\Step11_Serialization.Server\Step11_Serialization.Server.csproj" />
     <ProjectReference Include="..\..\samples\GettingStarted\Step11_Serialization\Step11_Serialization.Client\Step11_Serialization.Client.csproj" />
+    <ProjectReference Include="..\..\samples\GettingStarted\Step12_ParallelToolCalls\Step12_ParallelToolCalls.Server\Step12_ParallelToolCalls.Server.csproj" />
+    <ProjectReference Include="..\..\samples\GettingStarted\Step12_ParallelToolCalls\Step12_ParallelToolCalls.Client\Step12_ParallelToolCalls.Client.csproj" />
   </ItemGroup>
 
 </Project>

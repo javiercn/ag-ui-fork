@@ -39,6 +39,8 @@
     <Project Path="samples/GettingStarted/Step10_InterruptsUserInput/Step10_InterruptsUserInput.Client/Step10_InterruptsUserInput.Client.csproj" />
     <Project Path="samples/GettingStarted/Step11_Serialization/Step11_Serialization.Server/Step11_Serialization.Server.csproj" />
     <Project Path="samples/GettingStarted/Step11_Serialization/Step11_Serialization.Client/Step11_Serialization.Client.csproj" />
+    <Project Path="samples/GettingStarted/Step12_ParallelToolCalls/Step12_ParallelToolCalls.Server/Step12_ParallelToolCalls.Server.csproj" />
+    <Project Path="samples/GettingStarted/Step12_ParallelToolCalls/Step12_ParallelToolCalls.Client/Step12_ParallelToolCalls.Client.csproj" />
   </Folder>
   <Folder Name="/samples/" />
 </Solution>
