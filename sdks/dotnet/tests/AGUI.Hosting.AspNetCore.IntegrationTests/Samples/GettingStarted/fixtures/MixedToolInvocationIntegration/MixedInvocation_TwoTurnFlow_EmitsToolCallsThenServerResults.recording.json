@@ -1,0 +1,492 @@
+[
+  [
+    {
+      "contents": [],
+      "responseId": "",
+      "messageId": "",
+      "createdAt": "1970-01-01T00:00:00+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "messageId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "createdAt": "2026-06-17T17:23:21+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "messageId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "createdAt": "2026-06-17T17:23:21+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "messageId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "createdAt": "2026-06-17T17:23:21+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "messageId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "createdAt": "2026-06-17T17:23:21+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "messageId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "createdAt": "2026-06-17T17:23:21+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "messageId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "createdAt": "2026-06-17T17:23:21+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "messageId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "createdAt": "2026-06-17T17:23:21+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "messageId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "createdAt": "2026-06-17T17:23:21+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "messageId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "createdAt": "2026-06-17T17:23:21+00:00",
+      "finishReason": "tool_calls",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "usage",
+          "details": {
+            "inputTokenCount": 184,
+            "outputTokenCount": 116,
+            "totalTokenCount": 300,
+            "cachedInputTokenCount": 0,
+            "reasoningTokenCount": 64,
+            "additionalCounts": {
+              "InputTokenDetails.AudioTokenCount": 0,
+              "OutputTokenDetails.AudioTokenCount": 0,
+              "OutputTokenDetails.AcceptedPredictionTokenCount": 0,
+              "OutputTokenDetails.RejectedPredictionTokenCount": 0
+            }
+          }
+        }
+      ],
+      "responseId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "messageId": "chatcmpl-DroGvU4S9x671e2dT36EephmE7Q5h",
+      "createdAt": "2026-06-17T17:23:21+00:00",
+      "finishReason": "tool_calls",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "functionCall",
+          "name": "get_user_location",
+          "arguments": {},
+          "informationalOnly": false,
+          "callId": "call_DCa8d5Isrrr1qoq7gXccs3TK"
+        },
+        {
+          "$type": "functionCall",
+          "name": "get_weather",
+          "arguments": {
+            "city": "Paris"
+          },
+          "informationalOnly": false,
+          "callId": "call_KIXum07cB0CSzyk3JeteSZuX"
+        }
+      ],
+      "responseId": "",
+      "messageId": "",
+      "createdAt": "1970-01-01T00:00:00+00:00",
+      "finishReason": "tool_calls",
+      "modelId": ""
+    }
+  ],
+  [
+    {
+      "contents": [],
+      "responseId": "",
+      "messageId": "",
+      "createdAt": "1970-01-01T00:00:00+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": ""
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "1"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": ")"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " Your"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " current"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " city"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": ":"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " Tokyo"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": ","
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " Japan"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "."
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "  \n"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "2"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": ")"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " Weather"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " in"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " Paris"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": ":"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " "
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "18"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "°C"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": ","
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " rainy"
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "."
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "finishReason": "stop",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "usage",
+          "details": {
+            "inputTokenCount": 243,
+            "outputTokenCount": 161,
+            "totalTokenCount": 404,
+            "cachedInputTokenCount": 0,
+            "reasoningTokenCount": 128,
+            "additionalCounts": {
+              "InputTokenDetails.AudioTokenCount": 0,
+              "OutputTokenDetails.AudioTokenCount": 0,
+              "OutputTokenDetails.AcceptedPredictionTokenCount": 0,
+              "OutputTokenDetails.RejectedPredictionTokenCount": 0
+            }
+          }
+        }
+      ],
+      "responseId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "messageId": "chatcmpl-DroGyENZYUK94pANoCvqO6niKbAKQ",
+      "createdAt": "2026-06-17T17:23:24+00:00",
+      "finishReason": "stop",
+      "modelId": ""
+    }
+  ]
+]

@@ -1,6 +1,11 @@
 using System.Runtime.CompilerServices;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using AGUI.Abstractions;
 using AGUI.Client;
+using Azure.AI.OpenAI;
+using Azure.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.AI;
@@ -64,34 +69,44 @@ public sealed class MixedToolInvocationIntegrationTest : IntegrationTestBase
     [Fact]
     public async Task MixedInvocation_TwoTurnFlow_EmitsToolCallsThenServerResults()
     {
-        // Server tool: registered server-side, will be executed on the server during turn 2
+        const string testName = nameof(MixedInvocation_TwoTurnFlow_EmitsToolCallsThenServerResults);
+        // Server tool: registered server-side (resolved via the approval-resume path on the
+        // continuation). Client tool: declared by the client and auto-invoked client-side.
         var serverToolInvoked = false;
-        string GetWeather()
+        var serverTool = AIFunctionFactory.Create(
+            (string city) => { serverToolInvoked = true; return $"{city}: 18C, rainy"; },
+            "get_weather", "Gets the current weather for a given city.");
+
+        // Record/replay: replay the captured real-LLM run if present, otherwise call Azure
+        // OpenAI (gpt-5-mini) to capture a fresh mixed invocation.
+        var serverCapture = new CapturingChatClient();
+        var recording = LoadRecording(testName, s_jsonOptions);
+        var hasRecording = recording.Count > 0 && recording[0].Count > 0;
+
+        if (hasRecording)
         {
-            serverToolInvoked = true;
-            return "Weather in Amsterdam: 22C, sunny";
+            var fake = new FakeChatClientWithCapture();
+            foreach (var turn in recording)
+            {
+                var captured = turn;
+                fake.Enqueue(_ => ReplayUpdates(captured));
+            }
+
+            serverCapture.SetInner(fake);
         }
-
-        var serverTool = AIFunctionFactory.Create(GetWeather, "get_weather", "Gets the weather");
-
-        var fakeLlm = new FakeChatClientWithCapture();
-
-        // Turn 1 (server): LLM emits both tool calls → FICC wraps in approval requests
-        fakeLlm.Enqueue(_ => EmitMixedToolCalls());
-
-        // Turn 2 (server): After approval processing, FICC calls LLM for final text.
-        fakeLlm.Enqueue(_ => EmitTextResponse(
-            "Based on the weather in Amsterdam (22C, sunny) and your location (Amsterdam), I recommend visiting Vondelpark!"));
+        else
+        {
+            serverCapture.SetInner(CreateAzureChatClient());
+        }
 
         var factory = Factory.WithWebHostBuilder(builder =>
         {
             builder.ConfigureTestServices(services =>
             {
                 services.RemoveAll<IChatClient>();
-                services.AddSingleton<DelegatingStreamingChatClient>();
                 services.AddSingleton<AITool>(serverTool);
-                services.AddChatClient(sp => (IChatClient)fakeLlm)
-                    .UseFunctionInvocation();
+                services.AddChatClient(sp => (IChatClient)serverCapture)
+                    .UseFunctionInvocation(configure: f => f.TerminateOnUnknownCalls = true);
             });
         });
 
@@ -99,50 +114,75 @@ public sealed class MixedToolInvocationIntegrationTest : IntegrationTestBase
         var transport = new AGUIHttpTransport(httpClient, "/agui");
         var aguiClient = new AGUIChatClient(transport);
 
-        // Client declares get_user_location as a client tool with a REAL implementation
-        // (AGUIChatClient's internal FICC will auto-invoke this)
         var clientToolInvoked = false;
         var clientTool = AIFunctionFactory.Create(
-            () =>
-            {
-                clientToolInvoked = true;
-                return "Amsterdam, Netherlands (52.37N, 4.90E)";
-            },
-            "get_user_location",
-            "Gets the user's GPS location");
+            () => { clientToolInvoked = true; return "Tokyo, Japan"; },
+            "get_user_location", "Gets the user's current city via GPS.");
 
         var messages = new List<ChatMessage>
         {
-            new(ChatRole.User, "What's the weather near me?")
+            new(ChatRole.User,
+                "Two things, please: (1) what city am I in right now, and (2) what's the weather in Paris? " +
+                "Call get_user_location for #1 and get_weather for #2."),
         };
-        var options = new ChatOptions
-        {
-            Tools = [clientTool]
-        };
+        var options = new ChatOptions { Tools = [clientTool] };
 
-        // Single call: AGUIChatClient's FICC handles the full round-trip internally
-        // Turn 1: server emits tool calls → client invokes get_user_location → sends result back
-        // Turn 2: server processes continuation, invokes get_weather, calls LLM for final text
         var updates = await CollectUpdates(aguiClient, messages, options);
 
-        // Client tool was auto-invoked by AGUIChatClient's internal FICC
-        Assert.True(clientToolInvoked, "Client tool should be auto-invoked by AGUIChatClient");
+        SaveRecording(testName, serverCapture, s_jsonOptions);
 
-        // Server tool was invoked on the continuation turn
+        // The model issued a true mixed invocation (both tools in the first response): the client
+        // tool ran client-side, and the server tool ran server-side on the continuation.
+        Assert.True(clientToolInvoked, "Client tool should be auto-invoked by AGUIChatClient");
         Assert.True(serverToolInvoked, "Server tool should be invoked during continuation");
 
-        // The server tool call (get_weather) was marked InformationalOnly by AGUIChatClientHandler
-        // so it passes through to the caller as a FunctionCallContent
+        // The server tool call passes through to the caller as an informational FunctionCallContent.
         var serverToolCalls = updates
             .SelectMany(u => u.Contents)
             .OfType<FunctionCallContent>()
             .Where(fcc => fcc.Name == "get_weather")
             .ToList();
-        Assert.Single(serverToolCalls);
+        Assert.NotEmpty(serverToolCalls);
 
-        // Final text response should be present
-        var text = ExtractText(updates);
-        Assert.Contains("Vondelpark", text);
+        Assert.False(string.IsNullOrWhiteSpace(ExtractText(updates)), "Final text response should be present");
+    }
+
+    private static IChatClient CreateAzureChatClient()
+    {
+        var endpoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT")
+            ?? throw new InvalidOperationException("AZURE_OPENAI_ENDPOINT is not set (recording requires Azure).");
+        var deployment = Environment.GetEnvironmentVariable("AZURE_OPENAI_DEPLOYMENT_NAME") ?? "gpt-5-mini";
+        return new AzureOpenAIClient(new Uri(endpoint), new DefaultAzureCredential())
+            .GetChatClient(deployment).AsIChatClient();
+    }
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators
+    private static async IAsyncEnumerable<ChatResponseUpdate> ReplayUpdates(List<ChatResponseUpdate> updates)
+    {
+        foreach (var update in updates)
+        {
+            yield return update;
+        }
+    }
+#pragma warning restore CS1998
+
+    private static readonly JsonSerializerOptions s_jsonOptions = CreateJsonOptions();
+
+    private static JsonSerializerOptions CreateJsonOptions()
+    {
+        JsonSerializerOptions options = new(JsonSerializerDefaults.Web)
+        {
+            WriteIndented = true,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        };
+
+        options.TypeInfoResolverChain.Add(AIJsonUtilities.DefaultOptions.TypeInfoResolver!);
+        options.TypeInfoResolverChain.Add(AGUIJsonSerializerContext.Default);
+        AGUIServiceCollectionExtensions.RegisterInterruptContentTypes(options);
+        options.Converters.Add(new ChatResponseUpdateCaptureConverter());
+
+        return options;
     }
 
     [Fact]
@@ -263,23 +303,6 @@ public sealed class MixedToolInvocationIntegrationTest : IntegrationTestBase
     }
 
 #pragma warning disable CS1998
-    private static async IAsyncEnumerable<ChatResponseUpdate> EmitMixedToolCalls(
-        [EnumeratorCancellation] CancellationToken ct = default)
-    {
-        yield return new ChatResponseUpdate
-        {
-            Role = ChatRole.Assistant,
-            Contents =
-            [
-                new FunctionCallContent("call_weather_1", "get_weather",
-                    new Dictionary<string, object?> { ["city"] = "Amsterdam" }),
-                new FunctionCallContent("call_location_1", "get_user_location",
-                    new Dictionary<string, object?>())
-            ],
-            FinishReason = ChatFinishReason.ToolCalls
-        };
-    }
-
     private static async IAsyncEnumerable<ChatResponseUpdate> EmitSingleToolCall(
         string callId, string name, IDictionary<string, object?> arguments,
         [EnumeratorCancellation] CancellationToken ct = default)
