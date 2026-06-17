@@ -1,0 +1,58 @@
+﻿[
+  {
+    "role": "assistant",
+    "contents": [],
+    "additionalProperties": {
+      "agui_thread_id": "thread_Id_2"
+    },
+    "responseId": "run_Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "functionCall",
+        "name": "ApproveExpenseReport",
+        "arguments": {
+          "expenseReportId": "EXP-2024-001"
+        },
+        "informationalOnly": true,
+        "callId": "call_Id_1"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "tool",
+    "contents": [
+      {
+        "$type": "functionResult",
+        "result": "\u0022Expense report EXP-2024-001 has been approved and processed.\u0022",
+        "callId": "call_Id_1"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "Expense report EXP-2024-001 has been approved and processed."
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "msg_Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [],
+    "responseId": "run_Id_2",
+    "conversationId": "thread_Id_2",
+    "finishReason": "stop"
+  }
+]

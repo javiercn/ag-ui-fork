@@ -1,0 +1,36 @@
+﻿[
+  {
+    "role": "assistant",
+    "contents": [],
+    "additionalProperties": {
+      "agui_thread_id": "thread_Id_1"
+    },
+    "responseId": "run_Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [],
+    "responseId": "run_Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "Here\u0027s a Classic Spaghetti Carbonara recipe \u2014 an intermediate Italian dish with guanciale, egg yolks, and Pecorino Romano. It takes about 30 minutes total to prepare and cook."
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "msg_Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [],
+    "responseId": "run_Id_1",
+    "conversationId": "thread_Id_1",
+    "finishReason": "stop"
+  }
+]

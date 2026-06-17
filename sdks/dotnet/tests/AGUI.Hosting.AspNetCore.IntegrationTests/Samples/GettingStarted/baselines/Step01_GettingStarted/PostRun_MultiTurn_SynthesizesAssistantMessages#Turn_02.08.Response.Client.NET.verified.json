@@ -1,0 +1,234 @@
+﻿[
+  {
+    "role": "assistant",
+    "contents": [],
+    "additionalProperties": {
+      "agui_thread_id": "thread_Id_2"
+    },
+    "responseId": "run_Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "I\u0027m"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " doing"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " well"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": ","
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " thanks"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " \u2014"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " ready"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " to"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " help"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "."
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " What"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " can"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " I"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " do"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " for"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " you"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " today"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "?"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [],
+    "responseId": "run_Id_2",
+    "conversationId": "thread_Id_2",
+    "finishReason": "stop"
+  }
+]

@@ -1,0 +1,49 @@
+﻿[
+  {
+    "type": "RUN_STARTED",
+    "threadId": "thread_Id_2",
+    "runId": "run_Id_2"
+  },
+  {
+    "type": "TEXT_MESSAGE_START",
+    "messageId": "msg_Id_1",
+    "role": "assistant",
+    "rawEvent": {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "Thank you! Your username \u0027johndoe42\u0027 has been registered."
+        }
+      ],
+      "modelId": "user-input-agent"
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "msg_Id_1",
+    "delta": "Thank you! Your username \u0027johndoe42\u0027 has been registered.",
+    "rawEvent": {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "Thank you! Your username \u0027johndoe42\u0027 has been registered."
+        }
+      ],
+      "modelId": "user-input-agent"
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_END",
+    "messageId": "msg_Id_1"
+  },
+  {
+    "type": "RUN_FINISHED",
+    "threadId": "thread_Id_2",
+    "runId": "run_Id_2",
+    "outcome": {
+      "type": "success"
+    }
+  }
+]

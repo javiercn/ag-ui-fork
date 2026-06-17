@@ -1,0 +1,180 @@
+﻿[
+  {
+    "type": "RUN_STARTED",
+    "threadId": "thread_Id_2",
+    "runId": "run_Id_2"
+  },
+  {
+    "type": "TOOL_CALL_START",
+    "parentMessageId": "guid_Id_1",
+    "toolCallId": "call_Id_1",
+    "toolCallName": "delete_file",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "functionCall",
+          "name": "delete_file",
+          "arguments": {
+            "filename": "/etc/important.conf"
+          },
+          "informationalOnly": false,
+          "callId": "call_Id_1",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "guid_Id_1",
+      "messageId": "guid_Id_1",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TOOL_CALL_ARGS",
+    "toolCallId": "call_Id_1",
+    "delta": "{\u0022filename\u0022:\u0022/etc/important.conf\u0022}",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "functionCall",
+          "name": "delete_file",
+          "arguments": {
+            "filename": "/etc/important.conf"
+          },
+          "informationalOnly": false,
+          "callId": "call_Id_1",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "guid_Id_1",
+      "messageId": "guid_Id_1",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TOOL_CALL_END",
+    "toolCallId": "call_Id_1",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "functionCall",
+          "name": "delete_file",
+          "arguments": {
+            "filename": "/etc/important.conf"
+          },
+          "informationalOnly": false,
+          "callId": "call_Id_1",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "guid_Id_1",
+      "messageId": "guid_Id_1",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TOOL_CALL_RESULT",
+    "messageId": "call_Id_1",
+    "toolCallId": "call_Id_1",
+    "content": "\u0022File \u0027/etc/important.conf\u0027 deleted successfully.\u0022",
+    "rawEvent": {
+      "authorName": null,
+      "role": "tool",
+      "contents": [
+        {
+          "$type": "functionResult",
+          "result": "File \u0027/etc/important.conf\u0027 deleted successfully.",
+          "callId": "call_Id_1",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "guid_Id_2",
+      "messageId": "guid_Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_START",
+    "messageId": "msg_Id_1",
+    "role": "assistant",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "The file \u0027/etc/important.conf\u0027 has been deleted successfully.",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": "msg_Id_1",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "gpt-4o",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "msg_Id_1",
+    "delta": "The file \u0027/etc/important.conf\u0027 has been deleted successfully.",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "The file \u0027/etc/important.conf\u0027 has been deleted successfully.",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": "msg_Id_1",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "gpt-4o",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_END",
+    "messageId": "msg_Id_1"
+  },
+  {
+    "type": "RUN_FINISHED",
+    "threadId": "thread_Id_2",
+    "runId": "run_Id_2",
+    "outcome": {
+      "type": "success"
+    }
+  }
+]

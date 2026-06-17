@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -182,59 +182,6 @@ public sealed class Step09_InterruptsApprovalTest : IntegrationTestBase<Step09_I
             });
         }
 
-        var json = JsonSerializer.Serialize(turns, s_jsonOptions);
-        var chatcmplMap = new Dictionary<string, int>();
-        var threadMap = new Dictionary<string, int>();
-        var runMap = new Dictionary<string, int>();
-        var toolCallIdMap = new Dictionary<string, int>();
-        var msgIdMap = new Dictionary<string, int>();
-        var guidMap = new Dictionary<string, int>();
-        await Verifier.VerifyJson(json)
-            .ScrubMember("createdAt")
-            .ScrubMember("totalTokenCount")
-            .AddScrubber(builder =>
-            {
-                var text = builder.ToString();
-                builder.Clear();
-                builder.Append(Regex.Replace(
-                    text,
-                    @"(?<![a-zA-Z_])(chatcmpl-|thread_|run_|call_|msg_|approval_|ficc_)[A-Za-z0-9_]+|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
-                    m =>
-                    {
-                        if (m.Groups[1].Success)
-                        {
-                            var prefix = m.Groups[1].Value;
-                            var suffix = m.Value[prefix.Length..];
-                            var (map, label) = prefix switch
-                            {
-                                "chatcmpl-" => (chatcmplMap, "chatcmpl-Id"),
-                                "thread_" => (threadMap, "thread_Id"),
-                                "run_" => (runMap, "run_Id"),
-                                "call_" => (toolCallIdMap, "call_Id"),
-                                "msg_" => (msgIdMap, "msg_Id"),
-                                "approval_" => (msgIdMap, "approval_Id"),
-                                "ficc_" => (toolCallIdMap, "ficc_Id"),
-                                _ => throw new InvalidOperationException()
-                            };
-                            if (!map.TryGetValue(suffix, out var index))
-                            {
-                                index = map.Count + 1;
-                                map[suffix] = index;
-                            }
-                            return $"{label}_{index}";
-                        }
-                        else
-                        {
-                            // GUID pattern
-                            var guidVal = m.Value;
-                            if (!guidMap.TryGetValue(guidVal, out var index))
-                            {
-                                index = guidMap.Count + 1;
-                                guidMap[guidVal] = index;
-                            }
-                            return $"Guid_{index}";
-                        }
-                    }));
-            });
+        await VerifyCaptures(turns, testName, s_jsonOptions);
     }
 }

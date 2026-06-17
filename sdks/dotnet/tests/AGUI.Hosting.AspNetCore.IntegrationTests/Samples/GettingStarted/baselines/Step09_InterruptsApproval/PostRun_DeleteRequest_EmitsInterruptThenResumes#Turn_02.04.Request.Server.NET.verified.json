@@ -1,0 +1,37 @@
+﻿[
+  {
+    "role": "user",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "Please delete the file /etc/important.conf"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "functionCall",
+        "name": "delete_file",
+        "arguments": {
+          "filename": "/etc/important.conf"
+        },
+        "informationalOnly": true,
+        "callId": "call_Id_1"
+      }
+    ],
+    "messageId": "guid_Id_1"
+  },
+  {
+    "role": "tool",
+    "contents": [
+      {
+        "$type": "functionResult",
+        "result": "File \u0027/etc/important.conf\u0027 deleted successfully.",
+        "callId": "call_Id_1"
+      }
+    ],
+    "messageId": "guid_Id_2"
+  }
+]

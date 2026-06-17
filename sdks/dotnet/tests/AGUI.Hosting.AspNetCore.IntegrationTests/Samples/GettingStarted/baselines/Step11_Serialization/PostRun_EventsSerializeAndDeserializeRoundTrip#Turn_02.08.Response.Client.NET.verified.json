@@ -1,0 +1,30 @@
+﻿[
+  {
+    "role": "assistant",
+    "contents": [],
+    "additionalProperties": {
+      "agui_thread_id": "thread_Id_1"
+    },
+    "responseId": "run_Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "Event compaction reduces noise in an event stream. It merges TEXT_MESSAGE_CONTENT sequences into snapshots and collapses STATE_DELTA events into a final STATE_SNAPSHOT."
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "guid_Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [],
+    "responseId": "run_Id_2",
+    "conversationId": "thread_Id_1",
+    "finishReason": "stop"
+  }
+]

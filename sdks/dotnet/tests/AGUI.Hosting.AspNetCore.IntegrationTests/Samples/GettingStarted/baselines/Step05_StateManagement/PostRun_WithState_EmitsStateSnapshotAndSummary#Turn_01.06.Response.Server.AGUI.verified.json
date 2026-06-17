@@ -1,0 +1,49 @@
+﻿[
+  {
+    "type": "RUN_STARTED",
+    "threadId": "thread_Id_1",
+    "runId": "run_Id_1"
+  },
+  {
+    "type": "TEXT_MESSAGE_START",
+    "messageId": "msg_Id_1",
+    "role": "assistant",
+    "rawEvent": {
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "{\u0022recipe\u0022:{\u0022title\u0022:\u0022Classic Spaghetti Carbonara\u0022,\u0022cuisine\u0022:\u0022Italian\u0022,\u0022ingredients\u0022:[\u0022400g spaghetti\u0022,\u0022200g guanciale or pancetta\u0022,\u00224 large egg yolks\u0022,\u0022100g Pecorino Romano cheese, grated\u0022,\u0022Freshly ground black pepper\u0022,\u0022Salt for pasta water\u0022],\u0022steps\u0022:[\u0022Bring a large pot of salted water to boil and cook spaghetti until al dente.\u0022,\u0022While pasta cooks, cut guanciale into small strips and cook in a dry pan over medium heat until crispy.\u0022,\u0022In a bowl, whisk together egg yolks and grated Pecorino Romano.\u0022,\u0022Drain pasta, reserving 1 cup of pasta water.\u0022,\u0022Toss hot pasta with guanciale, then remove from heat.\u0022,\u0022Add egg and cheese mixture, tossing quickly to create a creamy sauce. Add pasta water as needed.\u0022,\u0022Season generously with black pepper and serve immediately.\u0022],\u0022prep_time_minutes\u0022:10,\u0022cook_time_minutes\u0022:20,\u0022skill_level\u0022:\u0022intermediate\u0022}}"
+        }
+      ],
+      "modelId": "gpt-4o-mini"
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "msg_Id_1",
+    "delta": "{\u0022recipe\u0022:{\u0022title\u0022:\u0022Classic Spaghetti Carbonara\u0022,\u0022cuisine\u0022:\u0022Italian\u0022,\u0022ingredients\u0022:[\u0022400g spaghetti\u0022,\u0022200g guanciale or pancetta\u0022,\u00224 large egg yolks\u0022,\u0022100g Pecorino Romano cheese, grated\u0022,\u0022Freshly ground black pepper\u0022,\u0022Salt for pasta water\u0022],\u0022steps\u0022:[\u0022Bring a large pot of salted water to boil and cook spaghetti until al dente.\u0022,\u0022While pasta cooks, cut guanciale into small strips and cook in a dry pan over medium heat until crispy.\u0022,\u0022In a bowl, whisk together egg yolks and grated Pecorino Romano.\u0022,\u0022Drain pasta, reserving 1 cup of pasta water.\u0022,\u0022Toss hot pasta with guanciale, then remove from heat.\u0022,\u0022Add egg and cheese mixture, tossing quickly to create a creamy sauce. Add pasta water as needed.\u0022,\u0022Season generously with black pepper and serve immediately.\u0022],\u0022prep_time_minutes\u0022:10,\u0022cook_time_minutes\u0022:20,\u0022skill_level\u0022:\u0022intermediate\u0022}}",
+    "rawEvent": {
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "{\u0022recipe\u0022:{\u0022title\u0022:\u0022Classic Spaghetti Carbonara\u0022,\u0022cuisine\u0022:\u0022Italian\u0022,\u0022ingredients\u0022:[\u0022400g spaghetti\u0022,\u0022200g guanciale or pancetta\u0022,\u00224 large egg yolks\u0022,\u0022100g Pecorino Romano cheese, grated\u0022,\u0022Freshly ground black pepper\u0022,\u0022Salt for pasta water\u0022],\u0022steps\u0022:[\u0022Bring a large pot of salted water to boil and cook spaghetti until al dente.\u0022,\u0022While pasta cooks, cut guanciale into small strips and cook in a dry pan over medium heat until crispy.\u0022,\u0022In a bowl, whisk together egg yolks and grated Pecorino Romano.\u0022,\u0022Drain pasta, reserving 1 cup of pasta water.\u0022,\u0022Toss hot pasta with guanciale, then remove from heat.\u0022,\u0022Add egg and cheese mixture, tossing quickly to create a creamy sauce. Add pasta water as needed.\u0022,\u0022Season generously with black pepper and serve immediately.\u0022],\u0022prep_time_minutes\u0022:10,\u0022cook_time_minutes\u0022:20,\u0022skill_level\u0022:\u0022intermediate\u0022}}"
+        }
+      ],
+      "modelId": "gpt-4o-mini"
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_END",
+    "messageId": "msg_Id_1"
+  },
+  {
+    "type": "RUN_FINISHED",
+    "threadId": "thread_Id_1",
+    "runId": "run_Id_1",
+    "outcome": {
+      "type": "success"
+    }
+  }
+]

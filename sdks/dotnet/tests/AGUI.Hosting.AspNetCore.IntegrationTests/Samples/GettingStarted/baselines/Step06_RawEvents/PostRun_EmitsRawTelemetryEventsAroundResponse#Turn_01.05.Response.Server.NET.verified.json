@@ -1,0 +1,12 @@
+﻿[
+  {
+    "role": "Assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "Raw events let an agent pass through opaque events from external systems unchanged."
+      }
+    ],
+    "modelId": "gpt-4o-mini"
+  }
+]

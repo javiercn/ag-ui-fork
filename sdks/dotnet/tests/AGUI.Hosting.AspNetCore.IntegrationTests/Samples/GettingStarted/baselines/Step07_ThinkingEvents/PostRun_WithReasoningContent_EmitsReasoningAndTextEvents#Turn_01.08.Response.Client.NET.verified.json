@@ -1,0 +1,65 @@
+﻿[
+  {
+    "role": "assistant",
+    "contents": [],
+    "additionalProperties": {
+      "agui_thread_id": "thread_Id_1"
+    },
+    "responseId": "run_Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [],
+    "responseId": "run_Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [],
+    "responseId": "run_Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "reasoning",
+        "text": "Let me calculate 15 * 23. I can break this down: 15 * 20 = 300, 15 * 3 = 45, so 300 \u002B 45 = 345."
+      }
+    ],
+    "responseId": "run_Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [],
+    "responseId": "run_Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [],
+    "responseId": "run_Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "15 \u00D7 23 = 345"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "msg_Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [],
+    "responseId": "run_Id_1",
+    "conversationId": "thread_Id_1",
+    "finishReason": "stop"
+  }
+]

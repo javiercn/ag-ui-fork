@@ -1,0 +1,58 @@
+﻿[
+  {
+    "role": "assistant",
+    "contents": [],
+    "additionalProperties": {
+      "agui_thread_id": "thread_Id_2"
+    },
+    "responseId": "run_Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "functionCall",
+        "name": "delete_file",
+        "arguments": {
+          "filename": "/etc/important.conf"
+        },
+        "informationalOnly": true,
+        "callId": "call_Id_1"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "tool",
+    "contents": [
+      {
+        "$type": "functionResult",
+        "result": "\u0022File \u0027/etc/important.conf\u0027 deleted successfully.\u0022",
+        "callId": "call_Id_1"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "The file \u0027/etc/important.conf\u0027 has been deleted successfully."
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "msg_Id_1",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [],
+    "responseId": "run_Id_2",
+    "conversationId": "thread_Id_2",
+    "finishReason": "stop"
+  }
+]

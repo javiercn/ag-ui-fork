@@ -1,0 +1,12 @@
+﻿[
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "Thank you! Your username \u0027johndoe42\u0027 has been registered."
+      }
+    ],
+    "modelId": "user-input-agent"
+  }
+]

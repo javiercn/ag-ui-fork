@@ -1,0 +1,49 @@
+﻿[
+  {
+    "type": "RUN_STARTED",
+    "threadId": "thread_Id_1",
+    "runId": "run_Id_1"
+  },
+  {
+    "type": "TEXT_MESSAGE_START",
+    "messageId": "msg_Id_1",
+    "role": "assistant",
+    "rawEvent": {
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "The image shows the AG-UI logo, a geometric crystal or diamond shape rendered in black. The design features angular facets that create a three-dimensional appearance, with clean lines forming a symmetrical polyhedron. It represents the AG-UI protocol\u0027s visual identity."
+        }
+      ],
+      "modelId": "gpt-4o"
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "msg_Id_1",
+    "delta": "The image shows the AG-UI logo, a geometric crystal or diamond shape rendered in black. The design features angular facets that create a three-dimensional appearance, with clean lines forming a symmetrical polyhedron. It represents the AG-UI protocol\u0027s visual identity.",
+    "rawEvent": {
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "The image shows the AG-UI logo, a geometric crystal or diamond shape rendered in black. The design features angular facets that create a three-dimensional appearance, with clean lines forming a symmetrical polyhedron. It represents the AG-UI protocol\u0027s visual identity."
+        }
+      ],
+      "modelId": "gpt-4o"
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_END",
+    "messageId": "msg_Id_1"
+  },
+  {
+    "type": "RUN_FINISHED",
+    "threadId": "thread_Id_1",
+    "runId": "run_Id_1",
+    "outcome": {
+      "type": "success"
+    }
+  }
+]

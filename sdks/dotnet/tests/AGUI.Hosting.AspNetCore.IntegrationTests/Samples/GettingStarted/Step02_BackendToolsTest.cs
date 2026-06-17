@@ -1,4 +1,4 @@
-﻿using AGUI.Abstractions;
+using AGUI.Abstractions;
 using AGUI.Client;
 using AGUI.Hosting.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -187,40 +187,6 @@ public sealed class Step02_BackendToolsTest : IntegrationTestBase<Step02_Backend
             });
         }
 
-        var json = JsonSerializer.Serialize(turns, s_jsonOptions);
-        var chatcmplMap = new Dictionary<string, int>();
-        var threadMap = new Dictionary<string, int>();
-        var runMap = new Dictionary<string, int>();
-        var toolCallIdMap = new Dictionary<string, int>();
-        await Verifier.VerifyJson(json)
-            .ScrubMember("createdAt")
-            .ScrubMember("totalTokenCount")
-            .AddScrubber(builder =>
-            {
-                var text = builder.ToString();
-                builder.Clear();
-                builder.Append(Regex.Replace(
-                    text,
-                    @"(?<![a-zA-Z_])(chatcmpl-|thread_|run_|call_)[A-Za-z0-9_]+",
-                    m =>
-                    {
-                        var prefix = m.Groups[1].Value;
-                        var suffix = m.Value[prefix.Length..];
-                        var (map, label) = prefix switch
-                        {
-                            "chatcmpl-" => (chatcmplMap, "chatcmpl-Id"),
-                            "thread_" => (threadMap, "thread_Id"),
-                            "run_" => (runMap, "run_Id"),
-                            "call_" => (toolCallIdMap, "call_Id"),
-                            _ => throw new InvalidOperationException()
-                        };
-                        if (!map.TryGetValue(suffix, out var index))
-                        {
-                            index = map.Count + 1;
-                            map[suffix] = index;
-                        }
-                        return $"{label}_{index}";
-                    }));
-            });
+        await VerifyCaptures(turns, testName, s_jsonOptions);
     }
 }

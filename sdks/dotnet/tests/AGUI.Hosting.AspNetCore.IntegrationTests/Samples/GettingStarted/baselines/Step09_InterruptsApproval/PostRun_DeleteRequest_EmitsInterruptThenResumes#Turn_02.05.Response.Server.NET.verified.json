@@ -1,0 +1,13 @@
+﻿[
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "The file \u0027/etc/important.conf\u0027 has been deleted successfully."
+      }
+    ],
+    "messageId": "msg_Id_1",
+    "modelId": "gpt-4o"
+  }
+]

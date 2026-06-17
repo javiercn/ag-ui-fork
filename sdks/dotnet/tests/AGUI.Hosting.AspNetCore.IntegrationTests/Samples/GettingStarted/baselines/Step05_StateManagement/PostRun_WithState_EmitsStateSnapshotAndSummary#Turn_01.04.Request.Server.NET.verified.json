@@ -1,0 +1,37 @@
+﻿[
+  {
+    "role": "user",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "Suggest me an Italian pasta recipe"
+      }
+    ]
+  },
+  {
+    "role": "system",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "You are a helpful recipe assistant. When users ask you to create or suggest a recipe,\nrespond with a complete JSON object that includes:\n- recipe.title: The recipe name\n- recipe.cuisine: Type of cuisine (e.g., Italian, Mexican, Japanese)\n- recipe.ingredients: Array of ingredient strings with quantities\n- recipe.steps: Array of cooking instruction strings\n- recipe.prep_time_minutes: Preparation time in minutes\n- recipe.cook_time_minutes: Cooking time in minutes\n- recipe.skill_level: One of \u0022beginner\u0022, \u0022intermediate\u0022, or \u0022advanced\u0022\n\nAlways include all fields in the response. Be creative and helpful."
+      }
+    ]
+  },
+  {
+    "role": "system",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "Here is the current state in JSON format:"
+      },
+      {
+        "$type": "text",
+        "text": "{\u0022recipe\u0022:{\u0022title\u0022:\u0022\u0022,\u0022cuisine\u0022:\u0022\u0022,\u0022ingredients\u0022:[],\u0022steps\u0022:[],\u0022prep_time_minutes\u0022:0,\u0022cook_time_minutes\u0022:0,\u0022skill_level\u0022:\u0022\u0022}}"
+      },
+      {
+        "$type": "text",
+        "text": "The new state is:"
+      }
+    ]
+  }
+]

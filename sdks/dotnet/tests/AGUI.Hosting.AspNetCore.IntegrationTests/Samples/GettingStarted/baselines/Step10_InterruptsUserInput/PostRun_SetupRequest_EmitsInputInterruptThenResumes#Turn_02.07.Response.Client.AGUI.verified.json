@@ -1,0 +1,67 @@
+﻿[
+  {
+    "type": "RUN_STARTED",
+    "threadId": "thread_Id_2",
+    "runId": "run_Id_2"
+  },
+  {
+    "type": "TEXT_MESSAGE_START",
+    "messageId": "msg_Id_2",
+    "role": "assistant",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "Thank you! Your username \u0027johndoe42\u0027 has been registered.",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": null,
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "user-input-agent",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "msg_Id_2",
+    "delta": "Thank you! Your username \u0027johndoe42\u0027 has been registered.",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "Thank you! Your username \u0027johndoe42\u0027 has been registered.",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": null,
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "user-input-agent",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_END",
+    "messageId": "msg_Id_2"
+  },
+  {
+    "type": "RUN_FINISHED",
+    "threadId": "thread_Id_2",
+    "runId": "run_Id_2",
+    "outcome": {
+      "type": "success"
+    }
+  }
+]

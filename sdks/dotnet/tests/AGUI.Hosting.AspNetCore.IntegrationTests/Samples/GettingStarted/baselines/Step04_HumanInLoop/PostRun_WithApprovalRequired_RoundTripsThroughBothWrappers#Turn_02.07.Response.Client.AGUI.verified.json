@@ -1,0 +1,180 @@
+﻿[
+  {
+    "type": "RUN_STARTED",
+    "threadId": "thread_Id_2",
+    "runId": "run_Id_2"
+  },
+  {
+    "type": "TOOL_CALL_START",
+    "parentMessageId": "guid_Id_1",
+    "toolCallId": "call_Id_1",
+    "toolCallName": "ApproveExpenseReport",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "functionCall",
+          "name": "ApproveExpenseReport",
+          "arguments": {
+            "expenseReportId": "EXP-2024-001"
+          },
+          "informationalOnly": false,
+          "callId": "call_Id_1",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "guid_Id_1",
+      "messageId": "guid_Id_1",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TOOL_CALL_ARGS",
+    "toolCallId": "call_Id_1",
+    "delta": "{\u0022expenseReportId\u0022:\u0022EXP-2024-001\u0022}",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "functionCall",
+          "name": "ApproveExpenseReport",
+          "arguments": {
+            "expenseReportId": "EXP-2024-001"
+          },
+          "informationalOnly": false,
+          "callId": "call_Id_1",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "guid_Id_1",
+      "messageId": "guid_Id_1",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TOOL_CALL_END",
+    "toolCallId": "call_Id_1",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "functionCall",
+          "name": "ApproveExpenseReport",
+          "arguments": {
+            "expenseReportId": "EXP-2024-001"
+          },
+          "informationalOnly": false,
+          "callId": "call_Id_1",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "guid_Id_1",
+      "messageId": "guid_Id_1",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TOOL_CALL_RESULT",
+    "messageId": "call_Id_1",
+    "toolCallId": "call_Id_1",
+    "content": "\u0022Expense report EXP-2024-001 has been approved and processed.\u0022",
+    "rawEvent": {
+      "authorName": null,
+      "role": "tool",
+      "contents": [
+        {
+          "$type": "functionResult",
+          "result": "Expense report EXP-2024-001 has been approved and processed.",
+          "callId": "call_Id_1",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": "guid_Id_2",
+      "messageId": "guid_Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_START",
+    "messageId": "msg_Id_2",
+    "role": "assistant",
+    "rawEvent": {
+      "authorName": null,
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "Expense report EXP-2024-001 has been approved and processed.",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": null,
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "gpt-4o-mini",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "msg_Id_2",
+    "delta": "Expense report EXP-2024-001 has been approved and processed.",
+    "rawEvent": {
+      "authorName": null,
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "Expense report EXP-2024-001 has been approved and processed.",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": null,
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "gpt-4o-mini",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_END",
+    "messageId": "msg_Id_2"
+  },
+  {
+    "type": "RUN_FINISHED",
+    "threadId": "thread_Id_2",
+    "runId": "run_Id_2",
+    "outcome": {
+      "type": "success"
+    }
+  }
+]

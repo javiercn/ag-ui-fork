@@ -1,0 +1,96 @@
+﻿[
+  {
+    "type": "RUN_STARTED",
+    "threadId": "thread_Id_2",
+    "runId": "run_Id_2"
+  },
+  {
+    "type": "TEXT_MESSAGE_START",
+    "messageId": "msg_Id_3",
+    "role": "assistant",
+    "rawEvent": {
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "Based on your location in Amsterdam, Netherlands,"
+        }
+      ],
+      "modelId": "gpt-4o-mini"
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "msg_Id_3",
+    "delta": "Based on your location in Amsterdam, Netherlands,",
+    "rawEvent": {
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "Based on your location in Amsterdam, Netherlands,"
+        }
+      ],
+      "modelId": "gpt-4o-mini"
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_END",
+    "messageId": "msg_Id_3",
+    "rawEvent": {
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " here are some great things to do nearby:\n\n1. Visit the Rijksmuseum\n2. Take a canal cruise\n3. Explore the Jordaan neighborhood"
+        }
+      ],
+      "finishReason": "stop",
+      "modelId": "gpt-4o-mini"
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_START",
+    "messageId": "msg_Id_4",
+    "role": "assistant",
+    "rawEvent": {
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " here are some great things to do nearby:\n\n1. Visit the Rijksmuseum\n2. Take a canal cruise\n3. Explore the Jordaan neighborhood"
+        }
+      ],
+      "finishReason": "stop",
+      "modelId": "gpt-4o-mini"
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "msg_Id_4",
+    "delta": " here are some great things to do nearby:\n\n1. Visit the Rijksmuseum\n2. Take a canal cruise\n3. Explore the Jordaan neighborhood",
+    "rawEvent": {
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " here are some great things to do nearby:\n\n1. Visit the Rijksmuseum\n2. Take a canal cruise\n3. Explore the Jordaan neighborhood"
+        }
+      ],
+      "finishReason": "stop",
+      "modelId": "gpt-4o-mini"
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_END",
+    "messageId": "msg_Id_4"
+  },
+  {
+    "type": "RUN_FINISHED",
+    "threadId": "thread_Id_2",
+    "runId": "run_Id_2",
+    "outcome": {
+      "type": "success"
+    }
+  }
+]

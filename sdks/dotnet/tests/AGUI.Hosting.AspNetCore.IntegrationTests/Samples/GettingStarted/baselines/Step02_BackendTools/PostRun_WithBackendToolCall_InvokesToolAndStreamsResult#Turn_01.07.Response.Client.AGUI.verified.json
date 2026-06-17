@@ -1,0 +1,261 @@
+﻿[
+  {
+    "type": "RUN_STARTED",
+    "threadId": "thread_Id_1",
+    "runId": "run_Id_1"
+  },
+  {
+    "type": "TOOL_CALL_START",
+    "parentMessageId": "chatcmpl-Id_1",
+    "toolCallId": "call_Id_1",
+    "toolCallName": "SearchRestaurants",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "functionCall",
+          "name": "SearchRestaurants",
+          "arguments": {
+            "request": {
+              "location": "Seattle",
+              "cuisine": "Italian"
+            }
+          },
+          "informationalOnly": false,
+          "callId": "call_Id_1",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": "chatcmpl-Id_1",
+      "conversationId": null,
+      "finishReason": "toolCalls",
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TOOL_CALL_ARGS",
+    "toolCallId": "call_Id_1",
+    "delta": "{\u0022request\u0022:{\u0022location\u0022:\u0022Seattle\u0022,\u0022cuisine\u0022:\u0022Italian\u0022}}",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "functionCall",
+          "name": "SearchRestaurants",
+          "arguments": {
+            "request": {
+              "location": "Seattle",
+              "cuisine": "Italian"
+            }
+          },
+          "informationalOnly": false,
+          "callId": "call_Id_1",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": "chatcmpl-Id_1",
+      "conversationId": null,
+      "finishReason": "toolCalls",
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TOOL_CALL_END",
+    "toolCallId": "call_Id_1",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "functionCall",
+          "name": "SearchRestaurants",
+          "arguments": {
+            "request": {
+              "location": "Seattle",
+              "cuisine": "Italian"
+            }
+          },
+          "informationalOnly": false,
+          "callId": "call_Id_1",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": "chatcmpl-Id_1",
+      "conversationId": null,
+      "finishReason": "toolCalls",
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TOOL_CALL_RESULT",
+    "messageId": "call_Id_1",
+    "toolCallId": "call_Id_1",
+    "content": "\u0022{\\\u0022location\\\u0022:\\\u0022Seattle\\\u0022,\\\u0022cuisine\\\u0022:\\\u0022Italian\\\u0022,\\\u0022results\\\u0022:[{\\\u0022name\\\u0022:\\\u0022The Golden Fork\\\u0022,\\\u0022cuisine\\\u0022:\\\u0022Italian\\\u0022,\\\u0022rating\\\u0022:4.5,\\\u0022address\\\u0022:\\\u0022123 Main St, Seattle\\\u0022},{\\\u0022name\\\u0022:\\\u0022Spice Haven\\\u0022,\\\u0022cuisine\\\u0022:\\\u0022Indian\\\u0022,\\\u0022rating\\\u0022:4.7,\\\u0022address\\\u0022:\\\u0022456 Oak Ave, Seattle\\\u0022},{\\\u0022name\\\u0022:\\\u0022Green Leaf\\\u0022,\\\u0022cuisine\\\u0022:\\\u0022Vegetarian\\\u0022,\\\u0022rating\\\u0022:4.3,\\\u0022address\\\u0022:\\\u0022789 Elm Rd, Seattle\\\u0022}]}\u0022",
+    "rawEvent": {
+      "authorName": null,
+      "role": null,
+      "contents": [
+        {
+          "$type": "functionResult",
+          "result": "{\u0022location\u0022:\u0022Seattle\u0022,\u0022cuisine\u0022:\u0022Italian\u0022,\u0022results\u0022:[{\u0022name\u0022:\u0022The Golden Fork\u0022,\u0022cuisine\u0022:\u0022Italian\u0022,\u0022rating\u0022:4.5,\u0022address\u0022:\u0022123 Main St, Seattle\u0022},{\u0022name\u0022:\u0022Spice Haven\u0022,\u0022cuisine\u0022:\u0022Indian\u0022,\u0022rating\u0022:4.7,\u0022address\u0022:\u0022456 Oak Ave, Seattle\u0022},{\u0022name\u0022:\u0022Green Leaf\u0022,\u0022cuisine\u0022:\u0022Vegetarian\u0022,\u0022rating\u0022:4.3,\u0022address\u0022:\u0022789 Elm Rd, Seattle\u0022}]}",
+          "callId": "call_Id_1",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": null,
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_START",
+    "messageId": "chatcmpl-Id_2",
+    "role": "assistant",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "I found some great Italian restaurants in Seattle for you!\n\n",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": "I found some great Italian restaurants in Seattle for you!\n\n",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "I found some great Italian restaurants in Seattle for you!\n\n",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": "1. **The Golden Fork** - Italian cuisine, rated 4.5/5, located at 123 Main St, Seattle\n",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "1. **The Golden Fork** - Italian cuisine, rated 4.5/5, located at 123 Main St, Seattle\n",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": "2. **Spice Haven** - Indian cuisine, rated 4.7/5, located at 456 Oak Ave, Seattle\n",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "2. **Spice Haven** - Indian cuisine, rated 4.7/5, located at 456 Oak Ave, Seattle\n",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "chatcmpl-Id_2",
+    "delta": "3. **Green Leaf** - Vegetarian cuisine, rated 4.3/5, located at 789 Elm Rd, Seattle",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "3. **Green Leaf** - Vegetarian cuisine, rated 4.3/5, located at 789 Elm Rd, Seattle",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": "chatcmpl-Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_END",
+    "messageId": "chatcmpl-Id_2"
+  },
+  {
+    "type": "RUN_FINISHED",
+    "threadId": "thread_Id_1",
+    "runId": "run_Id_1",
+    "outcome": {
+      "type": "success"
+    }
+  }
+]

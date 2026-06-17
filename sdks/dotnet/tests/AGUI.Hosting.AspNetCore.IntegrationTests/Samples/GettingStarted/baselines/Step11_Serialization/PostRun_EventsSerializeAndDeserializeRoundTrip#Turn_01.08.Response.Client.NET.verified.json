@@ -1,0 +1,30 @@
+﻿[
+  {
+    "role": "assistant",
+    "contents": [],
+    "additionalProperties": {
+      "agui_thread_id": "thread_Id_1"
+    },
+    "responseId": "run_Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "AG-UI events use a type discriminator for polymorphic serialization. Each event has a \u0027type\u0027 field that identifies its concrete type, enabling correct deserialization from JSON back to the proper .NET type."
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "guid_Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [],
+    "responseId": "run_Id_1",
+    "conversationId": "thread_Id_1",
+    "finishReason": "stop"
+  }
+]

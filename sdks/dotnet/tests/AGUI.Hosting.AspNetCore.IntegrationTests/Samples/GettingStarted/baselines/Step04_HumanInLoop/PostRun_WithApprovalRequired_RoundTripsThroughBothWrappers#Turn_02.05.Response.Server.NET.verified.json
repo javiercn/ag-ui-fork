@@ -1,0 +1,12 @@
+﻿[
+  {
+    "role": "Assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "Expense report EXP-2024-001 has been approved and processed."
+      }
+    ],
+    "modelId": "gpt-4o-mini"
+  }
+]

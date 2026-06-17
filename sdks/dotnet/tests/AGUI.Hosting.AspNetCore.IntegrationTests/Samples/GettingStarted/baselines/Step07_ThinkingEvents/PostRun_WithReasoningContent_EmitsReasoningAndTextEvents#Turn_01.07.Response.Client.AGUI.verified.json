@@ -1,0 +1,89 @@
+﻿[
+  {
+    "type": "RUN_STARTED",
+    "threadId": "thread_Id_1",
+    "runId": "run_Id_1"
+  },
+  {
+    "type": "REASONING_START",
+    "messageId": "msg_Id_1"
+  },
+  {
+    "type": "REASONING_MESSAGE_START",
+    "messageId": "msg_Id_1",
+    "role": "reasoning"
+  },
+  {
+    "type": "REASONING_MESSAGE_CONTENT",
+    "messageId": "msg_Id_1",
+    "delta": "Let me calculate 15 * 23. I can break this down: 15 * 20 = 300, 15 * 3 = 45, so 300 \u002B 45 = 345."
+  },
+  {
+    "type": "REASONING_MESSAGE_END",
+    "messageId": "msg_Id_1"
+  },
+  {
+    "type": "REASONING_END",
+    "messageId": "msg_Id_1"
+  },
+  {
+    "type": "TEXT_MESSAGE_START",
+    "messageId": "msg_Id_2",
+    "role": "assistant",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "15 \u00D7 23 = 345",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": "msg_Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "msg_Id_2",
+    "delta": "15 \u00D7 23 = 345",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "15 \u00D7 23 = 345",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": "msg_Id_2",
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": null,
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_END",
+    "messageId": "msg_Id_2"
+  },
+  {
+    "type": "RUN_FINISHED",
+    "threadId": "thread_Id_1",
+    "runId": "run_Id_1",
+    "outcome": {
+      "type": "success"
+    }
+  }
+]

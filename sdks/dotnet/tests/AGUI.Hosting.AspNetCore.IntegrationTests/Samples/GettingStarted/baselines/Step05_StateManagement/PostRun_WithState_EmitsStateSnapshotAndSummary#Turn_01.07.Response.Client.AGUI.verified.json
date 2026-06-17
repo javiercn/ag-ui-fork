@@ -1,0 +1,96 @@
+﻿[
+  {
+    "type": "RUN_STARTED",
+    "threadId": "thread_Id_1",
+    "runId": "run_Id_1"
+  },
+  {
+    "type": "STATE_SNAPSHOT",
+    "snapshot": {
+      "recipe": {
+        "title": "Classic Spaghetti Carbonara",
+        "cuisine": "Italian",
+        "ingredients": [
+          "400g spaghetti",
+          "200g guanciale or pancetta",
+          "4 large egg yolks",
+          "100g Pecorino Romano cheese, grated",
+          "Freshly ground black pepper",
+          "Salt for pasta water"
+        ],
+        "steps": [
+          "Bring a large pot of salted water to boil and cook spaghetti until al dente.",
+          "While pasta cooks, cut guanciale into small strips and cook in a dry pan over medium heat until crispy.",
+          "In a bowl, whisk together egg yolks and grated Pecorino Romano.",
+          "Drain pasta, reserving 1 cup of pasta water.",
+          "Toss hot pasta with guanciale, then remove from heat.",
+          "Add egg and cheese mixture, tossing quickly to create a creamy sauce. Add pasta water as needed.",
+          "Season generously with black pepper and serve immediately."
+        ],
+        "prep_time_minutes": 10,
+        "cook_time_minutes": 20,
+        "skill_level": "intermediate"
+      }
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_START",
+    "messageId": "msg_Id_2",
+    "role": "assistant",
+    "rawEvent": {
+      "authorName": null,
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "Here\u0027s a Classic Spaghetti Carbonara recipe \u2014 an intermediate Italian dish with guanciale, egg yolks, and Pecorino Romano. It takes about 30 minutes total to prepare and cook.",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": null,
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "gpt-4o-mini",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_CONTENT",
+    "messageId": "msg_Id_2",
+    "delta": "Here\u0027s a Classic Spaghetti Carbonara recipe \u2014 an intermediate Italian dish with guanciale, egg yolks, and Pecorino Romano. It takes about 30 minutes total to prepare and cook.",
+    "rawEvent": {
+      "authorName": null,
+      "role": "Assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "Here\u0027s a Classic Spaghetti Carbonara recipe \u2014 an intermediate Italian dish with guanciale, egg yolks, and Pecorino Romano. It takes about 30 minutes total to prepare and cook.",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": null,
+      "conversationId": null,
+      "finishReason": null,
+      "modelId": "gpt-4o-mini",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TEXT_MESSAGE_END",
+    "messageId": "msg_Id_2"
+  },
+  {
+    "type": "RUN_FINISHED",
+    "threadId": "thread_Id_1",
+    "runId": "run_Id_1",
+    "outcome": {
+      "type": "success"
+    }
+  }
+]

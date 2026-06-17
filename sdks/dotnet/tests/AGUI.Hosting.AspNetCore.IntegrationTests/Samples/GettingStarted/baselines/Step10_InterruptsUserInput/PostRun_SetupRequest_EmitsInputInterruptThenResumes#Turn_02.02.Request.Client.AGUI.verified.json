@@ -1,0 +1,19 @@
+﻿{
+  "threadId": "thread_Id_2",
+  "runId": "run_Id_2",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Please setup my account"
+    }
+  ],
+  "resume": [
+    {
+      "interruptId": "input_Id_2",
+      "status": "resolved",
+      "payload": {
+        "response": "johndoe42"
+      }
+    }
+  ]
+}

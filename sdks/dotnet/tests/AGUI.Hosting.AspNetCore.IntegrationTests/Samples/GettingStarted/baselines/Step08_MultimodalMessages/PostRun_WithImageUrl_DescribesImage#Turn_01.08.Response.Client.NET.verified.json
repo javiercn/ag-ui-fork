@@ -1,0 +1,30 @@
+﻿[
+  {
+    "role": "assistant",
+    "contents": [],
+    "additionalProperties": {
+      "agui_thread_id": "thread_Id_1"
+    },
+    "responseId": "run_Id_1",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "The image shows the AG-UI logo, a geometric crystal or diamond shape rendered in black. The design features angular facets that create a three-dimensional appearance, with clean lines forming a symmetrical polyhedron. It represents the AG-UI protocol\u0027s visual identity."
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "msg_Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [],
+    "responseId": "run_Id_1",
+    "conversationId": "thread_Id_1",
+    "finishReason": "stop"
+  }
+]

@@ -1,0 +1,105 @@
+﻿[
+  {
+    "type": "RUN_STARTED",
+    "threadId": "thread_Id_1",
+    "runId": "run_Id_1"
+  },
+  {
+    "type": "TOOL_CALL_START",
+    "toolCallId": "call_Id_1",
+    "toolCallName": "delete_file",
+    "rawEvent": {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "toolApprovalRequest",
+          "toolCall": {
+            "$type": "functionCall",
+            "name": "delete_file",
+            "arguments": {
+              "filename": "/etc/important.conf"
+            },
+            "informationalOnly": false,
+            "callId": "call_Id_1"
+          },
+          "requestId": "ficc_Id_1"
+        }
+      ],
+      "finishReason": "tool_calls"
+    }
+  },
+  {
+    "type": "TOOL_CALL_ARGS",
+    "toolCallId": "call_Id_1",
+    "delta": "{\r\n  \u0022filename\u0022: \u0022/etc/important.conf\u0022\r\n}",
+    "rawEvent": {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "toolApprovalRequest",
+          "toolCall": {
+            "$type": "functionCall",
+            "name": "delete_file",
+            "arguments": {
+              "filename": "/etc/important.conf"
+            },
+            "informationalOnly": false,
+            "callId": "call_Id_1"
+          },
+          "requestId": "ficc_Id_1"
+        }
+      ],
+      "finishReason": "tool_calls"
+    }
+  },
+  {
+    "type": "TOOL_CALL_END",
+    "toolCallId": "call_Id_1",
+    "rawEvent": {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "toolApprovalRequest",
+          "toolCall": {
+            "$type": "functionCall",
+            "name": "delete_file",
+            "arguments": {
+              "filename": "/etc/important.conf"
+            },
+            "informationalOnly": false,
+            "callId": "call_Id_1"
+          },
+          "requestId": "ficc_Id_1"
+        }
+      ],
+      "finishReason": "tool_calls"
+    }
+  },
+  {
+    "type": "RUN_FINISHED",
+    "threadId": "thread_Id_1",
+    "runId": "run_Id_1",
+    "outcome": {
+      "type": "interrupt",
+      "interrupts": [
+        {
+          "id": "ficc_Id_1",
+          "reason": "tool_call",
+          "message": "Approval required for tool call: delete_file",
+          "toolCallId": "call_Id_1",
+          "responseSchema": {
+            "type": "object",
+            "properties": {
+              "approved": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "approved"
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

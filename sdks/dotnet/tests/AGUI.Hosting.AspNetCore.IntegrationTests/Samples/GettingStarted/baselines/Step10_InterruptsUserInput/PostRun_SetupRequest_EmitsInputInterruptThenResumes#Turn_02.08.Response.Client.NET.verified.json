@@ -1,0 +1,30 @@
+﻿[
+  {
+    "role": "assistant",
+    "contents": [],
+    "additionalProperties": {
+      "agui_thread_id": "thread_Id_2"
+    },
+    "responseId": "run_Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "Thank you! Your username \u0027johndoe42\u0027 has been registered."
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "msg_Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [],
+    "responseId": "run_Id_2",
+    "conversationId": "thread_Id_2",
+    "finishReason": "stop"
+  }
+]

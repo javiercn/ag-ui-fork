@@ -1,0 +1,23 @@
+﻿[
+  {
+    "role": "user",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "Please setup my account"
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "contents": [
+      {
+        "$type": "interruptResponse",
+        "payload": {
+          "response": "johndoe42"
+        },
+        "requestId": "input_Id_2"
+      }
+    ]
+  }
+]

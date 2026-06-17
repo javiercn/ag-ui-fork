@@ -1,0 +1,81 @@
+﻿[
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "functionCall",
+        "name": "SearchRestaurants",
+        "arguments": {
+          "request": {
+            "location": "Seattle",
+            "cuisine": "Italian"
+          }
+        },
+        "informationalOnly": false,
+        "callId": "call_Id_1"
+      }
+    ],
+    "messageId": "chatcmpl-Id_1",
+    "finishReason": "toolCalls"
+  },
+  {
+    "contents": [
+      {
+        "$type": "functionResult",
+        "result": "{\u0022location\u0022:\u0022Seattle\u0022,\u0022cuisine\u0022:\u0022Italian\u0022,\u0022results\u0022:[{\u0022name\u0022:\u0022The Golden Fork\u0022,\u0022cuisine\u0022:\u0022Italian\u0022,\u0022rating\u0022:4.5,\u0022address\u0022:\u0022123 Main St, Seattle\u0022},{\u0022name\u0022:\u0022Spice Haven\u0022,\u0022cuisine\u0022:\u0022Indian\u0022,\u0022rating\u0022:4.7,\u0022address\u0022:\u0022456 Oak Ave, Seattle\u0022},{\u0022name\u0022:\u0022Green Leaf\u0022,\u0022cuisine\u0022:\u0022Vegetarian\u0022,\u0022rating\u0022:4.3,\u0022address\u0022:\u0022789 Elm Rd, Seattle\u0022}]}",
+        "callId": "call_Id_1"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "I found some great Italian restaurants in Seattle for you!\n\n"
+      }
+    ],
+    "messageId": "chatcmpl-Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "1. **The Golden Fork** - Italian cuisine, rated 4.5/5, located at 123 Main St, Seattle\n"
+      }
+    ],
+    "messageId": "chatcmpl-Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "2. **Spice Haven** - Indian cuisine, rated 4.7/5, located at 456 Oak Ave, Seattle\n"
+      }
+    ],
+    "messageId": "chatcmpl-Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "3. **Green Leaf** - Vegetarian cuisine, rated 4.3/5, located at 789 Elm Rd, Seattle"
+      }
+    ],
+    "messageId": "chatcmpl-Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": ""
+      }
+    ],
+    "messageId": "chatcmpl-Id_2",
+    "finishReason": "stop"
+  }
+]

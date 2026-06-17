@@ -1,0 +1,16 @@
+﻿[
+  {
+    "role": "Assistant",
+    "contents": [
+      {
+        "$type": "functionCall",
+        "name": "GetUserLocation",
+        "arguments": {},
+        "informationalOnly": false,
+        "callId": "call_Id_1"
+      }
+    ],
+    "finishReason": "toolCalls",
+    "modelId": "gpt-4o-mini"
+  }
+]
