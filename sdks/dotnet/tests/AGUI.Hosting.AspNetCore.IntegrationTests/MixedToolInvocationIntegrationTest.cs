@@ -72,32 +72,17 @@ public sealed class MixedToolInvocationIntegrationTest : IntegrationTestBase
         const string testName = nameof(MixedInvocation_TwoTurnFlow_EmitsToolCallsThenServerResults);
         // Server tool: registered server-side (resolved via the approval-resume path on the
         // continuation). Client tool: declared by the client and auto-invoked client-side.
-        var serverToolInvoked = false;
         var serverTool = AIFunctionFactory.Create(
-            (string city) => { serverToolInvoked = true; return $"{city}: 18C, rainy"; },
+            (string city) => $"{city}: 18C, rainy",
             "get_weather", "Gets the current weather for a given city.");
 
         // Record/replay: replay the captured real-LLM run if present, otherwise call Azure
-        // OpenAI (gpt-5-mini) to capture a fresh mixed invocation.
+        // OpenAI (gpt-5-mini) to capture a fresh mixed invocation. The capturing client wraps the
+        // whole FunctionInvokingChatClient pipeline so the captured server-side updates (and the
+        // events derived from them) match what goes over the wire.
         var serverCapture = new CapturingChatClient();
         var recording = LoadRecording(testName, s_jsonOptions);
         var hasRecording = recording.Count > 0 && recording[0].Count > 0;
-
-        if (hasRecording)
-        {
-            var fake = new FakeChatClientWithCapture();
-            foreach (var turn in recording)
-            {
-                var captured = turn;
-                fake.Enqueue(_ => ReplayUpdates(captured));
-            }
-
-            serverCapture.SetInner(fake);
-        }
-        else
-        {
-            serverCapture.SetInner(CreateAzureChatClient());
-        }
 
         var factory = Factory.WithWebHostBuilder(builder =>
         {
@@ -105,13 +90,34 @@ public sealed class MixedToolInvocationIntegrationTest : IntegrationTestBase
             {
                 services.RemoveAll<IChatClient>();
                 services.AddSingleton<AITool>(serverTool);
-                services.AddChatClient(sp => (IChatClient)serverCapture)
-                    .UseFunctionInvocation(configure: f => f.TerminateOnUnknownCalls = true);
+                services.AddChatClient(sp =>
+                {
+                    if (hasRecording)
+                    {
+                        var fake = new FakeChatClientWithCapture();
+                        foreach (var turn in recording)
+                        {
+                            var captured = turn;
+                            fake.Enqueue(_ => ReplayUpdates(captured));
+                        }
+
+                        serverCapture.SetInner(fake);
+                    }
+                    else
+                    {
+                        var pipeline = new ChatClientBuilder(CreateAzureChatClient())
+                            .UseFunctionInvocation(configure: f => f.TerminateOnUnknownCalls = true)
+                            .Build(sp);
+                        serverCapture.SetInner(pipeline);
+                    }
+
+                    return (IChatClient)serverCapture;
+                });
             });
         });
 
         var httpClient = factory.CreateClient();
-        var transport = new AGUIHttpTransport(httpClient, "/agui");
+        var transport = new CapturingAGUITransport(new AGUIHttpTransport(httpClient, "/agui"));
         var aguiClient = new AGUIChatClient(transport);
 
         var clientToolInvoked = false;
@@ -119,7 +125,7 @@ public sealed class MixedToolInvocationIntegrationTest : IntegrationTestBase
             () => { clientToolInvoked = true; return "Tokyo, Japan"; },
             "get_user_location", "Gets the user's current city via GPS.");
 
-        var messages = new List<ChatMessage>
+        var clientMessages = new List<ChatMessage>
         {
             new(ChatRole.User,
                 "Two things, please: (1) what city am I in right now, and (2) what's the weather in Paris? " +
@@ -127,24 +133,61 @@ public sealed class MixedToolInvocationIntegrationTest : IntegrationTestBase
         };
         var options = new ChatOptions { Tools = [clientTool] };
 
-        var updates = await CollectUpdates(aguiClient, messages, options);
+        var clientUpdates = await CollectUpdates(aguiClient, clientMessages, options);
 
         SaveRecording(testName, serverCapture, s_jsonOptions);
 
-        // The model issued a true mixed invocation (both tools in the first response): the client
-        // tool ran client-side, and the server tool ran server-side on the continuation.
+        // The client tool runs client-side in both record and replay; the server tool's execution
+        // is captured in the baselines as a TOOL_CALL_RESULT event.
         Assert.True(clientToolInvoked, "Client tool should be auto-invoked by AGUIChatClient");
-        Assert.True(serverToolInvoked, "Server tool should be invoked during continuation");
 
-        // The server tool call passes through to the caller as an informational FunctionCallContent.
-        var serverToolCalls = updates
-            .SelectMany(u => u.Contents)
-            .OfType<FunctionCallContent>()
-            .Where(fcc => fcc.Name == "get_weather")
-            .ToList();
-        Assert.NotEmpty(serverToolCalls);
+        await VerifyAllCaptures(transport, serverCapture, [clientMessages], [clientUpdates], testName);
+    }
 
-        Assert.False(string.IsNullOrWhiteSpace(ExtractText(updates)), "Final text response should be present");
+    private async Task VerifyAllCaptures(
+        CapturingAGUITransport transport,
+        CapturingChatClient server,
+        List<List<ChatMessage>> clientMessages,
+        List<List<ChatResponseUpdate>> clientUpdates,
+        string testName)
+    {
+        var turns = new List<object>();
+        for (int i = 0; i < transport.Turns.Count; i++)
+        {
+            var wire = transport.Turns[i];
+            var srv = i < server.Calls.Count ? server.Calls[i] : null;
+
+            List<BaseEvent>? serverDerivedEvents = null;
+            if (srv != null)
+            {
+                serverDerivedEvents = new List<BaseEvent>();
+                await foreach (var evt in ReplayUpdates(srv.Updates)
+                    .AsAGUIEventStreamAsync(wire.Input.ToChatRequestContext(s_jsonOptions)).ConfigureAwait(false))
+                {
+                    serverDerivedEvents.Add(evt);
+                }
+            }
+
+            turns.Add(new
+            {
+                client = new
+                {
+                    chatMessages = i < clientMessages.Count ? clientMessages[i] : null,
+                    runAgentInput = wire.Input,
+                    events = wire.Events,
+                    chatResponseUpdates = i < clientUpdates.Count ? clientUpdates[i] : null
+                },
+                server = srv != null ? new
+                {
+                    runAgentInput = srv.RunAgentInput,
+                    chatMessages = new { messages = srv.Messages, options = DescribeChatOptions(srv.Options) },
+                    chatResponseUpdates = srv.Updates,
+                    events = serverDerivedEvents
+                } : null
+            });
+        }
+
+        await VerifyCaptures(turns, testName, s_jsonOptions).ConfigureAwait(false);
     }
 
     private static IChatClient CreateAzureChatClient()
