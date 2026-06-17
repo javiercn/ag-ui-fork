@@ -2,17 +2,14 @@ using System.Runtime.CompilerServices;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
 using AGUI.Abstractions;
 using AGUI.Client;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Step07_ThinkingEvents.Client;
 using Step07_ThinkingEvents.Server;
-using VerifyXunit;
 using Xunit;
 
 namespace AGUI.Hosting.AspNetCore.IntegrationTests.Samples.GettingStarted;
@@ -39,26 +36,65 @@ public sealed class Step07_ThinkingEventsTest : IntegrationTestBase<Step07_Think
     }
 
     private (AGUIChatClient Client, CapturingAGUITransport Transport, CapturingChatClient Server) CreateCapturingClient(
+        int turnCount = 1,
         [CallerMemberName] string testName = "")
     {
         var serverCapture = new CapturingChatClient();
+        var recording = LoadRecording(testName, s_jsonOptions);
+        var hasRecording = recording.Count > 0 && recording[0].Count > 0;
 
-        // Create FakeChatClient with programmatic reasoning + text response
-        var fakeClient = new FakeChatClient();
-        fakeClient.Enqueue(_ => EmitReasoningAndTextResponse());
-
-        serverCapture.SetInner(fakeClient);
-
-        var factory = Factory.WithWebHostBuilder(builder =>
+        var httpClient = Factory.WithWebHostBuilder(builder =>
         {
+            if (hasRecording)
+            {
+                // Replay mode: feed the recorded real-LLM updates (reasoning + text) back through
+                // a FakeChatClient that stands in for the Azure OpenAI responses pipeline.
+                builder.ConfigureServices(services =>
+                {
+                    var chatClient = new FakeChatClient();
+                    for (int i = 0; i < turnCount; i++)
+                    {
+                        if (i < recording.Count)
+                        {
+                            var turnUpdates = recording[i];
+                            chatClient.Enqueue(_ => ReplayUpdates(turnUpdates));
+                        }
+                    }
+
+                    services.AddSingleton(chatClient);
+                });
+            }
+
             builder.ConfigureTestServices(services =>
             {
-                services.RemoveAll<IChatClient>();
-                services.AddSingleton<IChatClient>(serverCapture);
-            });
-        });
+                if (hasRecording)
+                {
+                    services.AddSingleton<IChatClient>(sp =>
+                    {
+                        var fake = sp.GetRequiredService<FakeChatClient>();
+                        serverCapture.SetInner(fake);
+                        return serverCapture;
+                    });
+                }
+                else
+                {
+                    // Record mode: wrap whatever the app registered (the Azure OpenAI responses
+                    // pipeline with reasoning enabled) so a real LLM run is captured for replay.
+                    var descriptor = services.FirstOrDefault(d => d.ServiceType == typeof(IChatClient));
+                    if (descriptor != null)
+                    {
+                        services.Remove(descriptor);
+                    }
 
-        var httpClient = factory.CreateClient();
+                    services.AddSingleton<IChatClient>(sp =>
+                    {
+                        var inner = (IChatClient)descriptor!.ImplementationFactory!(sp);
+                        serverCapture.SetInner(inner);
+                        return serverCapture;
+                    });
+                }
+            });
+        }).CreateClient();
 
         var transport = new AGUIHttpTransport(httpClient, "/");
         var transportCapture = new CapturingAGUITransport(transport);
@@ -68,22 +104,13 @@ public sealed class Step07_ThinkingEventsTest : IntegrationTestBase<Step07_Think
     }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators
-    private static async IAsyncEnumerable<ChatResponseUpdate> EmitReasoningAndTextResponse()
+    private static async IAsyncEnumerable<ChatResponseUpdate> ReplayUpdates(
+        List<ChatResponseUpdate> updates)
     {
-        // Reasoning content: thinking about the calculation
-        yield return new ChatResponseUpdate
+        foreach (var update in updates)
         {
-            Role = ChatRole.Assistant,
-            Contents = [new TextReasoningContent("Let me calculate 15 * 23. I can break this down: 15 * 20 = 300, 15 * 3 = 45, so 300 + 45 = 345.")]
-        };
-
-        // Text response with the answer
-        yield return new ChatResponseUpdate
-        {
-            Role = ChatRole.Assistant,
-            MessageId = "msg_calc_001",
-            Contents = [new TextContent("15 × 23 = 345")]
-        };
+            yield return update;
+        }
     }
 #pragma warning restore CS1998
 
@@ -112,10 +139,24 @@ public sealed class Step07_ThinkingEventsTest : IntegrationTestBase<Step07_Think
         List<List<ChatResponseUpdate>> clientUpdates,
         [CallerMemberName] string testName = "")
     {
+        SaveRecording(testName, server, s_jsonOptions);
+
         var turns = new List<object>();
         for (int i = 0; i < transport.Turns.Count; i++)
         {
             var wire = transport.Turns[i];
+            var srv = i < server.Calls.Count ? server.Calls[i] : null;
+
+            List<BaseEvent>? serverDerivedEvents = null;
+            if (srv != null)
+            {
+                serverDerivedEvents = new List<BaseEvent>();
+                await foreach (var evt in ReplayUpdates(srv.Updates)
+                    .AsAGUIEventStreamAsync(wire.Input.ToChatRequestContext(s_jsonOptions)))
+                {
+                    serverDerivedEvents.Add(evt);
+                }
+            }
 
             turns.Add(new
             {
@@ -129,7 +170,14 @@ public sealed class Step07_ThinkingEventsTest : IntegrationTestBase<Step07_Think
                     chatResponseUpdates = i < clientUpdates.Count
                         ? clientUpdates[i]
                         : null
-                }
+                },
+                server = srv != null ? new
+                {
+                    runAgentInput = srv.RunAgentInput,
+                    chatMessages = srv.Messages,
+                    chatResponseUpdates = srv.Updates,
+                    events = serverDerivedEvents
+                } : null
             });
         }
 

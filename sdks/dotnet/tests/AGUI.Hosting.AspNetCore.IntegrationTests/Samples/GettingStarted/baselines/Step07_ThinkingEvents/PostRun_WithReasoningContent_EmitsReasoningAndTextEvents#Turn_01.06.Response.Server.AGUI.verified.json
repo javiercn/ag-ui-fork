@@ -6,578 +6,572 @@
   },
   {
     "type": "REASONING_START",
-    "messageId": "msg_Id_3"
+    "messageId": "msg_Id_2"
   },
   {
     "type": "REASONING_MESSAGE_START",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "role": "reasoning"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": "**Sol"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": "ving"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " the"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " heads"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": "/"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": "legs"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " problem"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": "**\n\nI"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " need"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " to"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " solve"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " the"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " heads"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " and"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " legs"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " problem"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " involving"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " chickens"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " and"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " rabbits"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": "."
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " I\u0027ve"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " established"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " that"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " the"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " total"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " number"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " of"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " heads"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " is"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " 20"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": ","
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " so"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " I"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " have"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " the"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " equation"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " c"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " \u002B"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " r"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " ="
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " 20"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " and"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " for"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " the"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " legs"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": ","
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " 2"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": "c"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " \u002B"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " 4"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": "r"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " ="
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " 56"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": "."
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " I"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " substitute"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " c"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " as"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " 20"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " -"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " r"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " into"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " the"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " second"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " equation"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " to"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " find"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " r"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " ="
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " 8"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " and"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " then"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " c"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " ="
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " 12"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": "."
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " I"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " could"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " also"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " show"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " the"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " method"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " of"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " calculating"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " the"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " extra"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " legs"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " to"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " verify"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": ","
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " linking"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " legs"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " difference"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " to"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " rabbit"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " numbers"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": "."
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " I\u0027ll"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " present"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " the"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " final"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " answer"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " with"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " reasoning"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": " steps"
   },
   {
     "type": "REASONING_MESSAGE_CONTENT",
-    "messageId": "msg_Id_3",
+    "messageId": "msg_Id_2",
     "delta": "."
   },
   {
     "type": "REASONING_MESSAGE_END",
-    "messageId": "msg_Id_3"
+    "messageId": "msg_Id_2"
   },
   {
     "type": "REASONING_END",
-    "messageId": "msg_Id_3"
+    "messageId": "msg_Id_2"
   },
   {
     "type": "TEXT_MESSAGE_START",
     "messageId": "msg_Id_1",
     "role": "assistant",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "Let",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "Let"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -585,23 +579,17 @@
     "messageId": "msg_Id_1",
     "delta": "Let",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "Let",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "Let"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -609,23 +597,17 @@
     "messageId": "msg_Id_1",
     "delta": " c",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " c",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " c"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -633,23 +615,17 @@
     "messageId": "msg_Id_1",
     "delta": " =",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " =",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " ="
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -657,23 +633,17 @@
     "messageId": "msg_Id_1",
     "delta": " number",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " number",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " number"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -681,23 +651,17 @@
     "messageId": "msg_Id_1",
     "delta": " of",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " of",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " of"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -705,23 +669,17 @@
     "messageId": "msg_Id_1",
     "delta": " chickens",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " chickens",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " chickens"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -729,23 +687,17 @@
     "messageId": "msg_Id_1",
     "delta": " and",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " and",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " and"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -753,23 +705,17 @@
     "messageId": "msg_Id_1",
     "delta": " r",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " r",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " r"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -777,23 +723,17 @@
     "messageId": "msg_Id_1",
     "delta": " =",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " =",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " ="
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -801,23 +741,17 @@
     "messageId": "msg_Id_1",
     "delta": " number",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " number",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " number"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -825,23 +759,17 @@
     "messageId": "msg_Id_1",
     "delta": " of",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " of",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " of"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -849,23 +777,17 @@
     "messageId": "msg_Id_1",
     "delta": " rabbits",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " rabbits",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " rabbits"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -873,23 +795,17 @@
     "messageId": "msg_Id_1",
     "delta": ".\n\n",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": ".\n\n",
-          "annotations": null,
-          "additionalProperties": null
+          "text": ".\n\n"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -897,23 +813,17 @@
     "messageId": "msg_Id_1",
     "delta": "Heads",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "Heads",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "Heads"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -921,23 +831,17 @@
     "messageId": "msg_Id_1",
     "delta": ":",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": ":",
-          "annotations": null,
-          "additionalProperties": null
+          "text": ":"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -945,23 +849,17 @@
     "messageId": "msg_Id_1",
     "delta": " c",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " c",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " c"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -969,23 +867,17 @@
     "messageId": "msg_Id_1",
     "delta": " \u002B",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " \u002B",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " \u002B"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -993,23 +885,17 @@
     "messageId": "msg_Id_1",
     "delta": " r",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " r",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " r"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1017,23 +903,17 @@
     "messageId": "msg_Id_1",
     "delta": " =",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " =",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " ="
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1041,23 +921,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1065,23 +939,17 @@
     "messageId": "msg_Id_1",
     "delta": "20",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "20",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "20"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1089,23 +957,17 @@
     "messageId": "msg_Id_1",
     "delta": "  \n",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "  \n",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "  \n"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1113,23 +975,17 @@
     "messageId": "msg_Id_1",
     "delta": "Leg",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "Leg",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "Leg"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1137,23 +993,17 @@
     "messageId": "msg_Id_1",
     "delta": "s",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "s",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "s"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1161,23 +1011,17 @@
     "messageId": "msg_Id_1",
     "delta": ":",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": ":",
-          "annotations": null,
-          "additionalProperties": null
+          "text": ":"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1185,23 +1029,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1209,23 +1047,17 @@
     "messageId": "msg_Id_1",
     "delta": "2",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "2",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "2"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1233,23 +1065,17 @@
     "messageId": "msg_Id_1",
     "delta": "c",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "c",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "c"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1257,23 +1083,17 @@
     "messageId": "msg_Id_1",
     "delta": " \u002B",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " \u002B",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " \u002B"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1281,23 +1101,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1305,23 +1119,17 @@
     "messageId": "msg_Id_1",
     "delta": "4",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "4",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "4"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1329,23 +1137,17 @@
     "messageId": "msg_Id_1",
     "delta": "r",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "r",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "r"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1353,23 +1155,17 @@
     "messageId": "msg_Id_1",
     "delta": " =",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " =",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " ="
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1377,23 +1173,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1401,23 +1191,17 @@
     "messageId": "msg_Id_1",
     "delta": "56",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "56",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "56"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1425,23 +1209,17 @@
     "messageId": "msg_Id_1",
     "delta": "\n\n",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "\n\n",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "\n\n"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1449,23 +1227,17 @@
     "messageId": "msg_Id_1",
     "delta": "From",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "From",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "From"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1473,23 +1245,17 @@
     "messageId": "msg_Id_1",
     "delta": " the",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " the",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " the"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1497,23 +1263,17 @@
     "messageId": "msg_Id_1",
     "delta": " first",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " first",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " first"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1521,23 +1281,17 @@
     "messageId": "msg_Id_1",
     "delta": ",",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": ",",
-          "annotations": null,
-          "additionalProperties": null
+          "text": ","
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1545,23 +1299,17 @@
     "messageId": "msg_Id_1",
     "delta": " c",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " c",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " c"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1569,23 +1317,17 @@
     "messageId": "msg_Id_1",
     "delta": " =",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " =",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " ="
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1593,23 +1335,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1617,23 +1353,17 @@
     "messageId": "msg_Id_1",
     "delta": "20",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "20",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "20"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1641,23 +1371,17 @@
     "messageId": "msg_Id_1",
     "delta": " \u2212",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " \u2212",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " \u2212"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1665,23 +1389,17 @@
     "messageId": "msg_Id_1",
     "delta": " r",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " r",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " r"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1689,23 +1407,17 @@
     "messageId": "msg_Id_1",
     "delta": ".",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": ".",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "."
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1713,23 +1425,17 @@
     "messageId": "msg_Id_1",
     "delta": " Substitute",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " Substitute",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " Substitute"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1737,23 +1443,17 @@
     "messageId": "msg_Id_1",
     "delta": " into",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " into",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " into"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1761,23 +1461,17 @@
     "messageId": "msg_Id_1",
     "delta": " the",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " the",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " the"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1785,23 +1479,17 @@
     "messageId": "msg_Id_1",
     "delta": " legs",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " legs",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " legs"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1809,23 +1497,17 @@
     "messageId": "msg_Id_1",
     "delta": " equation",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " equation",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " equation"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1833,23 +1515,17 @@
     "messageId": "msg_Id_1",
     "delta": ":\n",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": ":\n",
-          "annotations": null,
-          "additionalProperties": null
+          "text": ":\n"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1857,23 +1533,17 @@
     "messageId": "msg_Id_1",
     "delta": "2",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "2",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "2"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1881,23 +1551,17 @@
     "messageId": "msg_Id_1",
     "delta": "(",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "(",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "("
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1905,23 +1569,17 @@
     "messageId": "msg_Id_1",
     "delta": "20",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "20",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "20"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1929,23 +1587,17 @@
     "messageId": "msg_Id_1",
     "delta": " \u2212",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " \u2212",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " \u2212"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1953,23 +1605,17 @@
     "messageId": "msg_Id_1",
     "delta": " r",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " r",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " r"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -1977,23 +1623,17 @@
     "messageId": "msg_Id_1",
     "delta": ")",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": ")",
-          "annotations": null,
-          "additionalProperties": null
+          "text": ")"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2001,23 +1641,17 @@
     "messageId": "msg_Id_1",
     "delta": " \u002B",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " \u002B",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " \u002B"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2025,23 +1659,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2049,23 +1677,17 @@
     "messageId": "msg_Id_1",
     "delta": "4",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "4",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "4"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2073,23 +1695,17 @@
     "messageId": "msg_Id_1",
     "delta": "r",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "r",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "r"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2097,23 +1713,17 @@
     "messageId": "msg_Id_1",
     "delta": " =",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " =",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " ="
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2121,23 +1731,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2145,23 +1749,17 @@
     "messageId": "msg_Id_1",
     "delta": "56",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "56",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "56"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2169,23 +1767,17 @@
     "messageId": "msg_Id_1",
     "delta": "  \n",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "  \n",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "  \n"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2193,23 +1785,17 @@
     "messageId": "msg_Id_1",
     "delta": "40",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "40",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "40"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2217,23 +1803,17 @@
     "messageId": "msg_Id_1",
     "delta": " \u2212",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " \u2212",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " \u2212"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2241,23 +1821,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2265,23 +1839,17 @@
     "messageId": "msg_Id_1",
     "delta": "2",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "2",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "2"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2289,23 +1857,17 @@
     "messageId": "msg_Id_1",
     "delta": "r",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "r",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "r"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2313,23 +1875,17 @@
     "messageId": "msg_Id_1",
     "delta": " \u002B",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " \u002B",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " \u002B"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2337,23 +1893,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2361,23 +1911,17 @@
     "messageId": "msg_Id_1",
     "delta": "4",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "4",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "4"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2385,23 +1929,17 @@
     "messageId": "msg_Id_1",
     "delta": "r",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "r",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "r"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2409,23 +1947,17 @@
     "messageId": "msg_Id_1",
     "delta": " =",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " =",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " ="
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2433,23 +1965,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2457,23 +1983,17 @@
     "messageId": "msg_Id_1",
     "delta": "56",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "56",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "56"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2481,23 +2001,17 @@
     "messageId": "msg_Id_1",
     "delta": "  \n",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "  \n",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "  \n"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2505,23 +2019,17 @@
     "messageId": "msg_Id_1",
     "delta": "40",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "40",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "40"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2529,23 +2037,17 @@
     "messageId": "msg_Id_1",
     "delta": " \u002B",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " \u002B",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " \u002B"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2553,23 +2055,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2577,23 +2073,17 @@
     "messageId": "msg_Id_1",
     "delta": "2",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "2",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "2"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2601,23 +2091,17 @@
     "messageId": "msg_Id_1",
     "delta": "r",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "r",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "r"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2625,23 +2109,17 @@
     "messageId": "msg_Id_1",
     "delta": " =",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " =",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " ="
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2649,23 +2127,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2673,23 +2145,17 @@
     "messageId": "msg_Id_1",
     "delta": "56",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "56",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "56"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2697,23 +2163,17 @@
     "messageId": "msg_Id_1",
     "delta": "  \n",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "  \n",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "  \n"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2721,23 +2181,17 @@
     "messageId": "msg_Id_1",
     "delta": "2",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "2",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "2"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2745,23 +2199,17 @@
     "messageId": "msg_Id_1",
     "delta": "r",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "r",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "r"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2769,23 +2217,17 @@
     "messageId": "msg_Id_1",
     "delta": " =",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " =",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " ="
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2793,23 +2235,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2817,23 +2253,17 @@
     "messageId": "msg_Id_1",
     "delta": "16",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "16",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "16"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2841,23 +2271,17 @@
     "messageId": "msg_Id_1",
     "delta": " \u2192",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " \u2192",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " \u2192"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2865,23 +2289,17 @@
     "messageId": "msg_Id_1",
     "delta": " r",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " r",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " r"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2889,23 +2307,17 @@
     "messageId": "msg_Id_1",
     "delta": " =",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " =",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " ="
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2913,23 +2325,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2937,23 +2343,17 @@
     "messageId": "msg_Id_1",
     "delta": "8",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "8",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "8"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2961,23 +2361,17 @@
     "messageId": "msg_Id_1",
     "delta": "\n\n",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "\n\n",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "\n\n"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -2985,23 +2379,17 @@
     "messageId": "msg_Id_1",
     "delta": "Then",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "Then",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "Then"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3009,23 +2397,17 @@
     "messageId": "msg_Id_1",
     "delta": " c",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " c",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " c"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3033,23 +2415,17 @@
     "messageId": "msg_Id_1",
     "delta": " =",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " =",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " ="
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3057,23 +2433,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3081,23 +2451,17 @@
     "messageId": "msg_Id_1",
     "delta": "20",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "20",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "20"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3105,23 +2469,17 @@
     "messageId": "msg_Id_1",
     "delta": " \u2212",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " \u2212",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " \u2212"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3129,23 +2487,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3153,23 +2505,17 @@
     "messageId": "msg_Id_1",
     "delta": "8",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "8",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "8"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3177,23 +2523,17 @@
     "messageId": "msg_Id_1",
     "delta": " =",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " =",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " ="
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3201,23 +2541,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3225,23 +2559,17 @@
     "messageId": "msg_Id_1",
     "delta": "12",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "12",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "12"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3249,23 +2577,17 @@
     "messageId": "msg_Id_1",
     "delta": ".\n\n",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": ".\n\n",
-          "annotations": null,
-          "additionalProperties": null
+          "text": ".\n\n"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3273,23 +2595,17 @@
     "messageId": "msg_Id_1",
     "delta": "Answer",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "Answer",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "Answer"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3297,23 +2613,17 @@
     "messageId": "msg_Id_1",
     "delta": ":",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": ":",
-          "annotations": null,
-          "additionalProperties": null
+          "text": ":"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3321,23 +2631,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3345,23 +2649,17 @@
     "messageId": "msg_Id_1",
     "delta": "12",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "12",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "12"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3369,23 +2667,17 @@
     "messageId": "msg_Id_1",
     "delta": " chickens",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " chickens",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " chickens"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3393,23 +2685,17 @@
     "messageId": "msg_Id_1",
     "delta": " and",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " and",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " and"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3417,23 +2703,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3441,23 +2721,17 @@
     "messageId": "msg_Id_1",
     "delta": "8",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "8",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "8"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3465,23 +2739,17 @@
     "messageId": "msg_Id_1",
     "delta": " rabbits",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " rabbits",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " rabbits"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3489,23 +2757,17 @@
     "messageId": "msg_Id_1",
     "delta": ".\n\n",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": ".\n\n",
-          "annotations": null,
-          "additionalProperties": null
+          "text": ".\n\n"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3513,23 +2775,17 @@
     "messageId": "msg_Id_1",
     "delta": "(",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "(",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "("
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3537,23 +2793,17 @@
     "messageId": "msg_Id_1",
     "delta": "Quick",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "Quick",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "Quick"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3561,23 +2811,17 @@
     "messageId": "msg_Id_1",
     "delta": " check",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " check",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " check"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3585,23 +2829,17 @@
     "messageId": "msg_Id_1",
     "delta": ":",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": ":",
-          "annotations": null,
-          "additionalProperties": null
+          "text": ":"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3609,23 +2847,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3633,23 +2865,17 @@
     "messageId": "msg_Id_1",
     "delta": "12",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "12",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "12"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3657,23 +2883,17 @@
     "messageId": "msg_Id_1",
     "delta": " heads",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " heads",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " heads"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3681,23 +2901,17 @@
     "messageId": "msg_Id_1",
     "delta": " \u002B",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " \u002B",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " \u002B"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3705,23 +2919,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3729,23 +2937,17 @@
     "messageId": "msg_Id_1",
     "delta": "8",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "8",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "8"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3753,23 +2955,17 @@
     "messageId": "msg_Id_1",
     "delta": " heads",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " heads",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " heads"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3777,23 +2973,17 @@
     "messageId": "msg_Id_1",
     "delta": " =",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " =",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " ="
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3801,23 +2991,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3825,23 +3009,17 @@
     "messageId": "msg_Id_1",
     "delta": "20",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "20",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "20"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3849,23 +3027,17 @@
     "messageId": "msg_Id_1",
     "delta": ";",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": ";",
-          "annotations": null,
-          "additionalProperties": null
+          "text": ";"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3873,23 +3045,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3897,23 +3063,17 @@
     "messageId": "msg_Id_1",
     "delta": "12",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "12",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "12"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3921,23 +3081,17 @@
     "messageId": "msg_Id_1",
     "delta": "\u00B7",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "\u00B7",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "\u00B7"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3945,23 +3099,17 @@
     "messageId": "msg_Id_1",
     "delta": "2",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "2",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "2"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3969,23 +3117,17 @@
     "messageId": "msg_Id_1",
     "delta": " \u002B",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " \u002B",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " \u002B"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -3993,23 +3135,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -4017,23 +3153,17 @@
     "messageId": "msg_Id_1",
     "delta": "8",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "8",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "8"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -4041,23 +3171,17 @@
     "messageId": "msg_Id_1",
     "delta": "\u00B7",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "\u00B7",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "\u00B7"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -4065,23 +3189,17 @@
     "messageId": "msg_Id_1",
     "delta": "4",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "4",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "4"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -4089,23 +3207,17 @@
     "messageId": "msg_Id_1",
     "delta": " =",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " =",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " ="
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -4113,23 +3225,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -4137,23 +3243,17 @@
     "messageId": "msg_Id_1",
     "delta": "24",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "24",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "24"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -4161,23 +3261,17 @@
     "messageId": "msg_Id_1",
     "delta": " \u002B",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " \u002B",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " \u002B"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -4185,23 +3279,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -4209,23 +3297,17 @@
     "messageId": "msg_Id_1",
     "delta": "32",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "32",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "32"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -4233,23 +3315,17 @@
     "messageId": "msg_Id_1",
     "delta": " =",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " =",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " ="
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -4257,23 +3333,17 @@
     "messageId": "msg_Id_1",
     "delta": " ",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " ",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " "
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -4281,23 +3351,17 @@
     "messageId": "msg_Id_1",
     "delta": "56",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": "56",
-          "annotations": null,
-          "additionalProperties": null
+          "text": "56"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -4305,23 +3369,17 @@
     "messageId": "msg_Id_1",
     "delta": " legs",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": " legs",
-          "annotations": null,
-          "additionalProperties": null
+          "text": " legs"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {
@@ -4329,23 +3387,17 @@
     "messageId": "msg_Id_1",
     "delta": ".)",
     "rawEvent": {
-      "authorName": null,
       "role": "assistant",
       "contents": [
         {
           "$type": "text",
-          "text": ".)",
-          "annotations": null,
-          "additionalProperties": null
+          "text": ".)"
         }
       ],
-      "additionalProperties": null,
       "responseId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
       "messageId": "msg_Id_1",
       "conversationId": "resp_0e1ebfcdd5c10d6e006a32918d58508196aec4d72c990876d2",
-      "finishReason": null,
-      "modelId": "gpt-5-mini",
-      "continuationToken": null
+      "modelId": "gpt-5-mini"
     }
   },
   {

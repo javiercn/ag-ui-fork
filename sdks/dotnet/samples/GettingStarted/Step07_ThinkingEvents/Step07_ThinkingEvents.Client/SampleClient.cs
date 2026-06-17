@@ -14,10 +14,12 @@ public static class SampleClient
     {
         var messages = new List<ChatMessage>
         {
-            new(ChatRole.User, "What is 15 * 23?"),
+            new(ChatRole.User,
+                "A farmer has chickens and rabbits. There are 20 heads and 56 legs in total. " +
+                "How many chickens and how many rabbits are there? Show your reasoning."),
         };
         messagesPerTurn?.Add(messages.ToList());
-        await output.WriteLineAsync("> What is 15 * 23?").ConfigureAwait(false);
+        await output.WriteLineAsync("> A farmer has chickens and rabbits. There are 20 heads and 56 legs in total. How many of each?").ConfigureAwait(false);
 
         var updates = new List<ChatResponseUpdate>();
         await foreach (var update in chatClient.GetStreamingResponseAsync(

@@ -19,11 +19,22 @@ public class Program
             var deploymentName = builder.Configuration["AZURE_OPENAI_DEPLOYMENT_NAME"]
                 ?? throw new InvalidOperationException("AZURE_OPENAI_DEPLOYMENT_NAME is not set.");
 
+            // Reasoning summaries are only surfaced by the Responses API, so use the responses
+            // client (not chat completions) and ask the model to emit a reasoning summary. The
+            // hosting layer turns the resulting TextReasoningContent into AG-UI thinking events.
             builder.Services.AddChatClient(new AzureOpenAIClient(
                     new Uri(endpoint),
                     new DefaultAzureCredential())
-                .GetChatClient(deploymentName)
-                .AsIChatClient());
+                .GetResponsesClient()
+                .AsIChatClient(deploymentName))
+                .ConfigureOptions(options =>
+                {
+                    options.Reasoning = new ReasoningOptions
+                    {
+                        Effort = ReasoningEffort.Medium,
+                        Output = ReasoningOutput.Summary,
+                    };
+                });
         }
         else
         {

@@ -4,6 +4,8 @@
     <TargetFrameworks>net10.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <IsAotCompatible>false</IsAotCompatible>
+    <!-- The Responses API (GetResponsesClient / reasoning) is still marked experimental. -->
+    <NoWarn>$(NoWarn);OPENAI001</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.AI.OpenAI" />
+    <!-- Reasoning summaries require the Responses API (GetResponsesClient), which is only
+         available in the Azure.AI.OpenAI prerelease. Scope the override to this sample. -->
+    <PackageReference Include="Azure.AI.OpenAI" VersionOverride="2.9.0-beta.1" />
     <PackageReference Include="Azure.Identity" />
     <PackageReference Include="Microsoft.Extensions.AI" />
     <PackageReference Include="Microsoft.Extensions.AI.OpenAI" />
