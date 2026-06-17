@@ -195,7 +195,7 @@ public sealed class Step11_SerializationTest : IntegrationTestBase<Step11_Serial
         [CallerMemberName] string testName = "")
     {
         var serverCapture = new CapturingChatClient();
-        var recording = LoadRecording(testName);
+        var recording = LoadRecording(testName, s_jsonOptions);
         var hasRecording = recording.Count > 0 && recording[0].Count > 0;
 
         var fakeClient = new FakeChatClient();
@@ -251,35 +251,6 @@ public sealed class Step11_SerializationTest : IntegrationTestBase<Step11_Serial
     }
 #pragma warning restore CS1998
 
-    private static string GetRecordingPath(string testName)
-    {
-        return Path.Combine(
-            AttributeReader.GetProjectDirectory(),
-            "Samples",
-            "GettingStarted",
-            $"Step11_SerializationTest.{testName}.recording.json");
-    }
-
-    private static List<List<ChatResponseUpdate>> LoadRecording(string testName)
-    {
-        var path = GetRecordingPath(testName);
-        if (!File.Exists(path))
-        {
-            return [];
-        }
-
-        var json = File.ReadAllText(path);
-        return JsonSerializer.Deserialize<List<List<ChatResponseUpdate>>>(json, s_jsonOptions) ?? [];
-    }
-
-    private static void SaveRecording(string testName, CapturingChatClient server)
-    {
-        var path = GetRecordingPath(testName);
-        var turns = server.Calls.Select(c => c.Updates).ToList();
-        var json = JsonSerializer.Serialize(turns, s_jsonOptions);
-        File.WriteAllText(path, json);
-    }
-
     private static readonly JsonSerializerOptions s_jsonOptions = CreateJsonOptions();
 
     private static JsonSerializerOptions CreateJsonOptions()
@@ -306,7 +277,7 @@ public sealed class Step11_SerializationTest : IntegrationTestBase<Step11_Serial
         List<BaseEvent> roundTrippedEvents,
         [CallerMemberName] string testName = "")
     {
-        SaveRecording(testName, server);
+        SaveRecording(testName, server, s_jsonOptions);
 
         var turns = new List<object>();
         for (int i = 0; i < transport.Turns.Count; i++)

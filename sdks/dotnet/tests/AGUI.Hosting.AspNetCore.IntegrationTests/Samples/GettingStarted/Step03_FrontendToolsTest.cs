@@ -43,7 +43,7 @@ public sealed class Step03_FrontendToolsTest : IntegrationTestBase<Step03_Fronte
         [CallerMemberName] string testName = "")
     {
         var serverCapture = new CapturingChatClient();
-        var recording = LoadRecording(testName);
+        var recording = LoadRecording(testName, s_jsonOptions);
         var hasRecording = recording.Count > 0 && recording[0].Count > 0;
 
         // Pre-create FakeChatClient with recorded handlers.
@@ -91,35 +91,6 @@ public sealed class Step03_FrontendToolsTest : IntegrationTestBase<Step03_Fronte
     }
 #pragma warning restore CS1998
 
-    private static string GetRecordingPath(string testName)
-    {
-        return Path.Combine(
-            AttributeReader.GetProjectDirectory(),
-            "Samples",
-            "GettingStarted",
-            $"Step03_FrontendToolsTest.{testName}.recording.json");
-    }
-
-    private static List<List<ChatResponseUpdate>> LoadRecording(string testName)
-    {
-        var path = GetRecordingPath(testName);
-        if (!File.Exists(path))
-        {
-            return [];
-        }
-
-        var json = File.ReadAllText(path);
-        return JsonSerializer.Deserialize<List<List<ChatResponseUpdate>>>(json, s_jsonOptions) ?? [];
-    }
-
-    private static void SaveRecording(string testName, CapturingChatClient server)
-    {
-        var path = GetRecordingPath(testName);
-        var turns = server.Calls.Select(c => c.Updates).ToList();
-        var json = JsonSerializer.Serialize(turns, s_jsonOptions);
-        File.WriteAllText(path, json);
-    }
-
     private static readonly JsonSerializerOptions s_jsonOptions = CreateJsonOptions();
 
     private static JsonSerializerOptions CreateJsonOptions()
@@ -145,7 +116,7 @@ public sealed class Step03_FrontendToolsTest : IntegrationTestBase<Step03_Fronte
         List<List<ChatResponseUpdate>> clientUpdates,
         [CallerMemberName] string testName = "")
     {
-        SaveRecording(testName, server);
+        SaveRecording(testName, server, s_jsonOptions);
 
         var turns = new List<object>();
         for (int i = 0; i < transport.Turns.Count; i++)

@@ -232,20 +232,64 @@ public abstract class IntegrationTestBase<TEntryPoint> : IClassFixture<WebApplic
         }));
     }
 
+    private string GetSampleName()
+    {
+        var name = GetType().Name;
+        return name.EndsWith("Test", StringComparison.Ordinal)
+            ? name[..^"Test".Length]
+            : name;
+    }
+
     private string GetBaselineDirectory()
     {
-        var sample = GetType().Name;
-        if (sample.EndsWith("Test", StringComparison.Ordinal))
-        {
-            sample = sample[..^"Test".Length];
-        }
-
         return Path.Combine(
             AttributeReader.GetProjectDirectory(),
             "Samples",
             "GettingStarted",
             "baselines",
-            sample);
+            GetSampleName());
+    }
+
+    private string GetFixtureDirectory()
+    {
+        return Path.Combine(
+            AttributeReader.GetProjectDirectory(),
+            "Samples",
+            "GettingStarted",
+            "fixtures",
+            GetSampleName());
+    }
+
+    /// <summary>
+    /// Resolves the recorded <see cref="ChatResponseUpdate"/> replay file for a test under
+    /// <c>Samples/GettingStarted/fixtures/{SampleName}/{testName}.recording.json</c>.
+    /// </summary>
+    protected string GetRecordingPath(string testName)
+    {
+        return Path.Combine(GetFixtureDirectory(), $"{testName}.recording.json");
+    }
+
+    /// <summary>Loads a recorded per-turn <see cref="ChatResponseUpdate"/> sequence, or an empty list if none exists.</summary>
+    internal List<List<ChatResponseUpdate>> LoadRecording(string testName, JsonSerializerOptions jsonOptions)
+    {
+        var path = GetRecordingPath(testName);
+        if (!File.Exists(path))
+        {
+            return [];
+        }
+
+        var json = File.ReadAllText(path);
+        return JsonSerializer.Deserialize<List<List<ChatResponseUpdate>>>(json, jsonOptions) ?? [];
+    }
+
+    /// <summary>Saves the server's captured per-turn <see cref="ChatResponseUpdate"/> sequence as a replay fixture.</summary>
+    internal void SaveRecording(string testName, CapturingChatClient server, JsonSerializerOptions jsonOptions)
+    {
+        var turns = server.Calls.Select(c => c.Updates).ToList();
+        var json = JsonSerializer.Serialize(turns, jsonOptions);
+        var path = GetRecordingPath(testName);
+        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+        File.WriteAllText(path, json);
     }
 
     private static void RemoveMembersRecursive(JsonNode? node, params string[] memberNames)
