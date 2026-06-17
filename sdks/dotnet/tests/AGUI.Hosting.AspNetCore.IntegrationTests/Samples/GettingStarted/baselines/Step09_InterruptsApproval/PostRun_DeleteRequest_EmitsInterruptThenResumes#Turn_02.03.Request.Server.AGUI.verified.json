@@ -4,7 +4,7 @@
   "messages": [
     {
       "role": "user",
-      "content": "Please delete the file /etc/important.conf"
+      "content": "Please delete the file report-draft.txt"
     }
   ],
   "resume": [
@@ -17,7 +17,7 @@
           "callId": "call_Id_1",
           "name": "delete_file",
           "arguments": {
-            "filename": "/etc/important.conf"
+            "filename": "report-draft.txt"
           }
         }
       }

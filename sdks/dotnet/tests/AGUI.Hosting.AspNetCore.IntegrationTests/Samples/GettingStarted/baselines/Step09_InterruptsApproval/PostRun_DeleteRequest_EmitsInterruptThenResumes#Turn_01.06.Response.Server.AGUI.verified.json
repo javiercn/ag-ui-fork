@@ -6,6 +6,7 @@
   },
   {
     "type": "TOOL_CALL_START",
+    "parentMessageId": "",
     "toolCallId": "call_Id_1",
     "toolCallName": "delete_file",
     "rawEvent": {
@@ -17,7 +18,7 @@
             "$type": "functionCall",
             "name": "delete_file",
             "arguments": {
-              "filename": "/etc/important.conf"
+              "filename": "report-draft.txt"
             },
             "informationalOnly": false,
             "callId": "call_Id_1"
@@ -25,13 +26,16 @@
           "requestId": "ficc_Id_1"
         }
       ],
-      "finishReason": "tool_calls"
+      "responseId": "",
+      "messageId": "",
+      "finishReason": "tool_calls",
+      "modelId": ""
     }
   },
   {
     "type": "TOOL_CALL_ARGS",
     "toolCallId": "call_Id_1",
-    "delta": "{\r\n  \u0022filename\u0022: \u0022/etc/important.conf\u0022\r\n}",
+    "delta": "{\r\n  \u0022filename\u0022: \u0022report-draft.txt\u0022\r\n}",
     "rawEvent": {
       "role": "assistant",
       "contents": [
@@ -41,7 +45,7 @@
             "$type": "functionCall",
             "name": "delete_file",
             "arguments": {
-              "filename": "/etc/important.conf"
+              "filename": "report-draft.txt"
             },
             "informationalOnly": false,
             "callId": "call_Id_1"
@@ -49,7 +53,10 @@
           "requestId": "ficc_Id_1"
         }
       ],
-      "finishReason": "tool_calls"
+      "responseId": "",
+      "messageId": "",
+      "finishReason": "tool_calls",
+      "modelId": ""
     }
   },
   {
@@ -64,7 +71,7 @@
             "$type": "functionCall",
             "name": "delete_file",
             "arguments": {
-              "filename": "/etc/important.conf"
+              "filename": "report-draft.txt"
             },
             "informationalOnly": false,
             "callId": "call_Id_1"
@@ -72,7 +79,10 @@
           "requestId": "ficc_Id_1"
         }
       ],
-      "finishReason": "tool_calls"
+      "responseId": "",
+      "messageId": "",
+      "finishReason": "tool_calls",
+      "modelId": ""
     }
   },
   {

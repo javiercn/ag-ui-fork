@@ -4,7 +4,7 @@
   "messages": [
     {
       "role": "user",
-      "content": "Please delete the file /etc/important.conf"
+      "content": "Please delete the file report-draft.txt"
     }
   ]
 }

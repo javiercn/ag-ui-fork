@@ -15,7 +15,7 @@
         "$type": "functionCall",
         "name": "delete_file",
         "arguments": {
-          "filename": "/etc/important.conf"
+          "filename": "report-draft.txt"
         },
         "informationalOnly": true,
         "callId": "call_Id_1"
@@ -29,7 +29,7 @@
     "contents": [
       {
         "$type": "functionResult",
-        "result": "\u0022File \u0027/etc/important.conf\u0027 deleted successfully.\u0022",
+        "result": "\u0022File \u0027report-draft.txt\u0027 deleted successfully.\u0022",
         "callId": "call_Id_1"
       }
     ],
@@ -41,11 +41,143 @@
     "contents": [
       {
         "$type": "text",
-        "text": "The file \u0027/etc/important.conf\u0027 has been deleted successfully."
+        "text": "Done"
       }
     ],
     "responseId": "run_Id_2",
-    "messageId": "msg_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " \u2014"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " \u0022"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "report"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "-d"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "raft"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": ".txt"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "\u0022"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " has"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " been"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " deleted"
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_2"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "."
+      }
+    ],
+    "responseId": "run_Id_2",
+    "messageId": "chatcmpl-Id_2",
     "conversationId": "thread_Id_2"
   },
   {

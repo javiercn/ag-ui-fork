@@ -15,10 +15,10 @@ public static class SampleClient
         // Turn 1: ask for the destructive action; expect a ToolApprovalRequestContent in reply.
         var messages = new List<ChatMessage>
         {
-            new(ChatRole.User, "Please delete the file /etc/important.conf"),
+            new(ChatRole.User, "Please delete the file report-draft.txt"),
         };
         messagesPerTurn?.Add(messages.ToList());
-        await output.WriteLineAsync("> Please delete the file /etc/important.conf").ConfigureAwait(false);
+        await output.WriteLineAsync("> Please delete the file report-draft.txt").ConfigureAwait(false);
 
         var turn1 = await StreamAsync(chatClient, messages, output, cancellationToken).ConfigureAwait(false);
         updatesPerTurn?.Add(turn1);

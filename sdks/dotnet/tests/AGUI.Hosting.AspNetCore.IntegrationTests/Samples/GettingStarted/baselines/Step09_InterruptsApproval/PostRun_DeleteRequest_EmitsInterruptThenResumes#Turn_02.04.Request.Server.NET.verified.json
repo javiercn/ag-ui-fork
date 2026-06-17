@@ -4,7 +4,7 @@
     "contents": [
       {
         "$type": "text",
-        "text": "Please delete the file /etc/important.conf"
+        "text": "Please delete the file report-draft.txt"
       }
     ]
   },
@@ -12,26 +12,37 @@
     "role": "assistant",
     "contents": [
       {
-        "$type": "functionCall",
-        "name": "delete_file",
-        "arguments": {
-          "filename": "/etc/important.conf"
+        "$type": "toolApprovalRequest",
+        "toolCall": {
+          "$type": "functionCall",
+          "name": "delete_file",
+          "arguments": {
+            "filename": "report-draft.txt"
+          },
+          "informationalOnly": false,
+          "callId": "call_Id_1"
         },
-        "informationalOnly": true,
-        "callId": "call_Id_1"
+        "requestId": "ficc_Id_1"
       }
-    ],
-    "messageId": "guid_Id_1"
+    ]
   },
   {
-    "role": "tool",
+    "role": "user",
     "contents": [
       {
-        "$type": "functionResult",
-        "result": "File \u0027/etc/important.conf\u0027 deleted successfully.",
-        "callId": "call_Id_1"
+        "$type": "toolApprovalResponse",
+        "approved": true,
+        "toolCall": {
+          "$type": "functionCall",
+          "name": "delete_file",
+          "arguments": {
+            "filename": "report-draft.txt"
+          },
+          "informationalOnly": false,
+          "callId": "call_Id_1"
+        },
+        "requestId": "ficc_Id_1"
       }
-    ],
-    "messageId": "guid_Id_2"
+    ]
   }
 ]

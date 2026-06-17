@@ -2,17 +2,14 @@ using System.Runtime.CompilerServices;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
 using AGUI.Abstractions;
 using AGUI.Client;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Step09_InterruptsApproval.Client;
 using Step09_InterruptsApproval.Server;
-using VerifyXunit;
 using Xunit;
 
 namespace AGUI.Hosting.AspNetCore.IntegrationTests.Samples.GettingStarted;
@@ -27,52 +24,7 @@ public sealed class Step09_InterruptsApprovalTest : IntegrationTestBase<Step09_I
     [Fact]
     public async Task PostRun_DeleteRequest_EmitsInterruptThenResumes()
     {
-        var serverCapture = new CapturingChatClient();
-        var fakeClient = new FakeChatClient();
-
-        // Turn 1: FakeChatClient (acting as LLM) emits a FunctionCallContent for delete_file.
-        // FunctionInvokingChatClient detects it requires approval (ApprovalRequiredAIFunction)
-        // and converts it to ToolApprovalRequestContent.
-        fakeClient.Enqueue(_ => EmitFunctionCallResponse(
-            "call_delete1",
-            "delete_file",
-            new Dictionary<string, object?> { ["filename"] = "/etc/important.conf" }));
-
-        // Turn 2: After FICC processes the approval and invokes delete_file,
-        // it calls the FakeChatClient with the tool result in messages.
-        // FakeChatClient returns the final success text.
-        fakeClient.Enqueue(_ => EmitTextResponse(
-            "The file '/etc/important.conf' has been deleted successfully."));
-
-        serverCapture.SetInner(fakeClient);
-
-        var factory = Factory.WithWebHostBuilder(builder =>
-        {
-            builder.ConfigureTestServices(services =>
-            {
-                // Match Step09's production pipeline: ApprovalRequiredAIFunction so FICC
-                // emits ToolApprovalRequestContent on tool calls. The SDK natively
-                // decodes the resume payload back into a ToolApprovalRequestContent +
-                // ToolApprovalResponseContent pair, so no per-app wrapper is needed.
-                services.RemoveAll<IChatClient>();
-                services.AddChatClient(sp => (IChatClient)serverCapture)
-                    .ConfigureOptions(options =>
-                    {
-                        options.Tools ??= [];
-                        options.Tools.Add(new ApprovalRequiredAIFunction(
-                            AIFunctionFactory.Create(
-                                (string filename) => $"File '{filename}' deleted successfully.",
-                                "delete_file",
-                                "Deletes a file from the system")));
-                    })
-                    .UseFunctionInvocation();
-            });
-        });
-
-        var httpClient = factory.CreateClient();
-        var transport = new AGUIHttpTransport(httpClient, "/");
-        var transportCapture = new CapturingAGUITransport(transport);
-        var aguiClient = new AGUIChatClient(transportCapture);
+        var (aguiClient, transport, server) = CreateCapturingClient(turnCount: 2);
 
         var clientMessages = new List<List<ChatMessage>>();
         var clientUpdates = new List<List<ChatResponseUpdate>>();
@@ -80,35 +32,85 @@ public sealed class Step09_InterruptsApprovalTest : IntegrationTestBase<Step09_I
         await Step09_InterruptsApproval.Client.SampleClient.RunAsync(
             aguiClient, TextWriter.Null, clientMessages, clientUpdates);
 
-        await VerifyAllCaptures(transportCapture, serverCapture, clientMessages, clientUpdates);
+        await VerifyAllCaptures(transport, server, clientMessages, clientUpdates);
+    }
+
+    private (AGUIChatClient Client, CapturingAGUITransport Transport, CapturingChatClient Server) CreateCapturingClient(
+        int turnCount = 1,
+        [CallerMemberName] string testName = "")
+    {
+        var serverCapture = new CapturingChatClient();
+        var recording = LoadRecording(testName, s_jsonOptions);
+        var hasRecording = recording.Count > 0 && recording[0].Count > 0;
+
+        var httpClient = Factory.WithWebHostBuilder(builder =>
+        {
+            if (hasRecording)
+            {
+                // Replay mode: the recording holds the production pipeline's post-conversion
+                // output (turn 1: the delete_file approval request the real LLM triggered;
+                // turn 2: the confirmation text). Replay it through a FakeChatClient that stands
+                // in for the whole server pipeline.
+                builder.ConfigureServices(services =>
+                {
+                    var chatClient = new FakeChatClient();
+                    for (int i = 0; i < turnCount; i++)
+                    {
+                        if (i < recording.Count)
+                        {
+                            var turnUpdates = recording[i];
+                            chatClient.Enqueue(_ => ReplayUpdates(turnUpdates));
+                        }
+                    }
+
+                    services.AddSingleton(chatClient);
+                });
+            }
+
+            builder.ConfigureTestServices(services =>
+            {
+                // Wrap whatever the app registered as IChatClient. In record mode that is the
+                // full Azure OpenAI + ApprovalRequiredAIFunction + UseFunctionInvocation pipeline,
+                // so the capture holds the approval request the real LLM triggered and the
+                // confirmation it produced after the function ran.
+                var descriptor = services.FirstOrDefault(d => d.ServiceType == typeof(IChatClient));
+                if (descriptor != null)
+                {
+                    services.Remove(descriptor);
+                }
+
+                if (hasRecording)
+                {
+                    services.AddSingleton<IChatClient>(sp =>
+                    {
+                        var fake = sp.GetRequiredService<FakeChatClient>();
+                        serverCapture.SetInner(fake);
+                        return serverCapture;
+                    });
+                }
+                else
+                {
+                    // Record mode: wrap the real Azure OpenAI client the app registered.
+                    services.AddSingleton<IChatClient>(sp =>
+                    {
+                        var inner = (IChatClient)descriptor!.ImplementationFactory!(sp);
+                        serverCapture.SetInner(inner);
+                        return serverCapture;
+                    });
+                }
+            });
+        }).CreateClient();
+
+        var transport = new AGUIHttpTransport(httpClient, "/");
+        var transportCapture = new CapturingAGUITransport(transport);
+        var aguiClient = new AGUIChatClient(transportCapture);
+
+        return (aguiClient, transportCapture, serverCapture);
     }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators
-    private static async IAsyncEnumerable<ChatResponseUpdate> EmitFunctionCallResponse(
-        string callId,
-        string functionName,
-        IDictionary<string, object?> arguments)
-    {
-        yield return new ChatResponseUpdate
-        {
-            Role = ChatRole.Assistant,
-            Contents = [new FunctionCallContent(callId, functionName, arguments)],
-            FinishReason = ChatFinishReason.ToolCalls
-        };
-    }
-
-    private static async IAsyncEnumerable<ChatResponseUpdate> EmitTextResponse(string text)
-    {
-        yield return new ChatResponseUpdate
-        {
-            Role = ChatRole.Assistant,
-            Contents = [new TextContent(text)],
-            MessageId = $"msg_{Guid.NewGuid():N}",
-            ModelId = "gpt-4o"
-        };
-    }
-
-    private static async IAsyncEnumerable<ChatResponseUpdate> EmitUpdates(List<ChatResponseUpdate> updates)
+    private static async IAsyncEnumerable<ChatResponseUpdate> ReplayUpdates(
+        List<ChatResponseUpdate> updates)
     {
         foreach (var update in updates)
         {
@@ -142,6 +144,8 @@ public sealed class Step09_InterruptsApprovalTest : IntegrationTestBase<Step09_I
         List<List<ChatResponseUpdate>> clientUpdates,
         [CallerMemberName] string testName = "")
     {
+        SaveRecording(testName, server, s_jsonOptions);
+
         var turns = new List<object>();
         for (int i = 0; i < transport.Turns.Count; i++)
         {
@@ -152,7 +156,7 @@ public sealed class Step09_InterruptsApprovalTest : IntegrationTestBase<Step09_I
             if (srv != null)
             {
                 serverDerivedEvents = new List<BaseEvent>();
-                await foreach (var evt in EmitUpdates(srv.Updates)
+                await foreach (var evt in ReplayUpdates(srv.Updates)
                     .AsAGUIEventStreamAsync(wire.Input.ToChatRequestContext(s_jsonOptions)))
                 {
                     serverDerivedEvents.Add(evt);

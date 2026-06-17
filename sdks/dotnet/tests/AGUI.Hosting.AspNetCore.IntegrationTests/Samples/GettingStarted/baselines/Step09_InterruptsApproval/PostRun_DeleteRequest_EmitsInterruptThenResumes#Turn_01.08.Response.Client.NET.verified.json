@@ -17,7 +17,7 @@
           "$type": "functionCall",
           "name": "delete_file",
           "arguments": {
-            "filename": "/etc/important.conf"
+            "filename": "report-draft.txt"
           },
           "informationalOnly": false,
           "callId": "call_Id_1"
