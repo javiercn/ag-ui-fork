@@ -1,6 +1,144 @@
 [
   [
     {
+      "contents": [],
+      "responseId": "",
+      "messageId": "",
+      "createdAt": "1970-01-01T00:00:00+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "messageId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "createdAt": "2026-06-17T12:53:44+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "messageId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "createdAt": "2026-06-17T12:53:44+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "messageId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "createdAt": "2026-06-17T12:53:44+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "messageId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "createdAt": "2026-06-17T12:53:44+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "messageId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "createdAt": "2026-06-17T12:53:44+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "messageId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "createdAt": "2026-06-17T12:53:44+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "messageId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "createdAt": "2026-06-17T12:53:44+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "messageId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "createdAt": "2026-06-17T12:53:44+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "messageId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "createdAt": "2026-06-17T12:53:44+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "messageId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "createdAt": "2026-06-17T12:53:44+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "messageId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "createdAt": "2026-06-17T12:53:44+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "messageId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "createdAt": "2026-06-17T12:53:44+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "messageId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "createdAt": "2026-06-17T12:53:44+00:00",
+      "finishReason": "tool_calls",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "usage",
+          "details": {
+            "inputTokenCount": 143,
+            "outputTokenCount": 158,
+            "totalTokenCount": 301,
+            "cachedInputTokenCount": 0,
+            "reasoningTokenCount": 128,
+            "additionalCounts": {
+              "InputTokenDetails.AudioTokenCount": 0,
+              "OutputTokenDetails.AudioTokenCount": 0,
+              "OutputTokenDetails.AcceptedPredictionTokenCount": 0,
+              "OutputTokenDetails.RejectedPredictionTokenCount": 0
+            }
+          }
+        }
+      ],
+      "responseId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "messageId": "chatcmpl-Drk409x3reIznSJjGNMsTNhBZq5WD",
+      "createdAt": "2026-06-17T12:53:44+00:00",
+      "finishReason": "tool_calls",
+      "modelId": ""
+    },
+    {
       "role": "assistant",
       "contents": [
         {
@@ -8,65 +146,62 @@
           "name": "SearchRestaurants",
           "arguments": {
             "request": {
-              "location": "Seattle",
-              "cuisine": "Italian"
+              "Location": "Seattle",
+              "Cuisine": "Italian"
             }
           },
-          "informationalOnly": false,
-          "callId": "call_abc123"
+          "informationalOnly": true,
+          "callId": "call_JcTuymTzUW0PTQYhQ7G41GFA"
         }
       ],
-      "messageId": "chatcmpl-tool1",
-      "finishReason": "toolCalls"
+      "responseId": "",
+      "messageId": "",
+      "createdAt": "1970-01-01T00:00:00+00:00",
+      "finishReason": "tool_calls",
+      "modelId": ""
     },
     {
+      "role": "tool",
       "contents": [
         {
           "$type": "functionResult",
-          "result": "{\"location\":\"Seattle\",\"cuisine\":\"Italian\",\"results\":[{\"name\":\"The Golden Fork\",\"cuisine\":\"Italian\",\"rating\":4.5,\"address\":\"123 Main St, Seattle\"},{\"name\":\"Spice Haven\",\"cuisine\":\"Indian\",\"rating\":4.7,\"address\":\"456 Oak Ave, Seattle\"},{\"name\":\"Green Leaf\",\"cuisine\":\"Vegetarian\",\"rating\":4.3,\"address\":\"789 Elm Rd, Seattle\"}]}",
-          "callId": "call_abc123"
-        }
-      ]
-    },
-    {
-      "role": "assistant",
-      "contents": [
-        {
-          "$type": "text",
-          "text": "I found some great Italian restaurants in Seattle for you!\n\n"
-        }
-      ],
-      "messageId": "chatcmpl-text1"
-    },
-    {
-      "role": "assistant",
-      "contents": [
-        {
-          "$type": "text",
-          "text": "1. **The Golden Fork** - Italian cuisine, rated 4.5/5, located at 123 Main St, Seattle\n"
-        }
-      ],
-      "messageId": "chatcmpl-text1"
-    },
-    {
-      "role": "assistant",
-      "contents": [
-        {
-          "$type": "text",
-          "text": "2. **Spice Haven** - Indian cuisine, rated 4.7/5, located at 456 Oak Ave, Seattle\n"
+          "result": {
+            "Location": "Seattle",
+            "Cuisine": "Italian",
+            "Results": [
+              {
+                "Name": "The Golden Fork",
+                "Cuisine": "Italian",
+                "Rating": 4.5,
+                "Address": "123 Main St, Seattle"
+              },
+              {
+                "Name": "Spice Haven",
+                "Cuisine": "Indian",
+                "Rating": 4.7,
+                "Address": "456 Oak Ave, Seattle"
+              },
+              {
+                "Name": "Green Leaf",
+                "Cuisine": "Vegetarian",
+                "Rating": 4.3,
+                "Address": "789 Elm Rd, Seattle"
+              }
+            ]
+          },
+          "callId": "call_JcTuymTzUW0PTQYhQ7G41GFA"
         }
       ],
-      "messageId": "chatcmpl-text1"
+      "responseId": "036993060ac44e758f1ed80bf65e5229",
+      "messageId": "036993060ac44e758f1ed80bf65e5229",
+      "createdAt": "2026-06-17T12:53:47.4243284+00:00"
     },
     {
-      "role": "assistant",
-      "contents": [
-        {
-          "$type": "text",
-          "text": "3. **Green Leaf** - Vegetarian cuisine, rated 4.3/5, located at 789 Elm Rd, Seattle"
-        }
-      ],
-      "messageId": "chatcmpl-text1"
+      "contents": [],
+      "responseId": "",
+      "messageId": "",
+      "createdAt": "1970-01-01T00:00:00+00:00",
+      "modelId": ""
     },
     {
       "role": "assistant",
@@ -76,8 +211,851 @@
           "text": ""
         }
       ],
-      "messageId": "chatcmpl-text1",
-      "finishReason": "stop"
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "I"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " found"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " one"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " Italian"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " restaurant"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " in"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " Seattle"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": ":\n\n"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "-"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " The"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " Golden"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " Fork"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " —"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " "
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "123"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " Main"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " St"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": ","
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " Seattle"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "."
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " Rating"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": ":"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " "
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "4"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "."
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "5"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "\n\n"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "Would"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " you"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " like"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " me"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " to"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " search"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " for"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " more"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " Italian"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " options"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " ("
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "bro"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "ader"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " sources"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "),"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " look"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " in"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " a"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " specific"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " neighborhood"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": ","
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " filter"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " by"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " price"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " or"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " ratings"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": ","
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " or"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " help"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " with"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " a"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " reservation"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " or"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": " directions"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "text",
+          "text": "?"
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "finishReason": "stop",
+      "modelId": ""
+    },
+    {
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "usage",
+          "details": {
+            "inputTokenCount": 320,
+            "outputTokenCount": 264,
+            "totalTokenCount": 584,
+            "cachedInputTokenCount": 0,
+            "reasoningTokenCount": 192,
+            "additionalCounts": {
+              "InputTokenDetails.AudioTokenCount": 0,
+              "OutputTokenDetails.AudioTokenCount": 0,
+              "OutputTokenDetails.AcceptedPredictionTokenCount": 0,
+              "OutputTokenDetails.RejectedPredictionTokenCount": 0
+            }
+          }
+        }
+      ],
+      "responseId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "messageId": "chatcmpl-Drk43VoPFlVwGcAnhJK0daOYNi7II",
+      "createdAt": "2026-06-17T12:53:47+00:00",
+      "finishReason": "stop",
+      "modelId": ""
     }
   ]
 ]

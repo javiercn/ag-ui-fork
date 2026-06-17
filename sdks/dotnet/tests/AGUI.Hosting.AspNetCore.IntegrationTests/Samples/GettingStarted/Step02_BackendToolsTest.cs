@@ -46,32 +46,59 @@ public sealed class Step02_BackendToolsTest : IntegrationTestBase<Step02_Backend
         var recording = LoadRecording(testName, s_jsonOptions);
         var hasRecording = recording.Count > 0 && recording[0].Count > 0;
 
-        // Pre-create FakeChatClient with recorded handlers.
-        var fakeClient = new FakeChatClient();
-        if (hasRecording)
+        var httpClient = Factory.WithWebHostBuilder(builder =>
         {
-            for (int i = 0; i < recording.Count; i++)
+            if (hasRecording)
             {
-                var callUpdates = recording[i];
-                fakeClient.Enqueue(_ => ReplayUpdates(callUpdates));
+                // Replay mode: the recording holds the production pipeline's output (the tool
+                // call, the tool result, and the final text). Replay it through a FakeChatClient
+                // that stands in for the whole server pipeline.
+                builder.ConfigureServices(services =>
+                {
+                    var chatClient = new FakeChatClient();
+                    for (int i = 0; i < turnCount; i++)
+                    {
+                        if (i < recording.Count)
+                        {
+                            var turnUpdates = recording[i];
+                            chatClient.Enqueue(_ => ReplayUpdates(turnUpdates));
+                        }
+                    }
+
+                    services.AddSingleton(chatClient);
+                });
             }
-        }
 
-        serverCapture.SetInner(fakeClient);
-
-        var factory = Factory.WithWebHostBuilder(builder =>
-        {
             builder.ConfigureTestServices(services =>
             {
-                // Remove ALL IChatClient registrations (including FunctionInvokingChatClient pipeline).
-                // In replay mode, the recording already contains the merged output from tool invocation,
-                // so we don't need FunctionInvokingChatClient.
-                services.RemoveAll<IChatClient>();
-                services.AddSingleton<IChatClient>(serverCapture);
-            });
-        });
+                var descriptor = services.FirstOrDefault(d => d.ServiceType == typeof(IChatClient));
+                if (descriptor != null)
+                {
+                    services.Remove(descriptor);
+                }
 
-        var httpClient = factory.CreateClient();
+                if (hasRecording)
+                {
+                    services.AddSingleton<IChatClient>(sp =>
+                    {
+                        var fake = sp.GetRequiredService<FakeChatClient>();
+                        serverCapture.SetInner(fake);
+                        return serverCapture;
+                    });
+                }
+                else
+                {
+                    // Record mode: wrap the app's real pipeline (Azure OpenAI + tools +
+                    // UseFunctionInvocation) so a real LLM run is captured for replay.
+                    services.AddSingleton<IChatClient>(sp =>
+                    {
+                        var inner = (IChatClient)descriptor!.ImplementationFactory!(sp);
+                        serverCapture.SetInner(inner);
+                        return serverCapture;
+                    });
+                }
+            });
+        }).CreateClient();
 
         var transport = new AGUIHttpTransport(httpClient, "/");
         var transportCapture = new CapturingAGUITransport(transport);

@@ -16,8 +16,8 @@
         "name": "SearchRestaurants",
         "arguments": {
           "request": {
-            "location": "Seattle",
-            "cuisine": "Italian"
+            "Location": "Seattle",
+            "Cuisine": "Italian"
           }
         },
         "informationalOnly": true,
@@ -32,7 +32,7 @@
     "contents": [
       {
         "$type": "functionResult",
-        "result": "\u0022{\\\u0022location\\\u0022:\\\u0022Seattle\\\u0022,\\\u0022cuisine\\\u0022:\\\u0022Italian\\\u0022,\\\u0022results\\\u0022:[{\\\u0022name\\\u0022:\\\u0022The Golden Fork\\\u0022,\\\u0022cuisine\\\u0022:\\\u0022Italian\\\u0022,\\\u0022rating\\\u0022:4.5,\\\u0022address\\\u0022:\\\u0022123 Main St, Seattle\\\u0022},{\\\u0022name\\\u0022:\\\u0022Spice Haven\\\u0022,\\\u0022cuisine\\\u0022:\\\u0022Indian\\\u0022,\\\u0022rating\\\u0022:4.7,\\\u0022address\\\u0022:\\\u0022456 Oak Ave, Seattle\\\u0022},{\\\u0022name\\\u0022:\\\u0022Green Leaf\\\u0022,\\\u0022cuisine\\\u0022:\\\u0022Vegetarian\\\u0022,\\\u0022rating\\\u0022:4.3,\\\u0022address\\\u0022:\\\u0022789 Elm Rd, Seattle\\\u0022}]}\u0022",
+        "result": "{\r\n            \u0022Location\u0022: \u0022Seattle\u0022,\r\n            \u0022Cuisine\u0022: \u0022Italian\u0022,\r\n            \u0022Results\u0022: [\r\n              {\r\n                \u0022Name\u0022: \u0022The Golden Fork\u0022,\r\n                \u0022Cuisine\u0022: \u0022Italian\u0022,\r\n                \u0022Rating\u0022: 4.5,\r\n                \u0022Address\u0022: \u0022123 Main St, Seattle\u0022\r\n              },\r\n              {\r\n                \u0022Name\u0022: \u0022Spice Haven\u0022,\r\n                \u0022Cuisine\u0022: \u0022Indian\u0022,\r\n                \u0022Rating\u0022: 4.7,\r\n                \u0022Address\u0022: \u0022456 Oak Ave, Seattle\u0022\r\n              },\r\n              {\r\n                \u0022Name\u0022: \u0022Green Leaf\u0022,\r\n                \u0022Cuisine\u0022: \u0022Vegetarian\u0022,\r\n                \u0022Rating\u0022: 4.3,\r\n                \u0022Address\u0022: \u0022789 Elm Rd, Seattle\u0022\r\n              }\r\n            ]\r\n          }",
         "callId": "call_Id_1"
       }
     ],
@@ -44,7 +44,7 @@
     "contents": [
       {
         "$type": "text",
-        "text": "I found some great Italian restaurants in Seattle for you!\n\n"
+        "text": "I"
       }
     ],
     "responseId": "run_Id_1",
@@ -56,7 +56,7 @@
     "contents": [
       {
         "$type": "text",
-        "text": "1. **The Golden Fork** - Italian cuisine, rated 4.5/5, located at 123 Main St, Seattle\n"
+        "text": " found"
       }
     ],
     "responseId": "run_Id_1",
@@ -68,7 +68,7 @@
     "contents": [
       {
         "$type": "text",
-        "text": "2. **Spice Haven** - Indian cuisine, rated 4.7/5, located at 456 Oak Ave, Seattle\n"
+        "text": " one"
       }
     ],
     "responseId": "run_Id_1",
@@ -80,7 +80,703 @@
     "contents": [
       {
         "$type": "text",
-        "text": "3. **Green Leaf** - Vegetarian cuisine, rated 4.3/5, located at 789 Elm Rd, Seattle"
+        "text": " Italian"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " restaurant"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " in"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " Seattle"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": ":\n\n"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "-"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " The"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " Golden"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " Fork"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " \u2014"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " "
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "123"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " Main"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " St"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": ","
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " Seattle"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "."
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " Rating"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": ":"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " "
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "4"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "."
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "5"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "\n\n"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "Would"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " you"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " like"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " me"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " to"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " search"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " for"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " more"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " Italian"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " options"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " ("
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "bro"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "ader"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " sources"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "),"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " look"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " in"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " a"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " specific"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " neighborhood"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": ","
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " filter"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " by"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " price"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " or"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " ratings"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": ","
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " or"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " help"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " with"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " a"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " reservation"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " or"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": " directions"
+      }
+    ],
+    "responseId": "run_Id_1",
+    "messageId": "chatcmpl-Id_2",
+    "conversationId": "thread_Id_1"
+  },
+  {
+    "role": "assistant",
+    "contents": [
+      {
+        "$type": "text",
+        "text": "?"
       }
     ],
     "responseId": "run_Id_1",

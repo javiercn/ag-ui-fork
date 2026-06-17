@@ -32,23 +32,23 @@ public class Program
                     new DefaultAzureCredential())
                 .GetChatClient(deploymentName)
                 .AsIChatClient())
-                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true)
                 .ConfigureOptions(options =>
                 {
                     options.Tools ??= [];
                     options.Tools.Add(searchRestaurants);
-                });
+                })
+                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true);
         }
         else
         {
             builder.Services.AddSingleton<FakeChatClient>();
             builder.Services.AddChatClient(sp => sp.GetRequiredService<FakeChatClient>())
-                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true)
                 .ConfigureOptions(options =>
                 {
                     options.Tools ??= [];
                     options.Tools.Add(searchRestaurants);
-                });
+                })
+                .UseFunctionInvocation(configure: fic => fic.TerminateOnUnknownCalls = true);
         }
 
         var app = builder.Build();
