@@ -6,11 +6,12 @@
   },
   {
     "type": "TOOL_CALL_START",
+    "parentMessageId": "",
     "toolCallId": "call_Id_1",
     "toolCallName": "GetUserLocation",
     "rawEvent": {
       "authorName": null,
-      "role": "Assistant",
+      "role": "assistant",
       "contents": [
         {
           "$type": "functionCall",
@@ -23,11 +24,11 @@
         }
       ],
       "additionalProperties": null,
-      "responseId": null,
-      "messageId": null,
+      "responseId": "",
+      "messageId": "",
       "conversationId": null,
-      "finishReason": "toolCalls",
-      "modelId": "gpt-4o-mini",
+      "finishReason": "tool_calls",
+      "modelId": "",
       "continuationToken": null
     }
   },
@@ -37,7 +38,7 @@
     "delta": "{}",
     "rawEvent": {
       "authorName": null,
-      "role": "Assistant",
+      "role": "assistant",
       "contents": [
         {
           "$type": "functionCall",
@@ -50,11 +51,11 @@
         }
       ],
       "additionalProperties": null,
-      "responseId": null,
-      "messageId": null,
+      "responseId": "",
+      "messageId": "",
       "conversationId": null,
-      "finishReason": "toolCalls",
-      "modelId": "gpt-4o-mini",
+      "finishReason": "tool_calls",
+      "modelId": "",
       "continuationToken": null
     }
   },
@@ -63,7 +64,7 @@
     "toolCallId": "call_Id_1",
     "rawEvent": {
       "authorName": null,
-      "role": "Assistant",
+      "role": "assistant",
       "contents": [
         {
           "$type": "functionCall",
@@ -76,11 +77,11 @@
         }
       ],
       "additionalProperties": null,
-      "responseId": null,
-      "messageId": null,
+      "responseId": "",
+      "messageId": "",
       "conversationId": null,
-      "finishReason": "toolCalls",
-      "modelId": "gpt-4o-mini",
+      "finishReason": "tool_calls",
+      "modelId": "",
       "continuationToken": null
     }
   },

@@ -6,10 +6,11 @@
   },
   {
     "type": "TOOL_CALL_START",
+    "parentMessageId": "",
     "toolCallId": "call_Id_1",
     "toolCallName": "GetUserLocation",
     "rawEvent": {
-      "role": "Assistant",
+      "role": "assistant",
       "contents": [
         {
           "$type": "functionCall",
@@ -19,8 +20,10 @@
           "callId": "call_Id_1"
         }
       ],
-      "finishReason": "toolCalls",
-      "modelId": "gpt-4o-mini"
+      "responseId": "",
+      "messageId": "",
+      "finishReason": "tool_calls",
+      "modelId": ""
     }
   },
   {
@@ -28,7 +31,7 @@
     "toolCallId": "call_Id_1",
     "delta": "{}",
     "rawEvent": {
-      "role": "Assistant",
+      "role": "assistant",
       "contents": [
         {
           "$type": "functionCall",
@@ -38,15 +41,17 @@
           "callId": "call_Id_1"
         }
       ],
-      "finishReason": "toolCalls",
-      "modelId": "gpt-4o-mini"
+      "responseId": "",
+      "messageId": "",
+      "finishReason": "tool_calls",
+      "modelId": ""
     }
   },
   {
     "type": "TOOL_CALL_END",
     "toolCallId": "call_Id_1",
     "rawEvent": {
-      "role": "Assistant",
+      "role": "assistant",
       "contents": [
         {
           "$type": "functionCall",
@@ -56,8 +61,10 @@
           "callId": "call_Id_1"
         }
       ],
-      "finishReason": "toolCalls",
-      "modelId": "gpt-4o-mini"
+      "responseId": "",
+      "messageId": "",
+      "finishReason": "tool_calls",
+      "modelId": ""
     }
   },
   {

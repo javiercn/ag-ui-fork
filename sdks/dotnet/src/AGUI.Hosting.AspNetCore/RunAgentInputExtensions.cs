@@ -222,9 +222,11 @@ public static class RunAgentInputExtensions
         HashSet<string> clientToolNames,
         List<ChatMessage> chatMessages)
     {
-        // Collect client tool results from messages
+        // Collect client tool results from messages and the set of call ids that already have a
+        // result (i.e. were executed client-side).
         var clientCallResults = new Dictionary<string, string>(StringComparer.Ordinal);
         var callIdToName = new Dictionary<string, string>(StringComparer.Ordinal);
+        var resolvedCallIds = new HashSet<string>(StringComparer.Ordinal);
 
         foreach (var message in chatMessages)
         {
@@ -234,45 +236,36 @@ public static class RunAgentInputExtensions
                 {
                     callIdToName[fcc.CallId] = fcc.Name;
                 }
-                else if (content is FunctionResultContent frc && callIdToName.ContainsKey(frc.CallId))
+                else if (content is FunctionResultContent frc)
                 {
-                    clientCallResults[frc.CallId] = frc.Result?.ToString() ?? string.Empty;
+                    resolvedCallIds.Add(frc.CallId);
+                    if (callIdToName.ContainsKey(frc.CallId))
+                    {
+                        clientCallResults[frc.CallId] = frc.Result?.ToString() ?? string.Empty;
+                    }
                 }
             }
         }
 
-        // Find the last assistant message with tool calls and collect all pending FCCs.
-        // Replace FCCs with ToolApprovalRequestContent (as FICC would have emitted them)
-        // and inject a User message with ToolApprovalResponseContent for each.
+        // A client tool call that already has a result is a complete tool_calls/tool exchange and
+        // is left untouched so the model sees a valid history. A call that has NO result yet (a
+        // server tool surfaced alongside a client tool in a mixed turn) still needs to run, so it
+        // is converted to a ToolApprovalRequestContent + approved ToolApprovalResponseContent pair
+        // for FunctionInvokingChatClient to resume and execute.
         var approvalResponses = new List<AIContent>();
         for (var i = chatMessages.Count - 1; i >= 0; i--)
         {
             var msg = chatMessages[i];
-            if (msg.Role != ChatRole.Assistant)
+            if (msg.Role != ChatRole.Assistant
+                || !msg.Contents.Any(c => c is FunctionCallContent { CallId: { } id } && !resolvedCallIds.Contains(id)))
             {
                 continue;
             }
 
-            var hasFcc = false;
-            foreach (var content in msg.Contents)
-            {
-                if (content is FunctionCallContent)
-                {
-                    hasFcc = true;
-                    break;
-                }
-            }
-
-            if (!hasFcc)
-            {
-                continue;
-            }
-
-            // Replace the assistant message contents: convert FCCs to ToolApprovalRequestContent
             var newContents = new List<AIContent>();
             foreach (var content in msg.Contents)
             {
-                if (content is FunctionCallContent fcc)
+                if (content is FunctionCallContent fcc && !resolvedCallIds.Contains(fcc.CallId))
                 {
                     var request = new ToolApprovalRequestContent($"approval_{fcc.CallId}", fcc);
                     newContents.Add(request);
@@ -285,17 +278,17 @@ public static class RunAgentInputExtensions
             }
 
             chatMessages[i] = new ChatMessage(msg.Role, newContents);
-            break; // Only process the last assistant message with tool calls
+            break; // Only process the last assistant message with unresolved tool calls
         }
 
-        // Inject a User message with approval responses for all pending tool calls
         if (approvalResponses.Count > 0)
         {
             chatMessages.Add(new ChatMessage(ChatRole.User, approvalResponses));
         }
 
-        // Create proxy functions for client tools that have pre-computed results
-        // and add them to the existing tools list (which may contain server tools)
+        // (Re)declare the client tools so the model still knows their schema. Each client tool
+        // with a pre-computed result is registered as a proxy returning that result, keeping it
+        // invocable without contacting the client again.
         chatOptions.Tools ??= new List<AITool>();
         foreach (var tool in clientTools)
         {
@@ -318,6 +311,10 @@ public static class RunAgentInputExtensions
                     tool.Name,
                     description);
                 chatOptions.Tools.Add(proxy);
+            }
+            else
+            {
+                chatOptions.Tools.Add(tool);
             }
         }
     }
