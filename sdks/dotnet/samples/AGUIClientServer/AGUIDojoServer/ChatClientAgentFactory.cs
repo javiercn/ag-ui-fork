@@ -7,6 +7,8 @@ using AGUIDojoServer.BackendToolRendering;
 using AGUIDojoServer.PredictiveStateUpdates;
 using AGUIDojoServer.SharedState;
 using System.ClientModel;
+using Azure.AI.OpenAI;
+using Azure.Identity;
 using OpenAI;
 using Microsoft.Extensions.AI;
 using ChatClient = OpenAI.Chat.ChatClient;
@@ -15,14 +17,37 @@ namespace AGUIDojoServer;
 
 internal static class ChatClientAgentFactory
 {
-    private static OpenAIClient? s_openAIClient;
-    private static string? s_modelName;
+    private static ChatClient? s_chatClient;
 
     public static void Initialize(IConfiguration configuration)
     {
-        s_modelName = configuration["OPENAI_CHAT_MODEL_ID"] ?? "gpt-4o";
-        string? apiKey = configuration["OPENAI_API_KEY"];
+        // Resolve a ChatClient from configuration. Three modes are supported, all
+        // producing the same OpenAI.Chat.ChatClient so the rest of the factory is
+        // provider-agnostic:
+        //
+        // 1. OPENAI_BASE_URL set — talk to any OpenAI-compatible endpoint with an
+        //    API key. This covers a local OpenAI mock (e.g. aimock used by the
+        //    dojo/e2e), the real OpenAI API, and Azure OpenAI via its
+        //    OpenAI-compatible surface (https://{resource}.openai.azure.com/openai/v1/).
+        // 2. AZURE_OPENAI_ENDPOINT set — talk to Azure OpenAI using Entra ID
+        //    (DefaultAzureCredential), no API key required.
+        // 3. Otherwise — talk to the public OpenAI API with OPENAI_API_KEY.
+        var modelName = configuration["OPENAI_CHAT_MODEL_ID"]
+            ?? configuration["AZURE_OPENAI_DEPLOYMENT_NAME"]
+            ?? "gpt-4o";
+
         string? baseUrl = configuration["OPENAI_BASE_URL"];
+        string? azureEndpoint = configuration["AZURE_OPENAI_ENDPOINT"];
+        string? apiKey = configuration["OPENAI_API_KEY"];
+
+        if (string.IsNullOrEmpty(baseUrl) && !string.IsNullOrEmpty(azureEndpoint))
+        {
+            var azureClient = new AzureOpenAIClient(
+                new Uri(azureEndpoint),
+                new DefaultAzureCredential());
+            s_chatClient = azureClient.GetChatClient(modelName);
+            return;
+        }
 
         var options = new OpenAIClientOptions();
         if (!string.IsNullOrEmpty(baseUrl))
@@ -30,15 +55,15 @@ internal static class ChatClientAgentFactory
             options.Endpoint = new Uri(baseUrl);
         }
 
-        s_openAIClient = new OpenAIClient(
+        var openAIClient = new OpenAIClient(
             new ApiKeyCredential(apiKey ?? string.Empty),
             options);
+        s_chatClient = openAIClient.GetChatClient(modelName);
     }
 
     private static IChatClient CreateBaseChatClient()
     {
-        ChatClient chatClient = s_openAIClient!.GetChatClient(s_modelName!);
-        return chatClient.AsIChatClient()
+        return s_chatClient!.AsIChatClient()
             .AsBuilder()
             .UseFunctionInvocation()
             .Build();
@@ -120,8 +145,7 @@ internal static class ChatClientAgentFactory
 
     public static IChatClient CreateSharedState(JsonSerializerOptions options)
     {
-        ChatClient chatClient = s_openAIClient!.GetChatClient(s_modelName!);
-        var innerClient = chatClient.AsIChatClient()
+        var innerClient = s_chatClient!.AsIChatClient()
             .AsBuilder()
             .UseFunctionInvocation()
             .Build();
