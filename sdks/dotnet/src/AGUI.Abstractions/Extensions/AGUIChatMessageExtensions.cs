@@ -20,8 +20,50 @@ public static class AGUIChatMessageExtensions
     /// <returns>A sequence of <see cref="ChatMessage"/> instances.</returns>
     public static IEnumerable<ChatMessage> AsChatMessages(this IEnumerable<AGUIMessage> aguiMessages)
     {
+        // Accumulates a run of consecutive assistant messages that carry tool calls. Clients such
+        // as @ag-ui/client split a single parallel-tool-call turn into one assistant message per
+        // call, producing assistant(call_1), assistant(call_2), tool(call_1), tool(call_2).
+        // Providers (e.g. OpenAI) reject that: an assistant tool_calls message must be immediately
+        // followed by its tool results. Merging the run back into a single assistant message keeps
+        // the reconstructed history valid. Only the current run is buffered, so this stays cheap.
+        List<AIContent>? pendingToolCallContents = null;
+        string? pendingToolCallId = null;
+
         foreach (var message in aguiMessages)
         {
+            if (message is AGUIAssistantMessage toolCallAssistant && toolCallAssistant.ToolCalls is { Count: > 0 })
+            {
+                pendingToolCallContents ??= new List<AIContent>();
+                pendingToolCallId ??= message.Id;
+
+                if (!string.IsNullOrEmpty(toolCallAssistant.Content))
+                {
+                    pendingToolCallContents.Add(new TextContent(toolCallAssistant.Content));
+                }
+
+                foreach (var toolCall in toolCallAssistant.ToolCalls)
+                {
+                    pendingToolCallContents.Add(new FunctionCallContent(
+                        toolCall.Id,
+                        toolCall.Function.Name,
+                        toolCall.Function.Arguments is { Length: > 0 }
+                            ? (IDictionary<string, object?>?)JsonSerializer.Deserialize(
+                                toolCall.Function.Arguments,
+                                AGUIJsonSerializerContext.Default.GetTypeInfo(typeof(IDictionary<string, object?>))!)
+                            : null));
+                }
+
+                continue;
+            }
+
+            // Any non-(assistant-with-tool-calls) message ends the current run; flush it first.
+            if (pendingToolCallContents is not null)
+            {
+                yield return new ChatMessage(ChatRole.Assistant, pendingToolCallContents) { MessageId = pendingToolCallId };
+                pendingToolCallContents = null;
+                pendingToolCallId = null;
+            }
+
             var role = MapChatRole(message.Role);
 
             if (message is AGUIUserMessage userMessage && userMessage.Content.Count > 0)
@@ -66,31 +108,6 @@ public static class AGUIChatMessageExtensions
 
                 yield return new ChatMessage(role, contents) { MessageId = message.Id, AuthorName = authorName };
             }
-            else if (message is AGUIAssistantMessage assistantMessage && assistantMessage.ToolCalls is { Count: > 0 })
-            {
-                var contents = new List<AIContent>();
-                if (!string.IsNullOrEmpty(assistantMessage.Content))
-                {
-                    contents.Add(new TextContent(assistantMessage.Content));
-                }
-
-                foreach (var toolCall in assistantMessage.ToolCalls)
-                {
-                    contents.Add(new FunctionCallContent(
-                        toolCall.Id,
-                        toolCall.Function.Name,
-                        toolCall.Function.Arguments is { Length: > 0 }
-                            ? (IDictionary<string, object?>?)JsonSerializer.Deserialize(
-                                toolCall.Function.Arguments,
-                                AGUIJsonSerializerContext.Default.GetTypeInfo(typeof(IDictionary<string, object?>))!)
-                            : null));
-                }
-
-                yield return new ChatMessage(role, contents)
-                {
-                    MessageId = message.Id
-                };
-            }
             else if (message is AGUIToolMessage toolMessage)
             {
                 var contents = new List<AIContent>
@@ -110,6 +127,12 @@ public static class AGUIChatMessageExtensions
                     MessageId = message.Id
                 };
             }
+        }
+
+        // Flush any trailing assistant-tool-call run.
+        if (pendingToolCallContents is not null)
+        {
+            yield return new ChatMessage(ChatRole.Assistant, pendingToolCallContents) { MessageId = pendingToolCallId };
         }
     }
 
