@@ -8,8 +8,8 @@
     },
     {
       "role": "assistant",
-      "id": "chatcmpl-Id_1",
-      "content": "Hello! How can I help you today?"
+      "content": "Hello! How can I help you today?",
+      "id": "chatcmpl-Id_1"
     },
     {
       "role": "user",

@@ -36,7 +36,7 @@ public sealed class AGUIMessageJsonConverter : JsonConverter<AGUIMessage>
             AGUIRoles.System => jsonElement.Deserialize(
                 options.GetTypeInfo(typeof(AGUISystemMessage))) as AGUISystemMessage,
             AGUIRoles.Developer => jsonElement.Deserialize(
-                options.GetTypeInfo(typeof(AGUISystemMessage))) as AGUISystemMessage,
+                options.GetTypeInfo(typeof(AGUIDeveloperMessage))) as AGUIDeveloperMessage,
             AGUIRoles.Tool => jsonElement.Deserialize(
                 options.GetTypeInfo(typeof(AGUIToolMessage))) as AGUIToolMessage,
             AGUIRoles.Activity => jsonElement.Deserialize(
@@ -68,7 +68,7 @@ public sealed class AGUIMessageJsonConverter : JsonConverter<AGUIMessage>
         {
             if (contentProp.ValueKind == JsonValueKind.String)
             {
-                userMessage.Content = [new AGUITextInputContent { Text = contentProp.GetString() ?? string.Empty }];
+                userMessage.Content = contentProp.GetString() ?? string.Empty;
             }
             else if (contentProp.ValueKind == JsonValueKind.Array)
             {
@@ -126,6 +126,9 @@ public sealed class AGUIMessageJsonConverter : JsonConverter<AGUIMessage>
                 break;
             case AGUISystemMessage system:
                 JsonSerializer.Serialize(writer, system, options.GetTypeInfo(typeof(AGUISystemMessage)));
+                break;
+            case AGUIDeveloperMessage developer:
+                JsonSerializer.Serialize(writer, developer, options.GetTypeInfo(typeof(AGUIDeveloperMessage)));
                 break;
             case AGUIToolMessage tool:
                 JsonSerializer.Serialize(writer, tool, options.GetTypeInfo(typeof(AGUIToolMessage)));

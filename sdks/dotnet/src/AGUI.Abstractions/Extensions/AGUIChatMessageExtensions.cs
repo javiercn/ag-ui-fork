@@ -122,7 +122,16 @@ public static class AGUIChatMessageExtensions
             }
             else
             {
-                yield return new ChatMessage(role, message.Content)
+                var text = message switch
+                {
+                    AGUIAssistantMessage assistant => assistant.Content ?? string.Empty,
+                    AGUISystemMessage system => system.Content,
+                    AGUIDeveloperMessage developer => developer.Content,
+                    AGUIReasoningMessage reasoning => reasoning.Content,
+                    _ => string.Empty,
+                };
+
+                yield return new ChatMessage(role, text)
                 {
                     MessageId = message.Id
                 };
@@ -149,15 +158,16 @@ public static class AGUIChatMessageExtensions
             if (message.Role == ChatRole.User)
             {
                 var userMsg = new AGUIUserMessage { Name = message.AuthorName };
+                var parts = new List<AGUIInputContent>();
                 foreach (var content in message.Contents)
                 {
                     switch (content)
                     {
                         case TextContent textContent:
-                            userMsg.Content.Add(new AGUITextInputContent { Text = textContent.Text ?? string.Empty });
+                            parts.Add(new AGUITextInputContent { Text = textContent.Text ?? string.Empty });
                             break;
                         case DataContent dataContent:
-                            userMsg.Content.Add(new AGUIBinaryInputContent
+                            parts.Add(new AGUIBinaryInputContent
                             {
                                 MimeType = dataContent.MediaType ?? string.Empty,
                                 Data = dataContent.Data is { Length: > 0 } ? Convert.ToBase64String(dataContent.Data.ToArray()) : null,
@@ -165,7 +175,7 @@ public static class AGUIChatMessageExtensions
                             });
                             break;
                         case UriContent uriContent:
-                            userMsg.Content.Add(new AGUIBinaryInputContent
+                            parts.Add(new AGUIBinaryInputContent
                             {
                                 MimeType = uriContent.MediaType ?? string.Empty,
                                 Url = uriContent.Uri?.ToString(),
@@ -173,17 +183,21 @@ public static class AGUIChatMessageExtensions
                             });
                             break;
                         default:
-                            userMsg.Content.Add(new AGUITextInputContent { Text = content.ToString() ?? string.Empty });
+                            parts.Add(new AGUITextInputContent { Text = content.ToString() ?? string.Empty });
                             break;
                     }
                 }
 
+                userMsg.Content = parts;
                 aguiMessage = userMsg;
             }
             else if (message.Role == ChatRole.Assistant)
             {
                 var functionCalls = message.Contents.OfType<FunctionCallContent>().ToList();
-                var assistantMsg = new AGUIAssistantMessage { Content = message.Text ?? string.Empty };
+                var assistantMsg = new AGUIAssistantMessage
+                {
+                    Content = string.IsNullOrEmpty(message.Text) ? null : message.Text
+                };
                 if (functionCalls.Count > 0)
                 {
                     assistantMsg.ToolCalls = new List<AGUIToolCall>();
@@ -214,31 +228,20 @@ public static class AGUIChatMessageExtensions
             }
             else if (message.Role == ChatRole.Tool)
             {
-                var functionResults = message.Contents.OfType<FunctionResultContent>().ToList();
-                if (functionResults.Count == 0)
+                // Mirror Microsoft.Extensions.AI (OpenAIChatClient.ToOpenAIChatMessages): a tool
+                // message is materialized only from FunctionResultContent items, each keyed on its
+                // tool call id. MEAI batches parallel tool results into a single tool ChatMessage,
+                // so emit one AGUIToolMessage per result to preserve them all. Any tool-role content
+                // without a FunctionResultContent has no tool call id to attach to and is ignored,
+                // rather than synthesizing a message with an empty toolCallId.
+                foreach (var functionResult in message.Contents.OfType<FunctionResultContent>())
                 {
-                    // No structured result; fall back to the raw message text under its message id.
                     yield return new AGUIToolMessage
                     {
-                        Id = message.MessageId,
-                        Content = message.Text ?? string.Empty
+                        Id = functionResult.CallId,
+                        ToolCallId = functionResult.CallId,
+                        Content = SerializeFunctionResult(functionResult, message.Text)
                     };
-                }
-                else
-                {
-                    // AG-UI models each tool result as a separate ToolMessage keyed on its tool
-                    // call id (the response side likewise sets TOOL_CALL_RESULT.messageId =
-                    // toolCallId). MEAI batches parallel tool results into a single tool
-                    // ChatMessage, so emit one AGUIToolMessage per result to preserve them all.
-                    foreach (var functionResult in functionResults)
-                    {
-                        yield return new AGUIToolMessage
-                        {
-                            Id = functionResult.CallId,
-                            ToolCallId = functionResult.CallId,
-                            Content = SerializeFunctionResult(functionResult, message.Text)
-                        };
-                    }
                 }
 
                 continue;

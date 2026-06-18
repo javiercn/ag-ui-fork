@@ -21,5 +21,5 @@ public sealed class AGUIActivityMessage : AGUIMessage
     /// Gets or sets the structured activity content as a JSON object.
     /// </summary>
     [JsonPropertyName("content")]
-    public new JsonElement Content { get; set; }
+    public JsonElement Content { get; set; }
 }

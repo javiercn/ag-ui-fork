@@ -325,6 +325,7 @@ AGUI.Abstractions.AGUIJsonSerializerContext.AGUIJsonSerializerContext() -> void
 AGUI.Abstractions.AGUIJsonSerializerContext.AGUIJsonSerializerContext(System.Text.Json.JsonSerializerOptions! options) -> void
 AGUI.Abstractions.AGUIJsonSerializerContext.AGUIMessage.get -> System.Text.Json.Serialization.Metadata.JsonTypeInfo<AGUI.Abstractions.AGUIMessage>
 AGUI.Abstractions.AGUIJsonSerializerContext.AGUISystemMessage.get -> System.Text.Json.Serialization.Metadata.JsonTypeInfo<AGUI.Abstractions.AGUISystemMessage>
+AGUI.Abstractions.AGUIJsonSerializerContext.AGUIDeveloperMessage.get -> System.Text.Json.Serialization.Metadata.JsonTypeInfo<AGUI.Abstractions.AGUIDeveloperMessage>
 AGUI.Abstractions.AGUIJsonSerializerContext.AGUIToolMessage.get -> System.Text.Json.Serialization.Metadata.JsonTypeInfo<AGUI.Abstractions.AGUIToolMessage>
 AGUI.Abstractions.AGUIJsonSerializerContext.AGUIToolCall.get -> System.Text.Json.Serialization.Metadata.JsonTypeInfo<AGUI.Abstractions.AGUIToolCall>
 AGUI.Abstractions.AGUIJsonSerializerContext.AGUIToolCallFunction.get -> System.Text.Json.Serialization.Metadata.JsonTypeInfo<AGUI.Abstractions.AGUIToolCallFunction>
@@ -388,8 +389,6 @@ override AGUI.Abstractions.AGUIJsonSerializerContext.GeneratedSerializerOptions.
 static AGUI.Abstractions.AGUIJsonSerializerContext.Default.get -> AGUI.Abstractions.AGUIJsonSerializerContext!
 AGUI.Abstractions.AGUIMessage
 AGUI.Abstractions.AGUIMessage.AGUIMessage() -> void
-AGUI.Abstractions.AGUIMessage.Content.get -> string!
-AGUI.Abstractions.AGUIMessage.Content.set -> void
 AGUI.Abstractions.AGUIMessage.Id.get -> string?
 AGUI.Abstractions.AGUIMessage.Id.set -> void
 AGUI.Abstractions.AGUIMessageJsonConverter
@@ -409,7 +408,6 @@ AGUI.Abstractions.AGUIToolMessage
 AGUI.Abstractions.AGUIToolMessage.AGUIToolMessage() -> void
 AGUI.Abstractions.AGUIToolMessage.Error.get -> string?
 AGUI.Abstractions.AGUIToolMessage.Error.set -> void
-AGUI.Abstractions.AGUIToolMessage.ToolCallId.get -> string?
 AGUI.Abstractions.AGUIToolMessage.ToolCallId.set -> void
 AGUI.Abstractions.AGUIToolCall
 AGUI.Abstractions.AGUIToolCall.AGUIToolCall() -> void
@@ -427,7 +425,6 @@ AGUI.Abstractions.AGUIToolCallFunction.Name.get -> string!
 AGUI.Abstractions.AGUIToolCallFunction.Name.set -> void
 AGUI.Abstractions.AGUIUserMessage
 AGUI.Abstractions.AGUIUserMessage.AGUIUserMessage() -> void
-AGUI.Abstractions.AGUIUserMessage.Content.get -> System.Collections.Generic.IList<AGUI.Abstractions.AGUIInputContent!>!
 AGUI.Abstractions.AGUIUserMessage.Content.set -> void
 AGUI.Abstractions.BaseEvent
 AGUI.Abstractions.BaseEvent.BaseEvent() -> void
@@ -720,10 +717,6 @@ AGUI.Abstractions.AGUIContext.Description.get -> string!
 AGUI.Abstractions.AGUIContext.Description.set -> void
 AGUI.Abstractions.AGUIContext.Value.get -> string!
 AGUI.Abstractions.AGUIContext.Value.set -> void
-AGUI.Abstractions.AGUIMessage.Name.get -> string?
-AGUI.Abstractions.AGUIMessage.Name.set -> void
-AGUI.Abstractions.AGUIMessage.EncryptedValue.get -> string?
-AGUI.Abstractions.AGUIMessage.EncryptedValue.set -> void
 AGUI.Abstractions.AGUIToolCall.EncryptedValue.get -> string?
 AGUI.Abstractions.AGUIToolCall.EncryptedValue.set -> void
 AGUI.Abstractions.AGUITool.Metadata.get -> System.Text.Json.JsonElement?
@@ -746,3 +739,51 @@ AGUI.Abstractions.AGUIJsonSerializerContext.AGUIActivityMessage.get -> System.Te
 AGUI.Abstractions.AGUIJsonSerializerContext.AGUIContext.get -> System.Text.Json.Serialization.Metadata.JsonTypeInfo<AGUI.Abstractions.AGUIContext>
 AGUI.Abstractions.AGUIJsonSerializerContext.AGUIReasoningMessage.get -> System.Text.Json.Serialization.Metadata.JsonTypeInfo<AGUI.Abstractions.AGUIReasoningMessage>
 AGUI.Abstractions.AGUIJsonSerializerContext.IListAGUIContext.get -> System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IList<AGUI.Abstractions.AGUIContext>>
+AGUI.Abstractions.AGUIDeveloperMessage
+AGUI.Abstractions.AGUIDeveloperMessage.AGUIDeveloperMessage() -> void
+AGUI.Abstractions.AGUIDeveloperMessage.Content.get -> string!
+AGUI.Abstractions.AGUIDeveloperMessage.Content.set -> void
+AGUI.Abstractions.AGUIDeveloperMessage.Name.get -> string?
+AGUI.Abstractions.AGUIDeveloperMessage.Name.set -> void
+AGUI.Abstractions.AGUIDeveloperMessage.EncryptedValue.get -> string?
+AGUI.Abstractions.AGUIDeveloperMessage.EncryptedValue.set -> void
+override AGUI.Abstractions.AGUIDeveloperMessage.Role.get -> string!
+AGUI.Abstractions.AGUIAssistantMessage.Content.get -> string?
+AGUI.Abstractions.AGUIAssistantMessage.Content.set -> void
+AGUI.Abstractions.AGUIAssistantMessage.Name.get -> string?
+AGUI.Abstractions.AGUIAssistantMessage.Name.set -> void
+AGUI.Abstractions.AGUIAssistantMessage.EncryptedValue.get -> string?
+AGUI.Abstractions.AGUIAssistantMessage.EncryptedValue.set -> void
+AGUI.Abstractions.AGUISystemMessage.Content.get -> string!
+AGUI.Abstractions.AGUISystemMessage.Content.set -> void
+AGUI.Abstractions.AGUISystemMessage.Name.get -> string?
+AGUI.Abstractions.AGUISystemMessage.Name.set -> void
+AGUI.Abstractions.AGUISystemMessage.EncryptedValue.get -> string?
+AGUI.Abstractions.AGUISystemMessage.EncryptedValue.set -> void
+AGUI.Abstractions.AGUIToolMessage.Content.get -> string!
+AGUI.Abstractions.AGUIToolMessage.Content.set -> void
+AGUI.Abstractions.AGUIToolMessage.ToolCallId.get -> string!
+AGUI.Abstractions.AGUIToolMessage.EncryptedValue.get -> string?
+AGUI.Abstractions.AGUIToolMessage.EncryptedValue.set -> void
+AGUI.Abstractions.AGUIReasoningMessage.Content.get -> string!
+AGUI.Abstractions.AGUIReasoningMessage.Content.set -> void
+AGUI.Abstractions.AGUIReasoningMessage.EncryptedValue.get -> string?
+AGUI.Abstractions.AGUIReasoningMessage.EncryptedValue.set -> void
+AGUI.Abstractions.AGUIUserMessage.Content.get -> AGUI.Abstractions.AGUIUserContent
+AGUI.Abstractions.AGUIUserMessage.Name.get -> string?
+AGUI.Abstractions.AGUIUserMessage.Name.set -> void
+AGUI.Abstractions.AGUIUserMessage.EncryptedValue.get -> string?
+AGUI.Abstractions.AGUIUserMessage.EncryptedValue.set -> void
+AGUI.Abstractions.AGUIUserContent
+AGUI.Abstractions.AGUIUserContent.AGUIUserContent() -> void
+AGUI.Abstractions.AGUIUserContent.AGUIUserContent(string! text) -> void
+AGUI.Abstractions.AGUIUserContent.AGUIUserContent(System.Collections.Generic.IList<AGUI.Abstractions.AGUIInputContent!>! parts) -> void
+AGUI.Abstractions.AGUIUserContent.Value.get -> object?
+AGUI.Abstractions.AGUIUserContent.IsText.get -> bool
+AGUI.Abstractions.AGUIUserContent.Count.get -> int
+AGUI.Abstractions.AGUIUserContent.this[int index].get -> AGUI.Abstractions.AGUIInputContent!
+AGUI.Abstractions.AGUIUserContent.GetEnumerator() -> System.Collections.Generic.IEnumerator<AGUI.Abstractions.AGUIInputContent!>!
+static AGUI.Abstractions.AGUIUserContent.Create(System.ReadOnlySpan<AGUI.Abstractions.AGUIInputContent!> parts) -> AGUI.Abstractions.AGUIUserContent
+static AGUI.Abstractions.AGUIUserContent.implicit operator AGUI.Abstractions.AGUIUserContent(string! text) -> AGUI.Abstractions.AGUIUserContent
+static AGUI.Abstractions.AGUIUserContent.implicit operator AGUI.Abstractions.AGUIUserContent(System.Collections.Generic.List<AGUI.Abstractions.AGUIInputContent!>! parts) -> AGUI.Abstractions.AGUIUserContent
+static AGUI.Abstractions.AGUIUserContent.implicit operator AGUI.Abstractions.AGUIUserContent(AGUI.Abstractions.AGUIInputContent![]! parts) -> AGUI.Abstractions.AGUIUserContent

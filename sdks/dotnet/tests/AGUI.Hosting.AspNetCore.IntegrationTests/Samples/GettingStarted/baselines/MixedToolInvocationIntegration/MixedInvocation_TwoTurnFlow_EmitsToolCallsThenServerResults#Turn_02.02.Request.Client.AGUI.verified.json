@@ -25,14 +25,13 @@
             "arguments": "{\u0022city\u0022:\u0022Paris\u0022}"
           }
         }
-      ],
-      "content": ""
+      ]
     },
     {
       "role": "tool",
+      "content": "\u0022Tokyo, Japan\u0022",
       "toolCallId": "call_Id_1",
-      "id": "call_Id_1",
-      "content": "\u0022Tokyo, Japan\u0022"
+      "id": "call_Id_1"
     }
   ],
   "tools": [

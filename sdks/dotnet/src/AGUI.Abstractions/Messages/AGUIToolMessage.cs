@@ -7,11 +7,18 @@ public sealed class AGUIToolMessage : AGUIMessage
 {
     public override string Role => AGUIRoles.Tool;
 
+    [JsonPropertyName("content")]
+    public string Content { get; set; } = string.Empty;
+
+    // Required per spec: a tool result is always tied to the tool call it answers.
     [JsonPropertyName("toolCallId")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? ToolCallId { get; set; }
+    public string ToolCallId { get; set; } = string.Empty;
 
     [JsonPropertyName("error")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Error { get; set; }
+
+    [JsonPropertyName("encryptedValue")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? EncryptedValue { get; set; }
 }

@@ -4,6 +4,9 @@ namespace AGUI.Abstractions;
 
 [JsonConverter(typeof(AGUIMessageJsonConverter))]
 // Keep in sync with sdks/typescript/packages/core/src/types.ts
+// The base carries only the fields shared by every message role (id, role). Each role
+// declares its own content/name/encryptedValue exactly as the spec models them, so there
+// is nothing to shadow.
 public abstract class AGUIMessage
 {
     [JsonPropertyName("id")]
@@ -12,15 +15,4 @@ public abstract class AGUIMessage
 
     [JsonPropertyName("role")]
     public abstract string Role { get; }
-
-    [JsonPropertyName("content")]
-    public string Content { get; set; } = string.Empty;
-
-    [JsonPropertyName("name")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? Name { get; set; }
-
-    [JsonPropertyName("encryptedValue")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? EncryptedValue { get; set; }
 }

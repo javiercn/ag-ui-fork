@@ -34,6 +34,7 @@ namespace AGUI.Abstractions;
 [JsonSerializable(typeof(AGUIUserMessage))]
 [JsonSerializable(typeof(AGUIAssistantMessage))]
 [JsonSerializable(typeof(AGUISystemMessage))]
+[JsonSerializable(typeof(AGUIDeveloperMessage))]
 [JsonSerializable(typeof(AGUIToolMessage))]
 [JsonSerializable(typeof(AGUIActivityMessage))]
 [JsonSerializable(typeof(AGUIReasoningMessage))]
