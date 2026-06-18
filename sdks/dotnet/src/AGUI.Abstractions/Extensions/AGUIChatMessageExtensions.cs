@@ -226,6 +226,10 @@ public static class AGUIChatMessageExtensions
             {
                 aguiMessage = new AGUISystemMessage { Content = message.Text ?? string.Empty };
             }
+            else if (message.Role == s_developerChatRole)
+            {
+                aguiMessage = new AGUIDeveloperMessage { Content = message.Text ?? string.Empty };
+            }
             else if (message.Role == ChatRole.Tool)
             {
                 // Mirror Microsoft.Extensions.AI (OpenAIChatClient.ToOpenAIChatMessages): a tool

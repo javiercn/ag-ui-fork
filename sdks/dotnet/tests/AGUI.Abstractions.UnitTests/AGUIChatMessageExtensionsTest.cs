@@ -515,6 +515,22 @@ public sealed class AGUIChatMessageExtensionsTest
         Assert.Equal(2, assistantMessages[0].Contents.OfType<FunctionCallContent>().Count());
     }
 
+    [Fact]
+    public void DeveloperMessage_RoundTripsThroughChatMessageAndBack()
+    {
+        var developerRole = new ChatRole("developer");
+        var chatMessage = new ChatMessage(developerRole, "follow the rules") { MessageId = "dev-1" };
+
+        var aguiMessage = Assert.Single(new[] { chatMessage }.AsAGUIMessages());
+        var developer = Assert.IsType<AGUIDeveloperMessage>(aguiMessage);
+        Assert.Equal("dev-1", developer.Id);
+        Assert.Equal("follow the rules", developer.Content);
+
+        var roundTripped = Assert.Single(new[] { developer }.AsChatMessages());
+        Assert.Equal(developerRole, roundTripped.Role);
+        Assert.Equal("follow the rules", roundTripped.Text);
+    }
+
     // https://github.com/microsoft/agent-framework/issues/2699
     // The coalesced assistant message must be followed by the tool results, so a full split
     // parallel turn reconstructs as a valid provider history:

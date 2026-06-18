@@ -165,23 +165,26 @@ public sealed class AGUIMessageJsonConverter : JsonConverter<AGUIMessage>
             writer.WriteString("encryptedValue", user.EncryptedValue);
         }
 
-        if (user.Content.Count == 1 && user.Content[0] is AGUITextInputContent singleTextContent)
+        switch (user.Content.Value)
         {
-            writer.WriteString("content", singleTextContent.Text);
-        }
-        else if (user.Content.Count > 0)
-        {
-            writer.WritePropertyName("content");
-            writer.WriteStartArray();
-            foreach (var content in user.Content)
-            {
-                JsonSerializer.Serialize(writer, content, options.GetTypeInfo(typeof(AGUIInputContent)));
-            }
-            writer.WriteEndArray();
-        }
-        else
-        {
-            writer.WriteString("content", string.Empty);
+            case string text:
+                writer.WriteString("content", text);
+                break;
+            case IList<AGUIInputContent> parts when parts.Count == 1 && parts[0] is AGUITextInputContent singleTextContent:
+                writer.WriteString("content", singleTextContent.Text);
+                break;
+            case IList<AGUIInputContent> parts when parts.Count > 0:
+                writer.WritePropertyName("content");
+                writer.WriteStartArray();
+                foreach (var content in parts)
+                {
+                    JsonSerializer.Serialize(writer, content, options.GetTypeInfo(typeof(AGUIInputContent)));
+                }
+                writer.WriteEndArray();
+                break;
+            default:
+                writer.WriteString("content", string.Empty);
+                break;
         }
 
         writer.WriteEndObject();
