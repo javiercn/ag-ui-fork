@@ -6,7 +6,6 @@
       "agui_thread_id": "thread_Id_2"
     },
     "responseId": "run_Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "RUN_STARTED",
       "threadId": "thread_Id_2",
@@ -23,7 +22,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -59,7 +57,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -95,7 +92,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -131,7 +127,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -167,7 +162,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -203,7 +197,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -239,7 +232,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -275,7 +267,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -311,7 +302,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -347,7 +337,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -383,7 +372,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -419,7 +407,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -455,7 +442,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -491,7 +477,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -527,7 +512,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -563,7 +547,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -599,7 +582,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -635,7 +617,6 @@
     ],
     "responseId": "run_Id_2",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -665,7 +646,6 @@
     "role": "assistant",
     "contents": [],
     "responseId": "run_Id_2",
-    "conversationId": "thread_Id_2",
     "finishReason": "stop",
     "rawRepresentation": {
       "type": "RUN_FINISHED",

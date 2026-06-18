@@ -6,7 +6,6 @@
       "agui_thread_id": "thread_Id_1"
     },
     "responseId": "run_Id_1",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "RUN_STARTED",
       "threadId": "thread_Id_1",
@@ -27,7 +26,6 @@
       }
     ],
     "responseId": "run_Id_1",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TOOL_CALL_END",
       "toolCallId": "call_Id_1",
@@ -82,7 +80,6 @@
       }
     ],
     "responseId": "run_Id_1",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TOOL_CALL_END",
       "toolCallId": "call_Id_2",
@@ -133,7 +130,6 @@
       }
     ],
     "responseId": "run_Id_1",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TOOL_CALL_RESULT",
       "messageId": "call_Id_1",
@@ -185,7 +181,6 @@
       }
     ],
     "responseId": "run_Id_1",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TOOL_CALL_RESULT",
       "messageId": "call_Id_2",
@@ -237,7 +232,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -273,7 +267,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -309,7 +302,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -345,7 +337,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -381,7 +372,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -417,7 +407,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -453,7 +442,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -489,7 +477,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -525,7 +512,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -561,7 +547,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -597,7 +582,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -633,7 +617,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -669,7 +652,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -705,7 +687,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -741,7 +722,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -777,7 +757,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -813,7 +792,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -849,7 +827,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -885,7 +862,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -921,7 +897,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -957,7 +932,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -993,7 +967,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -1029,7 +1002,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -1065,7 +1037,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -1101,7 +1072,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -1137,7 +1107,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -1173,7 +1142,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -1209,7 +1177,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -1245,7 +1212,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -1281,7 +1247,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -1317,7 +1282,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -1353,7 +1317,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -1389,7 +1352,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -1425,7 +1387,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -1461,7 +1422,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -1497,7 +1457,6 @@
     ],
     "responseId": "run_Id_1",
     "messageId": "chatcmpl-Id_2",
-    "conversationId": "thread_Id_1",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
       "messageId": "chatcmpl-Id_2",
@@ -1527,7 +1486,6 @@
     "role": "assistant",
     "contents": [],
     "responseId": "run_Id_1",
-    "conversationId": "thread_Id_1",
     "finishReason": "stop",
     "rawRepresentation": {
       "type": "RUN_FINISHED",

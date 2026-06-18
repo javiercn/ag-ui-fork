@@ -63,16 +63,15 @@ public sealed class AGUIChatClient : DelegatingChatClient
         ChatOptions? options = null,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        ChatResponseUpdate? firstUpdate = null;
-        string? conversationId = null;
+        bool threadIdPinned = false;
 
         // AG-UI requires the full message history on every turn, so we clear the conversation id
         // before FunctionInvokingChatClient sees it (it would skip sending history if ConversationId is set).
-        // We store it in AdditionalProperties for the inner handler to use.
+        // A caller-supplied ConversationId is treated as the AG-UI thread id and carried inward via
+        // AdditionalProperties instead.
         var innerOptions = options;
         if (options?.ConversationId != null)
         {
-            conversationId = options.ConversationId;
             innerOptions = options.Clone();
             innerOptions.AdditionalProperties ??= [];
             innerOptions.AdditionalProperties[AGUIClientInternalKeys.ThreadId] = options.ConversationId;
@@ -144,12 +143,22 @@ public sealed class AGUIChatClient : DelegatingChatClient
 
         await foreach (var update in base.GetStreamingResponseAsync(messagesList, innerOptions, cancellationToken).ConfigureAwait(false))
         {
-            if (conversationId == null && firstUpdate == null)
+            // The handler surfaces the resolved AG-UI thread id on the first update. Pin it on the
+            // caller's options so that reusing the same ChatOptions across turns keeps a stable
+            // thread id — without advertising a service ConversationId. We never promote it to
+            // ConversationId, because a non-null ConversationId makes MEAI agent wrappers treat the
+            // conversation as service-managed and send only deltas on the next turn, which truncates
+            // history against a stateless AG-UI server (issue #4869). The thread id stays available
+            // via AdditionalProperties.
+            if (!threadIdPinned
+                && update.AdditionalProperties?.TryGetValue(AGUIClientInternalKeys.ThreadId, out string? resolvedThreadId) is true
+                && !string.IsNullOrEmpty(resolvedThreadId))
             {
-                firstUpdate = update;
-                if (firstUpdate.AdditionalProperties?.TryGetValue(AGUIClientInternalKeys.ThreadId, out string? threadId) is true)
+                threadIdPinned = true;
+                if (options is not null && options.ConversationId is null)
                 {
-                    conversationId = threadId;
+                    options.AdditionalProperties ??= [];
+                    options.AdditionalProperties[AGUIClientInternalKeys.ThreadId] = resolvedThreadId;
                 }
             }
 
@@ -162,32 +171,11 @@ public sealed class AGUIChatClient : DelegatingChatClient
                 }
             }
 
-            // Note: we must NOT mutate update.ConversationId here because FICC holds
-            // references to yielded updates and uses them in ToChatResponse(). Mutating
-            // would cause FICC to see a non-null ConversationId and send only delta on
-            // subsequent iterations. Instead, we create a new update with ConversationId set.
-            if (conversationId != null)
-            {
-                var wrappedUpdate = new ChatResponseUpdate
-                {
-                    ConversationId = conversationId,
-                    Role = update.Role,
-                    RawRepresentation = update.RawRepresentation,
-                    ModelId = update.ModelId,
-                    AdditionalProperties = update.AdditionalProperties,
-                    Contents = update.Contents,
-                    ResponseId = update.ResponseId,
-                    MessageId = update.MessageId,
-                    FinishReason = update.FinishReason,
-                    CreatedAt = update.CreatedAt,
-                    AuthorName = update.AuthorName,
-                };
-                yield return wrappedUpdate;
-            }
-            else
-            {
-                yield return update;
-            }
+            // AG-UI servers are stateless: never surface a ConversationId (see issue #4869). The
+            // handler already nulls it; this is a defensive guard in case an inner client sets one.
+            update.ConversationId = null;
+
+            yield return update;
         }
     }
 

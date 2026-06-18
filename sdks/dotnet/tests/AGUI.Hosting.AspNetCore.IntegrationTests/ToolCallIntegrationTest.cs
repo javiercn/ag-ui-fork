@@ -30,7 +30,7 @@ public sealed class ToolCallIntegrationTest : IntegrationTestBase
             u =>
             {
                 Assert.Equal(ChatRole.Assistant, u.Role);
-                Assert.NotNull(u.ConversationId);
+                Assert.Null(u.ConversationId);
                 Assert.NotNull(u.ResponseId);
                 Assert.IsType<RunStartedEvent>(u.RawRepresentation);
             },
@@ -136,7 +136,7 @@ public sealed class ToolCallIntegrationTest : IntegrationTestBase
         var toolCallUpdate = updates.FirstOrDefault(u => u.Contents.OfType<FunctionCallContent>().Any());
         Assert.NotNull(toolCallUpdate);
         Assert.Equal(ChatRole.Assistant, toolCallUpdate!.Role);
-        Assert.NotNull(toolCallUpdate.ConversationId);
+        Assert.Null(toolCallUpdate.ConversationId);
         Assert.NotNull(toolCallUpdate.ResponseId);
         var fcc = toolCallUpdate.Contents.OfType<FunctionCallContent>().Single();
         Assert.Equal("call-1", fcc.CallId);

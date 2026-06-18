@@ -24,12 +24,17 @@ public static class SampleClient
         var turn1 = await StreamAsync(chatClient, messages, options: null, output, cancellationToken).ConfigureAwait(false);
         updatesPerTurn?.Add(turn1);
 
-        // Turn 2: branch from the previous run by setting RunAgentInput.ParentRunId
-        // through ChatOptions.RawRepresentationFactory — the AG-UI-native way to set
-        // wire-level fields. ConversationId carries the threadId so the run stays
-        // on the same thread.
-        var conversationId = turn1.FirstOrDefault(u => u.ConversationId != null)?.ConversationId;
-        var parentRunId = turn1.FirstOrDefault(u => u.ResponseId != null)?.ResponseId;
+        // Turn 2: branch from the previous run by setting RunAgentInput.ThreadId and
+        // ParentRunId through ChatOptions.RawRepresentationFactory — the AG-UI-native way
+        // to set wire-level fields. AGUIChatClient is stateless and never surfaces a
+        // ConversationId (a stateless client must not advertise one), so the thread/run ids
+        // are read from the RUN_STARTED event's raw representation instead.
+        var runStarted = turn1
+            .Select(u => u.RawRepresentation)
+            .OfType<RunStartedEvent>()
+            .FirstOrDefault();
+        var threadId = runStarted?.ThreadId;
+        var parentRunId = runStarted?.RunId;
 
         var followUp = new List<ChatMessage>
         {
@@ -37,9 +42,9 @@ public static class SampleClient
         };
         var followUpOptions = new ChatOptions
         {
-            ConversationId = conversationId,
             RawRepresentationFactory = _ => new RunAgentInput
             {
+                ThreadId = threadId ?? string.Empty,
                 ParentRunId = parentRunId,
             },
         };

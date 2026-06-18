@@ -152,6 +152,8 @@ The AG-UI specification does not prescribe how capabilities are exposed over the
 
 When the server sends a `RunFinishedEvent` with outcome `"interrupt"` and a tool approval payload, `AGUIChatClient` surfaces it as a `ToolApprovalRequestContent`. For other interrupts, it surfaces an `InterruptRequestContent`. The calling code handles the interrupt and supplies the response, which gets sent as `RunAgentInput.Resume` on the next request.
 
+`AGUIChatClient` is **stateless**: it sends the full message history on every turn. It therefore never surfaces a `ConversationId` on returned updates — a non-null `ConversationId` signals a service-managed conversation in MEAI, which would make agent wrappers (e.g. `AsAIAgent`) send only deltas on the next turn and truncate history against a stateless server. Updates are correlated by `ResponseId` (the AG-UI run id), and the AG-UI thread id is available via `ChatResponseUpdate.AdditionalProperties["agui_thread_id"]`. To keep a stable thread across turns, reuse the same `ChatOptions` instance (the client pins the thread id onto it) or set `RunAgentInput.ThreadId`/`ParentRunId` explicitly through `ChatOptions.RawRepresentationFactory` — the AG-UI-native way to drive wire-level fields, as shown in the Step 11 sample.
+
 `IAGUITransport` abstracts the wire protocol. The built-in `AGUIHttpTransport` uses HTTP+SSE, but you can implement the interface for in-memory testing or alternative transports.
 
 ---

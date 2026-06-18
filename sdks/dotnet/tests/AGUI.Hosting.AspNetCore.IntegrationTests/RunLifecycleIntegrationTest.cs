@@ -23,18 +23,20 @@ public sealed class RunLifecycleIntegrationTest : IntegrationTestBase
             u =>
             {
                 Assert.Equal(ChatRole.Assistant, u.Role);
-                Assert.NotNull(u.ConversationId);
+                // Stateless: no ConversationId (issue #4869); the thread id is surfaced via
+                // AdditionalProperties, and ResponseId carries the run id.
+                Assert.Null(u.ConversationId);
                 Assert.NotNull(u.ResponseId);
                 var started = Assert.IsType<RunStartedEvent>(u.RawRepresentation);
-                Assert.Equal(u.ConversationId, started.ThreadId);
+                Assert.Equal(started.ThreadId, u.AdditionalProperties?["agui_thread_id"]);
                 Assert.Equal(u.ResponseId, started.RunId);
             },
             u =>
             {
                 Assert.Equal(ChatRole.Assistant, u.Role);
+                Assert.Null(u.ConversationId);
                 Assert.Equal(ChatFinishReason.Stop, u.FinishReason);
                 var finished = Assert.IsType<RunFinishedEvent>(u.RawRepresentation);
-                Assert.Equal(u.ConversationId, finished.ThreadId);
                 Assert.Equal(u.ResponseId, finished.RunId);
             });
     }

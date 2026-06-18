@@ -23,10 +23,11 @@ public sealed class TextStreamingIntegrationTest : IntegrationTestBase
 
         var updates = await CollectUpdates(client, [new ChatMessage(ChatRole.User, "Hi")]);
 
-        // All updates should share the same ConversationId and ResponseId
+        // AGUIChatClient is stateless: it never surfaces a ConversationId (issue #4869).
+        // Updates are correlated by ResponseId instead.
         Assert.All(updates, u =>
         {
-            Assert.NotNull(u.ConversationId);
+            Assert.Null(u.ConversationId);
             Assert.NotNull(u.ResponseId);
         });
 

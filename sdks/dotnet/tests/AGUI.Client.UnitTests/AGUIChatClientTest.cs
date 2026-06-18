@@ -13,12 +13,13 @@ namespace AGUI.Client.UnitTests;
 public sealed class AGUIChatClientTest
 {
     // https://github.com/microsoft/agent-framework/issues/4869
-    // Issue #4869 — characterization test. AGUIChatClient echoes the caller-supplied
-    // ConversationId back on returned updates. The issue argues this misleads AsAIAgent
-    // wrappers (they then send only deltas). Whether to stop echoing is an OPEN DESIGN
-    // DECISION, so this test documents the CURRENT behavior rather than asserting a fix.
+    // AGUIChatClient is a stateless client: it sends the full message history every turn.
+    // It must NOT surface a ConversationId on returned updates, because MEAI agent wrappers
+    // (e.g. AsAIAgent/ChatClientAgent) treat a returned ConversationId as a service-managed
+    // session and then send only deltas on the next turn, truncating history against a
+    // stateless AG-UI server. The AG-UI thread id is surfaced via AdditionalProperties instead.
     [Fact]
-    public async Task GetStreamingResponse_EchoesCallerConversationId()
+    public async Task GetStreamingResponse_DoesNotSurfaceConversationId()
     {
         var transport = new StaticTransport(
             new RunStartedEvent { ThreadId = "t1", RunId = "r1" },
@@ -36,7 +37,109 @@ public sealed class AGUIChatClientTest
             updates.Add(u);
         }
 
-        Assert.Contains(updates, u => u.ConversationId == "t1");
+        Assert.All(updates, u => Assert.Null(u.ConversationId));
+    }
+
+    // https://github.com/microsoft/agent-framework/issues/4869
+    // The AG-UI thread id is still observable on returned updates via AdditionalProperties,
+    // even though it is never promoted to ConversationId. A caller-supplied ConversationId is
+    // honored as the thread id.
+    [Fact]
+    public async Task GetStreamingResponse_SurfacesThreadIdInAdditionalProperties()
+    {
+        var transport = new StaticTransport(
+            new RunStartedEvent { ThreadId = "t1", RunId = "r1" },
+            new TextMessageStartEvent { MessageId = "m1", Role = "assistant" },
+            new TextMessageContentEvent { MessageId = "m1", Delta = "hi" },
+            new TextMessageEndEvent { MessageId = "m1" },
+            new RunFinishedEvent { ThreadId = "t1", RunId = "r1" });
+        using var client = new AGUIChatClient(transport);
+        var options = new ChatOptions { ConversationId = "t1" };
+
+        var updates = new List<ChatResponseUpdate>();
+        await foreach (var u in client.GetStreamingResponseAsync(
+            new[] { new ChatMessage(ChatRole.User, "hi") }, options))
+        {
+            updates.Add(u);
+        }
+
+        Assert.Contains(updates, u =>
+            u.AdditionalProperties is not null
+            && u.AdditionalProperties.TryGetValue("agui_thread_id", out string? threadId)
+            && threadId == "t1");
+    }
+
+    // https://github.com/microsoft/agent-framework/issues/4869
+    // When the caller reuses the same ChatOptions across turns and does not supply a
+    // ConversationId, the client pins the generated AG-UI thread id onto the options so the
+    // thread stays stable across turns — without ever advertising a ConversationId.
+    [Fact]
+    public async Task GetStreamingResponse_ReusedOptions_KeepsStableThreadIdWithoutConversationId()
+    {
+        var transport = new CapturingTransport(
+            new TextMessageStartEvent { MessageId = "m1", Role = "assistant" },
+            new TextMessageContentEvent { MessageId = "m1", Delta = "hi" },
+            new TextMessageEndEvent { MessageId = "m1" });
+        using var client = new AGUIChatClient(transport);
+
+        // Caller reuses the same ChatOptions instance across turns and supplies no ConversationId.
+        var options = new ChatOptions();
+
+        await DrainAsync(client.GetStreamingResponseAsync(
+            new[] { new ChatMessage(ChatRole.User, "turn one") }, options));
+
+        var firstThreadId = transport.LastInput!.ThreadId;
+        Assert.False(string.IsNullOrEmpty(firstThreadId));
+
+        await DrainAsync(client.GetStreamingResponseAsync(
+            new[] { new ChatMessage(ChatRole.User, "turn two") }, options));
+
+        // Same thread id is reused because it was pinned onto the reused options.
+        Assert.Equal(firstThreadId, transport.LastInput!.ThreadId);
+        Assert.Null(options.ConversationId);
+        Assert.Equal(firstThreadId, options.AdditionalProperties?["agui_thread_id"]);
+    }
+
+    // https://github.com/microsoft/agent-framework/issues/4869
+    // A fresh ChatOptions on each turn (no continuity hints) yields a different thread id per
+    // turn — correctness is preserved because the full message history is sent every turn.
+    [Fact]
+    public async Task GetStreamingResponse_FreshOptionsPerTurn_GeneratesNewThreadId()
+    {
+        var transport = new CapturingTransport();
+        using var client = new AGUIChatClient(transport);
+
+        await DrainAsync(client.GetStreamingResponseAsync(
+            new[] { new ChatMessage(ChatRole.User, "turn one") }, new ChatOptions()));
+        var firstThreadId = transport.LastInput!.ThreadId;
+
+        await DrainAsync(client.GetStreamingResponseAsync(
+            new[] { new ChatMessage(ChatRole.User, "turn two") }, new ChatOptions()));
+        var secondThreadId = transport.LastInput!.ThreadId;
+
+        Assert.NotEqual(firstThreadId, secondThreadId);
+    }
+
+    // https://github.com/microsoft/agent-framework/issues/4869
+    // The full message history is sent to the transport on every turn (stateless protocol),
+    // regardless of thread continuity.
+    [Fact]
+    public async Task GetStreamingResponse_SendsFullHistoryEveryTurn()
+    {
+        var transport = new CapturingTransport();
+        using var client = new AGUIChatClient(transport);
+        var options = new ChatOptions();
+
+        var history = new List<ChatMessage>
+        {
+            new(ChatRole.User, "first"),
+            new(ChatRole.Assistant, "reply"),
+            new(ChatRole.User, "second"),
+        };
+
+        await DrainAsync(client.GetStreamingResponseAsync(history, options));
+
+        Assert.Equal(3, transport.LastInput!.Messages.Count);
     }
 
     // https://github.com/microsoft/agent-framework/issues/5587
@@ -94,6 +197,13 @@ public sealed class AGUIChatClientTest
         Assert.Equal("Expense report ER-1 approved", result.Result);
     }
 
+    private static async Task DrainAsync(IAsyncEnumerable<ChatResponseUpdate> updates)
+    {
+        await foreach (var _ in updates.ConfigureAwait(false))
+        {
+        }
+    }
+
     private sealed class StaticTransport(params BaseEvent[] events) : IAGUITransport
     {
         public async IAsyncEnumerable<BaseEvent> SendAsync(RunAgentInput input, [EnumeratorCancellation] CancellationToken cancellationToken)
@@ -103,6 +213,29 @@ public sealed class AGUIChatClientTest
                 cancellationToken.ThrowIfCancellationRequested();
                 yield return evt;
             }
+
+            await Task.CompletedTask.ConfigureAwait(false);
+        }
+    }
+
+    private sealed class CapturingTransport(params BaseEvent[] middleEvents) : IAGUITransport
+    {
+        public RunAgentInput? LastInput { get; private set; }
+
+        public async IAsyncEnumerable<BaseEvent> SendAsync(RunAgentInput input, [EnumeratorCancellation] CancellationToken cancellationToken)
+        {
+            LastInput = input;
+
+            // Echo the thread/run ids back like a real stateless AG-UI server.
+            yield return new RunStartedEvent { ThreadId = input.ThreadId, RunId = input.RunId };
+
+            foreach (var evt in middleEvents)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                yield return evt;
+            }
+
+            yield return new RunFinishedEvent { ThreadId = input.ThreadId, RunId = input.RunId };
 
             await Task.CompletedTask.ConfigureAwait(false);
         }
