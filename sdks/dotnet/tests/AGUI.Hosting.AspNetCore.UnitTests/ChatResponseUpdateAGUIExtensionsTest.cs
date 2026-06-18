@@ -1328,6 +1328,29 @@ public class ChatResponseUpdateAGUIExtensionsTest
 
     #endregion
 
+    #region Tool Call Result
+
+    // https://github.com/microsoft/agent-framework/issues/3962
+    // Issue #3962 — RESOLVED AS BY-DESIGN. A tool result is identified by its toolCallId in
+    // BOTH conversion directions: the response side sets TOOL_CALL_RESULT.messageId = toolCallId
+    // and the outbound AsAGUIMessages keys each AGUIToolMessage.Id on the call id. This keeps the
+    // identity deterministic (the wire messageId is otherwise dropped/echoed by clients). See
+    // sdks/dotnet/maf-issue-analysis/3962.md.
+    [Fact]
+    public async Task ToolCallResult_MessageId_EqualsToolCallId_ByDesign()
+    {
+        var frc = new FunctionResultContent("call-1", "result-data");
+        var update = new ChatResponseUpdate { Role = ChatRole.Tool, Contents = [frc] };
+
+        var events = await CollectEvents(ToAsyncEnumerable(update));
+
+        var resultEvent = events.OfType<ToolCallResultEvent>().Single();
+        Assert.Equal("call-1", resultEvent.ToolCallId);
+        Assert.Equal(resultEvent.ToolCallId, resultEvent.MessageId);
+    }
+
+    #endregion
+
     #region Helpers
 
     private static async Task<List<BaseEvent>> CollectEvents(

@@ -66,4 +66,20 @@ public sealed class ToolCallStartEventTest
         Assert.Equal("call-3", typed.ToolCallId);
         Assert.Equal("get_weather", typed.ToolCallName);
     }
+
+    // https://github.com/microsoft/agent-framework/issues/2637
+    [Fact]
+    public void ToolCallStartEvent_Serialization_OmitsParentMessageId_WhenNull()
+    {
+        var evt = new ToolCallStartEvent
+        {
+            ToolCallId = "call-123",
+            ToolCallName = "get_weather"
+        };
+
+        var json = JsonSerializer.Serialize(evt, AGUIJsonSerializerContext.Default.ToolCallStartEvent);
+        using var doc = JsonDocument.Parse(json);
+
+        Assert.False(doc.RootElement.TryGetProperty("parentMessageId", out _));
+    }
 }
