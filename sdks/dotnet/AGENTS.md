@@ -7,6 +7,22 @@ Refer to `Architecture.md` for the design philosophy, package structure, and how
 - .NET 10 SDK (see `global.json` for the exact version; `rollForward: minor` is configured).
 - All commands below run from the `sdks/dotnet/` directory.
 
+### Provisioning a repo-local SDK (optional, hermetic)
+
+To build against the exact pinned SDK without touching the machine-wide install, use the
+provisioning scripts. They download the SDK from `global.json` into a gitignored `.dotnet/`
+folder and build/test against it only (`DOTNET_MULTILEVEL_LOOKUP=0`):
+
+```bash
+./build.cmd            # Windows: provision + build
+./build.sh             # Linux/macOS: provision + build
+./build.sh --test      # provision + test
+```
+
+`eng/install-dotnet.ps1` / `eng/install-dotnet.sh` perform just the provisioning step and
+accept `-ExtraChannel`/`--extra-channel` (or `-ExtraVersion`/`--extra-version`) to install an
+additional SDK (e.g. a .NET 11 preview) side-by-side.
+
 ## Build
 
 ```bash

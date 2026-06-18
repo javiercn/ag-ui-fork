@@ -483,3 +483,6 @@ $RECYCLE.BIN/
 
 # Verify snapshot testing
 *.received.*
+
+# Repo-local .NET SDK provisioned by build.cmd/build.sh/eng/install-dotnet.*
+.dotnet/
