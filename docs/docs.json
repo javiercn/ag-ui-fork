@@ -167,8 +167,8 @@
         },
         {
           "anchor": ".NET SDK",
-          "href": "https://docs.ag-ui.com/sdk/dotnet/abstractions/overview",
-          "icon": "code"
+          "href": "/sdk/dotnet/abstractions/overview",
+          "icon": "/logo/dotnet.svg"
         }
       ]
     }
