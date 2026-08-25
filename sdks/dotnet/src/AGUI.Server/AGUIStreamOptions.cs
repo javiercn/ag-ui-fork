@@ -17,6 +17,7 @@ public sealed class AGUIStreamOptions
     private readonly Dictionary<string, Func<FunctionResultContent, IEnumerable<BaseEvent>>> _resultMappings = new(StringComparer.Ordinal);
     private readonly Dictionary<string, Func<FunctionCallContent, IEnumerable<BaseEvent>>> _callMappings = new(StringComparer.Ordinal);
     private List<Func<AIContent, AGUIInterrupt?>>? _interruptMappers;
+    private List<Func<ChatResponseUpdate, IEnumerable<AGUIInterrupt>?>>? _updateInterruptMappers;
     private List<Func<AIContent, IEnumerable<BaseEvent>?>>? _contentMappers;
     private Func<ChatResponseUpdate, IEnumerable<AGUIToolCallArgumentFragment>?>? _toolCallArgumentExtractor;
 
@@ -63,9 +64,29 @@ public sealed class AGUIStreamOptions
     }
 
     /// <summary>
+    /// Registers a mapper that classifies a complete <see cref="ChatResponseUpdate"/> as one or
+    /// more AG-UI interrupts.
+    /// </summary>
+    /// <remarks>
+    /// The mapper runs after the update's normal content conversion, so function calls still emit
+    /// their tool-call events. Interrupts returned across the stream are accumulated into one
+    /// terminal <see cref="RunFinishedEvent"/>.
+    /// </remarks>
+    /// <param name="mapper">A callback that returns interrupts for an update, or <see langword="null"/> to skip it.</param>
+    /// <returns>This instance for fluent chaining.</returns>
+    public AGUIStreamOptions MapInterrupt(
+        Func<ChatResponseUpdate, IEnumerable<AGUIInterrupt>?> mapper)
+    {
+        ArgumentNullException.ThrowIfNull(mapper);
+        _updateInterruptMappers ??= [];
+        _updateInterruptMappers.Add(mapper);
+        return this;
+    }
+
+    /// <summary>
     /// Registers a fallback that maps an <see cref="AIContent"/> to a sequence of AG-UI <see cref="BaseEvent"/>
     /// instances. Invoked for content types that are not handled by the built-in mappings and that none of the
-    /// registered <see cref="MapInterrupt"/> mappers claimed. Frameworks use this to surface their own content
+    /// registered <c>MapInterrupt</c> mappers claimed. Frameworks use this to surface their own content
     /// types (e.g., workflow step events) as AG-UI events.
     /// </summary>
     /// <remarks>
@@ -180,6 +201,25 @@ public sealed class AGUIStreamOptions
             if (mapper(content) is { } interrupt)
             {
                 return interrupt;
+            }
+        }
+
+        return null;
+    }
+
+    internal IEnumerable<AGUIInterrupt>? InvokeInterruptMappers(ChatResponseUpdate update)
+    {
+        if (_updateInterruptMappers is null)
+        {
+            return null;
+        }
+
+        foreach (var mapper in _updateInterruptMappers)
+        {
+            var interrupts = mapper(update);
+            if (interrupts is not null)
+            {
+                return interrupts;
             }
         }
 

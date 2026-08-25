@@ -130,7 +130,6 @@ public sealed class Step01_GettingStartedTest : IntegrationTestBase<Step01_Getti
         // then AGUIJsonSerializerContext for AG-UI types (RunAgentInput, BaseEvent, etc.)
         options.TypeInfoResolverChain.Add(AIJsonUtilities.DefaultOptions.TypeInfoResolver!);
         options.TypeInfoResolverChain.Add(AGUIJsonSerializerContext.Default);
-        AGUI.Abstractions.AGUIJsonUtilities.RegisterInterruptContentTypes(options);
         options.Converters.Add(new ChatResponseUpdateCaptureConverter());
 
         return options;

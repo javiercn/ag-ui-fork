@@ -448,90 +448,199 @@ public sealed class AGUIChatClientTest
         Assert.Null(transport.LastInput!.Resume);
     }
 
-    // A caller-supplied Resume takes precedence over the interrupt-response translation
-    // too, matching the approval path. Previously the interrupt block appended
-    // unconditionally, so a caller Resume dropped approvals but kept interrupts (#2177).
     [Fact]
-    public async Task GetStreamingResponse_CallerResume_TakesPrecedenceOverInterruptResponses()
+    public async Task GetStreamingResponse_WorkflowInterruptSurfacesActionableFunctionCallAndResumesWithResult()
     {
-        var transport = new CapturingTransport();
+        var workflowTurn = CreateWorkflowTurn(("call-w", "collect_input", "interrupt-w"));
+        var emittedInterrupt = Assert.Single(
+            Assert.IsType<RunFinishedInterruptOutcome>(
+                Assert.IsType<RunFinishedEvent>(workflowTurn[^1]).Outcome).Interrupts);
+        emittedInterrupt.Metadata = JsonDocument.Parse("""
+            {
+              "custom": "preserved",
+              "ag-ui": {
+                "existing": true
+              }
+            }
+            """).RootElement.Clone();
+        var transport = new CapturingTransport(workflowTurn);
         using var client = new AGUIChatClient(new() { Transport = transport });
+        var options = new ChatOptions { ConversationId = "thread-workflow" };
 
+        var updates = new List<ChatResponseUpdate>();
+        await foreach (var update in client.GetStreamingResponseAsync(
+            [new ChatMessage(ChatRole.User, "start")],
+            options))
+        {
+            updates.Add(update);
+        }
+
+        var call = Assert.Single(updates.SelectMany(update => update.Contents)
+            .OfType<FunctionCallContent>());
+        Assert.False(call.InformationalOnly);
+        var interrupt = Assert.IsType<AGUIInterrupt>(call.RawRepresentation);
+        Assert.Equal("interrupt-w", interrupt.Id);
+
+        await DrainAsync(client.GetStreamingResponseAsync(
+        [
+            new ChatMessage(ChatRole.User, "start"),
+            new ChatMessage(ChatRole.Assistant, [call]),
+            new ChatMessage(ChatRole.Tool, [new FunctionResultContent(call.CallId, "answer")]),
+        ],
+        options));
+
+        var resume = Assert.Single(transport.LastInput!.Resume!);
+        Assert.Equal("interrupt-w", resume.InterruptId);
+        Assert.Equal(ResumeStatus.Resolved, resume.Status);
+        Assert.Equal("answer", resume.Payload!.Value.GetString());
+        Assert.Equal("preserved", resume.Metadata!.Value.GetProperty("custom").GetString());
+        var aguiMetadata = resume.Metadata.Value.GetProperty(AGUIMetadata.ReservedKey);
+        Assert.True(aguiMetadata.GetProperty("existing").GetBoolean());
+        Assert.Equal(
+            "interrupt-w",
+            aguiMetadata.GetProperty("workflowInterrupt").GetProperty("interruptId").GetString());
+        Assert.DoesNotContain(
+            transport.LastInput.Messages,
+            message => message is AGUIToolMessage tool && tool.ToolCallId == call.CallId);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponse_ThreeWorkflowResponsesMayBeOutOfOrderButMustBeComplete()
+    {
+        var transport = new CapturingTransport(CreateWorkflowTurn(
+            ("call-w1", "collect_one", "interrupt-w1"),
+            ("call-w2", "collect_two", "interrupt-w2"),
+            ("call-w3", "collect_three", "interrupt-w3")));
+        using var client = new AGUIChatClient(new() { Transport = transport });
+        var options = new ChatOptions { ConversationId = "thread-workflow" };
+        var firstTurn = new List<ChatResponseUpdate>();
+        await foreach (var update in client.GetStreamingResponseAsync(
+            [new ChatMessage(ChatRole.User, "start")],
+            options))
+        {
+            firstTurn.Add(update);
+        }
+
+        var calls = firstTurn.SelectMany(update => update.Contents)
+            .OfType<FunctionCallContent>()
+            .ToDictionary(call => call.CallId, StringComparer.Ordinal);
+        await DrainAsync(client.GetStreamingResponseAsync(
+        [
+            new ChatMessage(ChatRole.Assistant, calls.Values.Cast<AIContent>().ToList()),
+            new ChatMessage(ChatRole.Tool,
+            [
+                new FunctionResultContent("call-w3", 3),
+                new FunctionResultContent("call-w1", 1),
+                new FunctionResultContent("call-w2", 2),
+            ]),
+        ],
+        options));
+
+        Assert.Equal(
+            ["interrupt-w1", "interrupt-w2", "interrupt-w3"],
+            transport.LastInput!.Resume!.Select(resume => resume.InterruptId));
+    }
+
+    [Fact]
+    public async Task GetStreamingResponse_MissingWorkflowResponseIsRejectedBeforeAnotherRequest()
+    {
+        var transport = new CapturingTransport(CreateWorkflowTurn(
+            ("call-w1", "collect_one", "interrupt-w1"),
+            ("call-w2", "collect_two", "interrupt-w2")));
+        using var client = new AGUIChatClient(new() { Transport = transport });
+        var options = new ChatOptions { ConversationId = "thread-workflow" };
+        var firstTurn = new List<ChatResponseUpdate>();
+        await foreach (var update in client.GetStreamingResponseAsync(
+            [new ChatMessage(ChatRole.User, "start")],
+            options))
+        {
+            firstTurn.Add(update);
+        }
+        var calls = firstTurn.SelectMany(update => update.Contents)
+            .OfType<FunctionCallContent>()
+            .ToList();
+
+        var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => DrainAsync(
+            client.GetStreamingResponseAsync(
+            [
+                new ChatMessage(ChatRole.Assistant, calls.Cast<AIContent>().ToList()),
+                new ChatMessage(ChatRole.Tool, [new FunctionResultContent(calls[0].CallId, "only one")]),
+            ],
+            options)));
+
+        Assert.Contains("Workflow responses are missing", exception.Message);
+        Assert.Equal(1, transport.SendCount);
+    }
+
+    [Fact]
+    public async Task GetStreamingResponse_CancellationResultProducesCancelledResume()
+    {
+        var transport = new CapturingTransport(CreateWorkflowTurn(
+            ("call-w", "collect_input", "interrupt-w")));
+        using var client = new AGUIChatClient(new() { Transport = transport });
+        var options = new ChatOptions { ConversationId = "thread-workflow" };
+        var updates = new List<ChatResponseUpdate>();
+        await foreach (var update in client.GetStreamingResponseAsync(
+            [new ChatMessage(ChatRole.User, "start")],
+            options))
+        {
+            updates.Add(update);
+        }
+        var call = Assert.Single(updates.SelectMany(update => update.Contents)
+            .OfType<FunctionCallContent>());
+
+        await DrainAsync(client.GetStreamingResponseAsync(
+        [
+            new ChatMessage(ChatRole.Assistant, [call]),
+            new ChatMessage(ChatRole.Tool, [call.CreateCancellationResult("cancelled by user")]),
+        ],
+        options));
+
+        var resume = Assert.Single(transport.LastInput!.Resume!);
+        Assert.Equal(ResumeStatus.Cancelled, resume.Status);
+        Assert.Equal("cancelled by user", resume.Payload!.Value.GetString());
+    }
+
+    [Fact]
+    public async Task GetStreamingResponse_TwoClientToolsAndWorkflowCallExecuteClientsExactlyOnceWithoutPrematureRequest()
+    {
+        var transport = new CapturingTransport(CreateMixedWorkflowTurn());
+        using var client = new AGUIChatClient(new() { Transport = transport });
+        var firstInvocations = 0;
+        var secondInvocations = 0;
         var options = new ChatOptions
         {
-            RawRepresentationFactory = _ => new RunAgentInput
-            {
-                Resume = new List<AGUIResume>
-                {
-                    new() { InterruptId = "caller-interrupt", Status = ResumeStatus.Resolved },
-                },
-            },
-        };
-
-        var history = new List<ChatMessage>
-        {
-            new(ChatRole.User, [new InterruptResponseContent("req-interrupt")]),
-        };
-
-        await DrainAsync(client.GetStreamingResponseAsync(history, options));
-
-        // The caller's Resume wins; the interrupt response is not appended over it.
-        var resume = transport.LastInput!.Resume;
-        Assert.NotNull(resume);
-        var entry = Assert.Single(resume!);
-        Assert.Equal("caller-interrupt", entry.InterruptId);
-    }
-
-    // Metadata set on an InterruptResponseContent travels onto the resume entry the
-    // client sends, alongside the payload — envelope data (signatures, routing keys)
-    // as opposed to the answer itself.
-    [Fact]
-    public async Task GetStreamingResponse_InterruptResponseMetadata_ReachesTheResumeEntry()
-    {
-        var transport = new CapturingTransport();
-        using var client = new AGUIChatClient(new() { Transport = transport });
-
-        var history = new List<ChatMessage>
-        {
-            new(ChatRole.User,
+            ConversationId = "thread-workflow",
+            Tools =
             [
-                new InterruptResponseContent("req-interrupt")
+                AIFunctionFactory.Create(() =>
                 {
-                    Payload = JsonDocument.Parse("""{"approved":true}""").RootElement,
-                    Metadata = JsonDocument.Parse(
-                        """{"definitionId":"review-plan","key":"afterModel-review"}""").RootElement,
-                },
-            ]),
+                    firstInvocations++;
+                    return "first";
+                }, "client_one"),
+                AIFunctionFactory.Create(() =>
+                {
+                    secondInvocations++;
+                    return "second";
+                }, "client_two"),
+            ],
         };
 
-        await DrainAsync(client.GetStreamingResponseAsync(history));
-
-        var resume = transport.LastInput!.Resume;
-        Assert.NotNull(resume);
-        var entry = Assert.Single(resume!);
-        Assert.Equal("req-interrupt", entry.InterruptId);
-        Assert.True(entry.Payload!.Value.GetProperty("approved").GetBoolean());
-        Assert.NotNull(entry.Metadata);
-        Assert.Equal("review-plan", entry.Metadata!.Value.GetProperty("definitionId").GetString());
-        Assert.Equal("afterModel-review", entry.Metadata!.Value.GetProperty("key").GetString());
-    }
-
-    // An InterruptResponseContent without metadata produces a resume entry without it.
-    [Fact]
-    public async Task GetStreamingResponse_InterruptResponseWithoutMetadata_OmitsIt()
-    {
-        var transport = new CapturingTransport();
-        using var client = new AGUIChatClient(new() { Transport = transport });
-
-        var history = new List<ChatMessage>
+        var updates = new List<ChatResponseUpdate>();
+        await foreach (var update in client.GetStreamingResponseAsync(
+            [new ChatMessage(ChatRole.User, "start")],
+            options))
         {
-            new(ChatRole.User, [new InterruptResponseContent("req-interrupt")]),
-        };
+            updates.Add(update);
+        }
 
-        await DrainAsync(client.GetStreamingResponseAsync(history));
-
-        var entry = Assert.Single(transport.LastInput!.Resume!);
-        Assert.Null(entry.Metadata);
+        Assert.Equal(1, transport.SendCount);
+        Assert.Equal(1, firstInvocations);
+        Assert.Equal(1, secondInvocations);
+        var workflowCall = updates.SelectMany(update => update.Contents)
+            .OfType<FunctionCallContent>()
+            .Single(call => call.Name == "collect_input");
+        Assert.False(workflowCall.InformationalOnly);
     }
 
     // https://github.com/microsoft/agent-framework/issues/5587
@@ -594,6 +703,75 @@ public sealed class AGUIChatClientTest
         await foreach (var _ in updates.ConfigureAwait(false))
         {
         }
+    }
+
+    private static BaseEvent[] CreateWorkflowTurn(
+        params (string CallId, string Name, string InterruptId)[] calls)
+    {
+        var events = new List<BaseEvent>();
+        foreach (var call in calls)
+        {
+            events.Add(new ToolCallStartEvent
+            {
+                ToolCallId = call.CallId,
+                ToolCallName = call.Name,
+            });
+            events.Add(new ToolCallArgsEvent { ToolCallId = call.CallId, Delta = "{}" });
+            events.Add(new ToolCallEndEvent { ToolCallId = call.CallId });
+        }
+        events.Add(new RunFinishedEvent
+        {
+            ThreadId = "thread-workflow",
+            RunId = "run-workflow",
+            Outcome = new RunFinishedInterruptOutcome
+            {
+                Interrupts = calls.Select(call => new AGUIInterrupt
+                {
+                    Id = call.InterruptId,
+                    ToolCallId = call.CallId,
+                    Reason = InterruptReasons.InputRequired,
+                }).ToList(),
+            },
+        });
+        return events.ToArray();
+    }
+
+    private static BaseEvent[] CreateMixedWorkflowTurn()
+    {
+        var events = new List<BaseEvent>();
+        foreach (var call in new[]
+        {
+            (CallId: "call-c1", Name: "client_one"),
+            (CallId: "call-c2", Name: "client_two"),
+            (CallId: "call-w", Name: "collect_input"),
+        })
+        {
+            events.Add(new ToolCallStartEvent
+            {
+                ToolCallId = call.CallId,
+                ToolCallName = call.Name,
+            });
+            events.Add(new ToolCallArgsEvent { ToolCallId = call.CallId, Delta = "{}" });
+            events.Add(new ToolCallEndEvent { ToolCallId = call.CallId });
+        }
+        events.Add(new RunFinishedEvent
+        {
+            ThreadId = "thread-workflow",
+            RunId = "run-workflow",
+            Outcome = new RunFinishedInterruptOutcome
+            {
+                Interrupts =
+                [
+                    new AGUIInterrupt
+                    {
+                        Id = "interrupt-w",
+                        ToolCallId = "call-w",
+                        Reason = InterruptReasons.InputRequired,
+                    },
+                ],
+            },
+        });
+        return events.ToArray();
     }
 
     [Fact]
@@ -786,9 +964,12 @@ public sealed class AGUIChatClientTest
     {
         public RunAgentInput? LastInput { get; private set; }
 
+        public int SendCount { get; private set; }
+
         public async IAsyncEnumerable<BaseEvent> SendAsync(RunAgentInput input, [EnumeratorCancellation] CancellationToken cancellationToken)
         {
             LastInput = input;
+            SendCount++;
 
             // Echo the thread/run ids back like a real stateless AG-UI server.
             yield return new RunStartedEvent { ThreadId = input.ThreadId, RunId = input.RunId };
@@ -799,7 +980,10 @@ public sealed class AGUIChatClientTest
                 yield return evt;
             }
 
-            yield return new RunFinishedEvent { ThreadId = input.ThreadId, RunId = input.RunId };
+            if (!middleEvents.Any(evt => evt is RunFinishedEvent))
+            {
+                yield return new RunFinishedEvent { ThreadId = input.ThreadId, RunId = input.RunId };
+            }
 
             await Task.CompletedTask.ConfigureAwait(false);
         }

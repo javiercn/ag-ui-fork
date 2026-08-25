@@ -61,24 +61,42 @@ public static class RunAgentInputExtensions
 
         // Translate AG-UI Resume entries into MEAI content on the message list so the
         // inner pipeline (custom IChatClient, FICC, etc.) sees standard MEAI types.
-        // Tool-approval-shaped resume payloads (with a `toolCall` field) become a
-        // ToolApprovalRequestContent + ToolApprovalResponseContent pair so
-        // FunctionInvokingChatClient resumes the tool naturally; everything else becomes
-        // a generic InterruptResponseContent.
+        // Tool-approval-shaped resume payloads become approval contents so
+        // FunctionInvokingChatClient resumes the tool naturally. Function-backed workflow
+        // resumes become ordinary FunctionResultContent after strict correlation validation.
         var resumedClientResults = new Dictionary<string, FunctionResultContent>(StringComparer.Ordinal);
         var resumedApprovalCallIds = new HashSet<string>(StringComparer.Ordinal);
         var resumeMessageStartIndex = messages.Count;
         var originalCallsById = messages.SelectMany(message => message.Contents)
             .OfType<FunctionCallContent>()
             .ToDictionary(call => call.CallId, StringComparer.Ordinal);
+        var latestAssistantCallIndex = FindLatestAssistantFunctionCallIndex(messages);
+        var latestCallsById = latestAssistantCallIndex >= 0
+            ? messages[latestAssistantCallIndex].Contents
+                .OfType<FunctionCallContent>()
+                .ToDictionary(call => call.CallId, StringComparer.Ordinal)
+            : new Dictionary<string, FunctionCallContent>(StringComparer.Ordinal);
+        var workflowResponseCount = 0;
         if (input.Resume is { Count: > 0 } resumeEntries)
         {
-            var genericResponses = new List<AIContent>(resumeEntries.Count);
+            var workflowResponses = new List<AIContent>(resumeEntries.Count);
             var approvalRequests = new List<AIContent>(resumeEntries.Count);
             var approvalResponses = new List<AIContent>(resumeEntries.Count);
+            var resumeInterruptIds = new HashSet<string>(StringComparer.Ordinal);
+            var workflowResponseInterruptIds = new HashSet<string>(StringComparer.Ordinal);
+            var workflowResponseCallIds = new HashSet<string>(StringComparer.Ordinal);
+            HashSet<string>? expectedWorkflowInterruptIds = null;
             foreach (var resume in resumeEntries)
             {
-                if (TryDecodeToolApprovalResume(resume, jsonSerializerOptions,
+                if (!resumeInterruptIds.Add(resume.InterruptId))
+                {
+                    throw new InvalidOperationException(
+                        $"Resume contains duplicate response for interruption '{resume.InterruptId}'.");
+                }
+
+                var descriptor = GetWorkflowResumeDescriptor(resume);
+                if (descriptor == null
+                    && TryDecodeToolApprovalResume(resume, jsonSerializerOptions,
                     out var approvalRequest, out var approvalResponse, out var result))
                 {
                     if (approvalRequest!.ToolCall is not FunctionCallContent resumedCall
@@ -111,12 +129,69 @@ public static class RunAgentInputExtensions
                     continue;
                 }
 
-                genericResponses.Add(new InterruptResponseContent(resume.InterruptId)
+                if (descriptor == null)
                 {
-                    Payload = resume.Payload,
-                    Metadata = resume.Metadata,
-                });
+                    throw new InvalidOperationException(
+                        $"Resume interruption '{resume.InterruptId}' is unknown.");
+                }
+                if (!string.Equals(descriptor.InterruptId, resume.InterruptId, StringComparison.Ordinal))
+                {
+                    throw new InvalidOperationException(
+                        $"Resume interruption '{resume.InterruptId}' was substituted.");
+                }
+                if (!latestCallsById.TryGetValue(descriptor.CallId, out var workflowOriginalCall))
+                {
+                    throw new InvalidOperationException(
+                        $"Resume interruption '{resume.InterruptId}' refers to an unknown or stale function call '{descriptor.CallId}'.");
+                }
+                if (!string.Equals(workflowOriginalCall.Name, descriptor.Name, StringComparison.Ordinal))
+                {
+                    throw new InvalidOperationException(
+                        $"Resume interruption '{resume.InterruptId}' substituted function '{descriptor.Name}' for '{workflowOriginalCall.Name}'.");
+                }
+                var originalArguments = JsonSerializer.SerializeToElement(
+                    workflowOriginalCall.Arguments,
+                    jsonSerializerOptions.GetTypeInfo(typeof(IDictionary<string, object?>)));
+                if (!JsonElement.DeepEquals(originalArguments, descriptor.Arguments))
+                {
+                    throw new InvalidOperationException(
+                        $"Resume interruption '{resume.InterruptId}' substituted the original function arguments.");
+                }
+
+                workflowResponseInterruptIds.Add(resume.InterruptId);
+                workflowResponseCallIds.Add(descriptor.CallId);
+                var pendingIds = GetPendingWorkflowInterruptIds(resume);
+                if (expectedWorkflowInterruptIds == null)
+                {
+                    expectedWorkflowInterruptIds = pendingIds;
+                }
+                else if (!expectedWorkflowInterruptIds.SetEquals(pendingIds))
+                {
+                    throw new InvalidOperationException(
+                        "Workflow Resume responses contain inconsistent pending-interruption registries.");
+                }
+
+                workflowResponses.Add(new FunctionResultContent(descriptor.CallId, resume.Payload));
             }
+
+            if (expectedWorkflowInterruptIds != null
+                && !expectedWorkflowInterruptIds.SetEquals(workflowResponseInterruptIds))
+            {
+                throw new InvalidOperationException(
+                    "Resume must contain exactly one response for every pending workflow interruption.");
+            }
+            if (workflowResponseCallIds.Count > 0
+                && (latestAssistantCallIndex < 0
+                    || !IsResumeForLatestCallBatch(
+                        messages,
+                        latestAssistantCallIndex,
+                        resumeMessageStartIndex,
+                        workflowResponseCallIds)))
+            {
+                throw new InvalidOperationException(
+                    "Workflow Resume entries do not match the latest unresolved function-call batch.");
+            }
+            workflowResponseCount = workflowResponses.Count;
 
             if (approvalRequests.Count > 0)
             {
@@ -124,9 +199,9 @@ public static class RunAgentInputExtensions
                 messages.Add(new ChatMessage(ChatRole.User, approvalResponses));
             }
 
-            if (genericResponses.Count > 0)
+            if (workflowResponses.Count > 0)
             {
-                messages.Add(new ChatMessage(ChatRole.User, genericResponses));
+                messages.Add(new ChatMessage(ChatRole.Tool, workflowResponses));
             }
         }
 
@@ -153,7 +228,7 @@ public static class RunAgentInputExtensions
             chatOptions,
             streamOptions ?? new AGUIStreamOptions(),
             jsonSerializerOptions,
-            isContinuation,
+            isContinuation || workflowResponseCount > 0,
             clientToolNames);
     }
 
@@ -229,6 +304,72 @@ public static class RunAgentInputExtensions
         return true;
     }
 
+    private static WorkflowResumeDescriptor? GetWorkflowResumeDescriptor(AGUIResume resume)
+    {
+        if (resume.Metadata is not { ValueKind: JsonValueKind.Object } metadata
+            || !metadata.TryGetProperty(AGUIMetadata.ReservedKey, out var aguiMetadata)
+            || aguiMetadata.ValueKind != JsonValueKind.Object
+            || !aguiMetadata.TryGetProperty("workflowInterrupt", out var workflowMetadata)
+            || workflowMetadata.ValueKind != JsonValueKind.Object)
+        {
+            return null;
+        }
+
+        if (!workflowMetadata.TryGetProperty("interruptId", out var interruptId)
+            || interruptId.ValueKind != JsonValueKind.String
+            || !workflowMetadata.TryGetProperty("callId", out var callId)
+            || callId.ValueKind != JsonValueKind.String
+            || !workflowMetadata.TryGetProperty("name", out var name)
+            || name.ValueKind != JsonValueKind.String
+            || !workflowMetadata.TryGetProperty("arguments", out var arguments)
+            || arguments.ValueKind != JsonValueKind.Object)
+        {
+            throw new InvalidOperationException(
+                $"Resume interruption '{resume.InterruptId}' has invalid workflow correlation metadata.");
+        }
+
+        return new WorkflowResumeDescriptor(
+            interruptId.GetString()!,
+            callId.GetString()!,
+            name.GetString()!,
+            arguments.Clone());
+    }
+
+    private static HashSet<string> GetPendingWorkflowInterruptIds(AGUIResume resume)
+    {
+        if (resume.Metadata is not { ValueKind: JsonValueKind.Object } metadata
+            || !metadata.TryGetProperty(AGUIMetadata.ReservedKey, out var aguiMetadata)
+            || aguiMetadata.ValueKind != JsonValueKind.Object
+            || !aguiMetadata.TryGetProperty(
+                "pendingWorkflowInterruptIds",
+                out var pendingInterruptIds)
+            || pendingInterruptIds.ValueKind != JsonValueKind.Array)
+        {
+            throw new InvalidOperationException(
+                $"Resume interruption '{resume.InterruptId}' is missing its pending workflow-interruption registry.");
+        }
+
+        var result = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var pendingInterruptId in pendingInterruptIds.EnumerateArray())
+        {
+            if (pendingInterruptId.ValueKind != JsonValueKind.String
+                || string.IsNullOrWhiteSpace(pendingInterruptId.GetString())
+                || !result.Add(pendingInterruptId.GetString()!))
+            {
+                throw new InvalidOperationException(
+                    $"Resume interruption '{resume.InterruptId}' has an invalid pending workflow-interruption registry.");
+            }
+        }
+
+        if (result.Count == 0)
+        {
+            throw new InvalidOperationException(
+                $"Resume interruption '{resume.InterruptId}' has an empty pending workflow-interruption registry.");
+        }
+
+        return result;
+    }
+
     private static bool ToolCallsMatch(
         FunctionCallContent originalCall,
         FunctionCallContent resumedCall)
@@ -242,6 +383,21 @@ public static class RunAgentInputExtensions
         var originalArguments = JsonSerializer.SerializeToElement(originalCall.Arguments, typeInfo);
         var resumedArguments = JsonSerializer.SerializeToElement(resumedCall.Arguments, typeInfo);
         return JsonElement.DeepEquals(originalArguments, resumedArguments);
+    }
+
+    private sealed class WorkflowResumeDescriptor(
+        string interruptId,
+        string callId,
+        string name,
+        JsonElement arguments)
+    {
+        internal string InterruptId { get; } = interruptId;
+
+        internal string CallId { get; } = callId;
+
+        internal string Name { get; } = name;
+
+        internal JsonElement Arguments { get; } = arguments;
     }
 
     /// <summary>

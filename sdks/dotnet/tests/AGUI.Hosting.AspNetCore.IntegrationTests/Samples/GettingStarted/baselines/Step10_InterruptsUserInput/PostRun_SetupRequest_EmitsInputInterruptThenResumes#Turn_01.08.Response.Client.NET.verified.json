@@ -16,48 +16,59 @@
     "role": "assistant",
     "contents": [
       {
-        "$type": "interruptRequest",
-        "reason": "input_required",
-        "message": "What username would you like to use?",
-        "responseSchema": {
-          "type": "object",
-          "properties": {
-            "response": {
+        "$type": "functionCall",
+        "name": "request_user_input",
+        "arguments": {
+          "prompt": "What username would you like for your account?"
+        },
+        "informationalOnly": false,
+        "callId": "call_Id_1",
+        "additionalProperties": {
+          "agui.workflow.interrupt": {
+            "id": "call_Id_1",
+            "reason": "input_required",
+            "message": "What username would you like for your account?",
+            "toolCallId": "call_Id_1",
+            "responseSchema": {
               "type": "string"
             }
           },
-          "required": [
-            "response"
-          ]
-        },
-        "requestId": "call_Id_1"
+          "agui.workflow.thread_Id_2": "thread_Id_1",
+          "agui.workflow.call_Id_2": "call_Id_1",
+          "agui.workflow.call_Id_3": "request_user_input",
+          "agui.workflow.call_Id_4": {
+            "prompt": "What username would you like for your account?"
+          }
+        }
       }
     ],
     "responseId": "run_Id_1",
     "rawRepresentation": {
-      "type": "RUN_FINISHED",
-      "threadId": "thread_Id_1",
-      "runId": "run_Id_1",
-      "outcome": {
-        "type": "interrupt",
-        "interrupts": [
+      "type": "TOOL_CALL_END",
+      "toolCallId": "call_Id_1",
+      "rawEvent": {
+        "authorName": null,
+        "role": "assistant",
+        "contents": [
           {
-            "id": "call_Id_1",
-            "reason": "input_required",
-            "message": "What username would you like to use?",
-            "responseSchema": {
-              "type": "object",
-              "properties": {
-                "response": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "response"
-              ]
-            }
+            "$type": "functionCall",
+            "name": "request_user_input",
+            "arguments": {
+              "prompt": "What username would you like for your account?"
+            },
+            "informationalOnly": false,
+            "callId": "call_Id_1",
+            "annotations": null,
+            "additionalProperties": null
           }
-        ]
+        ],
+        "additionalProperties": null,
+        "responseId": null,
+        "messageId": null,
+        "conversationId": null,
+        "finishReason": "tool_calls",
+        "modelId": "fake-model",
+        "continuationToken": null
       }
     }
   }

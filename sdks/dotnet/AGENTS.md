@@ -108,7 +108,7 @@ The `samples/AGUIClientServer/` directory contains a full Dojo server with multi
 
 ## Project layout
 
-- `src/AGUI.Abstractions/` — Protocol types: events, messages, tools, capabilities, serialization context (`AGUIJsonSerializerContext`), and `AGUIJsonUtilities.RegisterInterruptContentTypes`.
+- `src/AGUI.Abstractions/` — Protocol types: events, messages, tools, capabilities, and the serialization context (`AGUIJsonSerializerContext`).
 - `src/AGUI.Formatting/` — Wire-format formatters: `IAGUIEventStreamFormatter` (bidirectional read/write) and `SseEventStreamFormatter` (the SSE wire format). Depends on Abstractions + `System.Net.ServerSentEvents`.
 - `src/AGUI.Protobuf/` — Protobuf codec (the `internal` `AGUIProtobuf`), the public `ProtobufEventStreamFormatter`, and the `JsonElement`↔`google.protobuf.Value` bridge. The generated proto types are `internal`; the `.proto` schema is referenced from `sdks/typescript/packages/proto` (not copied). Depends on Abstractions + Formatting + `Google.Protobuf`.
 - `src/AGUI.Client/` — `AGUIChatClient` (`IChatClient`, constructed from `AGUIChatClientOptions`), `AGUIHttpTransport`/`IAGUITransport`, and the public negotiation primitives (`AGUIEventStreamHandler` `DelegatingHandler` + `ReadAGUIEventStreamAsync`) callers can wire into their own `HttpClient` to request protobuf. Depends on Formatting.
@@ -133,7 +133,7 @@ Every AG-UI endpoint follows this shape (the GettingStarted samples map it via t
 4. Pipe through `.AsAGUIEventStreamAsync(ctx, cancellationToken)` to get the AG-UI event stream.
 5. Return `AGUIResults.Events(events, httpContext, cancellationToken)` (from `AGUI.Samples.Shared`). This negotiating `IResult` inspects the request `Accept` header and encodes the stream as Server-Sent Events (the default) or protobuf when the server registers `ProtobufEventStreamFormatter` as an `IAGUIEventStreamFormatter` and the client accepts it. Endpoints no longer hand-write `TypedResults.ServerSentEvents(...)`.
 
-If the endpoint needs framework-specific content mapping (e.g. reasoning, custom workflow events) or a custom interrupt classifier, configure them on the `AGUIStreamOptions` instance passed to `ToChatRequestContext` via fluent `MapContent(...)` / `MapInterrupt(...)` / `MapCall(...)` / `MapResult(...)` calls.
+If the endpoint needs framework-specific content mapping (e.g. reasoning, custom workflow events) or a custom interrupt classifier, configure them on the `AGUIStreamOptions` instance passed to `ToChatRequestContext` via fluent `MapContent(...)` / `MapInterrupt(...)` / `MapCall(...)` / `MapResult(...)` calls. Prefer the update-aware `MapInterrupt(Func<ChatResponseUpdate, IEnumerable<AGUIInterrupt>?>)` overload for workflow suspension: normal content conversion runs first, every interrupt must correlate to a `FunctionCallContent` through `ToolCallId`, and interrupts returned across the stream are accumulated into one terminal outcome.
 
 ## Public API surface
 

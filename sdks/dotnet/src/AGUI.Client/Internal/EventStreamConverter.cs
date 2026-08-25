@@ -104,45 +104,10 @@ internal static class EventStreamConverter
                         // Flush buffered tool calls, converting interrupted ones to ToolApprovalRequestContent
                         foreach (var toolUpdate in toolCallBuilder.FlushWithInterrupts(
                             interruptOutcome,
-                            clientToolNames))
+                            clientToolNames,
+                            jsonSerializerOptions))
                         {
                             yield return toolUpdate;
-                        }
-
-                        // Emit non-tool-call interrupts as InterruptRequestContent
-                        var nonToolContents = new List<AIContent>();
-                        foreach (var interrupt in interruptOutcome.Interrupts)
-                        {
-                            if (string.Equals(interrupt.Reason, InterruptReasons.ToolCall, System.StringComparison.OrdinalIgnoreCase)
-                                && interrupt.ToolCallId is not null)
-                            {
-                                // Already handled by FlushWithInterrupts above
-                                continue;
-                            }
-
-                            var inputRequest = new InterruptRequestContent(interrupt.Id)
-                            {
-                                Reason = interrupt.Reason,
-                                Message = interrupt.Message,
-                                ToolCallId = interrupt.ToolCallId,
-                                ResponseSchema = interrupt.ResponseSchema,
-                                ExpiresAt = interrupt.ExpiresAt,
-                                Metadata = interrupt.Metadata,
-                            };
-
-                            nonToolContents.Add(inputRequest);
-                        }
-
-                        if (nonToolContents.Count > 0)
-                        {
-                            yield return new ChatResponseUpdate
-                            {
-                                Role = ChatRole.Assistant,
-                                ConversationId = conversationId,
-                                ResponseId = responseId,
-                                Contents = nonToolContents,
-                                RawRepresentation = runFinishedEvt
-                            };
                         }
                     }
                     else

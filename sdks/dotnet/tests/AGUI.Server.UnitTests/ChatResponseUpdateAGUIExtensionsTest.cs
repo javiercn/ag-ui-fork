@@ -1152,7 +1152,7 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
         var update = new ChatResponseUpdate
         {
             Role = ChatRole.Assistant,
-            Contents = [customContent]
+            Contents = [new FunctionCallContent("call-1", "collect_input"), customContent]
         };
 
         var handlerCalled = false;
@@ -1269,6 +1269,7 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
                     return new AGUIInterrupt
                     {
                         Id = "int-1",
+                        ToolCallId = "call-1",
                         Reason = "user_input",
                         Message = "Enter email"
                     };
@@ -1323,7 +1324,7 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
             new ChatResponseUpdate
             {
                 Role = ChatRole.Assistant,
-                Contents = [customContent]
+                Contents = [new FunctionCallContent("call-1", "collect_input"), customContent]
             });
 
         var events = await CollectEvents(
@@ -1332,7 +1333,12 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
             {
                 if (content is DataContent)
                 {
-                    return new AGUIInterrupt { Id = "int-1", Reason = "policy_hold" };
+                    return new AGUIInterrupt
+                    {
+                        Id = "int-1",
+                        ToolCallId = "call-1",
+                        Reason = "policy_hold",
+                    };
                 }
 
                 return null;
@@ -1355,7 +1361,7 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
         var update = new ChatResponseUpdate
         {
             Role = ChatRole.Assistant,
-            Contents = [customContent]
+            Contents = [new FunctionCallContent("call-1", "collect_input"), customContent]
         };
 
         var events = await CollectEvents(
@@ -1363,6 +1369,7 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
             interruptMapper: (_, _) => new AGUIInterrupt
             {
                 Id = "int-1",
+                ToolCallId = "call-1",
                 Reason = "upload_required"
             });
 
@@ -1446,7 +1453,7 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
         var update = new ChatResponseUpdate
         {
             Role = ChatRole.Assistant,
-            Contents = [customContent]
+            Contents = [new FunctionCallContent("call-1", "collect_input"), customContent]
         };
 
         var events = await CollectEvents(
@@ -1454,6 +1461,7 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
             interruptMapper: (_, _) => new AGUIInterrupt
             {
                 Id = "int-db-1",
+                ToolCallId = "call-1",
                 Reason = "database_modification",
                 Message = "DELETE on users affecting 42 rows",
                 Metadata = JsonDocument.Parse("{\"action\":\"DELETE\",\"table\":\"users\",\"affectedRows\":42}").RootElement.Clone()
@@ -1475,17 +1483,23 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
         // RUN_FINISHED events (which produce an invalid stream the client decoder rejects).
         var toolCall = new FunctionCallContent("call-1", "delete_file");
         var approval = new ToolApprovalRequestContent("req-approval", toolCall);
+        var workflowCall = new FunctionCallContent("call-2", "collect_input");
         var customContent = new DataContent("data:text/plain;base64,SGVsbG8=", "text/plain");
         var update = new ChatResponseUpdate
         {
             Role = ChatRole.Assistant,
-            Contents = [approval, customContent]
+            Contents = [approval, workflowCall, customContent]
         };
 
         var events = await CollectEvents(
             ToAsyncEnumerable(update),
             interruptMapper: (_, content) => content is DataContent
-                ? new AGUIInterrupt { Id = "int-custom", Reason = "custom_reason" }
+                ? new AGUIInterrupt
+                {
+                    Id = "int-custom",
+                    ToolCallId = "call-2",
+                    Reason = "custom_reason",
+                }
                 : null);
 
         var finished = events.OfType<RunFinishedEvent>().Single();
@@ -1493,6 +1507,80 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
         Assert.Equal(2, interruptOutcome.Interrupts.Count);
         Assert.Contains(interruptOutcome.Interrupts, i => i.Id == "req-approval");
         Assert.Contains(interruptOutcome.Interrupts, i => i.Id == "int-custom");
+    }
+
+    [Fact]
+    public async Task UpdateInterruptMapper_EmitsNormalToolEventsAndAccumulatesInterrupts()
+    {
+        var first = new ChatResponseUpdate
+        {
+            Role = ChatRole.Assistant,
+            Contents =
+            [
+                new FunctionCallContent(
+                    "call-1",
+                    "collect_one",
+                    new Dictionary<string, object?> { ["value"] = "one" }),
+            ],
+        };
+        var second = new ChatResponseUpdate
+        {
+            Role = ChatRole.Assistant,
+            RawRepresentation = "provider-native-update",
+            Contents =
+            [
+                new FunctionCallContent(
+                    "call-2",
+                    "collect_two",
+                    new Dictionary<string, object?> { ["value"] = "two" }),
+            ],
+        };
+
+        var sawRawRepresentation = false;
+        var events = await CollectEvents(
+            ToAsyncEnumerable(first, second),
+            updateInterruptMapper: update =>
+            {
+                sawRawRepresentation |= Equals(
+                    update.RawRepresentation,
+                    "provider-native-update");
+                return update.Contents.OfType<FunctionCallContent>()
+                    .Select(call => new AGUIInterrupt
+                    {
+                        Id = $"interrupt-{call.CallId}",
+                        ToolCallId = call.CallId,
+                        Reason = InterruptReasons.InputRequired,
+                    });
+            });
+
+        Assert.True(sawRawRepresentation);
+        Assert.Equal(2, events.OfType<ToolCallStartEvent>().Count());
+        Assert.Equal(2, events.OfType<ToolCallArgsEvent>().Count());
+        Assert.Equal(2, events.OfType<ToolCallEndEvent>().Count());
+        var finished = Assert.Single(events.OfType<RunFinishedEvent>());
+        var outcome = Assert.IsType<RunFinishedInterruptOutcome>(finished.Outcome);
+        Assert.Equal(
+            ["interrupt-call-1", "interrupt-call-2"],
+            outcome.Interrupts.Select(interrupt => interrupt.Id));
+    }
+
+    [Fact]
+    public async Task UpdateInterruptMapper_RejectsNonFunctionCorrelatedInterrupt()
+    {
+        var update = new ChatResponseUpdate(ChatRole.Assistant, "pause");
+
+        var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => CollectEvents(
+            ToAsyncEnumerable(update),
+            updateInterruptMapper: _ =>
+            [
+                new AGUIInterrupt
+                {
+                    Id = "interrupt-1",
+                    Reason = InterruptReasons.InputRequired,
+                },
+            ]));
+
+        Assert.Contains("is not correlated", exception.Message);
     }
 
     #endregion
@@ -1889,7 +1977,8 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
     private static async Task<List<BaseEvent>> CollectEvents(
         IAsyncEnumerable<ChatResponseUpdate> updates,
         Func<ChatResponseUpdate, AIContent, AGUIInterrupt?>? interruptMapper = null,
-        Func<ChatResponseUpdate, AIContent, IEnumerable<BaseEvent>?>? unmappedUpdateHandler = null)
+        Func<ChatResponseUpdate, AIContent, IEnumerable<BaseEvent>?>? unmappedUpdateHandler = null,
+        Func<ChatResponseUpdate, IEnumerable<AGUIInterrupt>?>? updateInterruptMapper = null)
     {
         var options = new AGUIStreamOptions();
         if (interruptMapper is not null)
@@ -1899,6 +1988,10 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
         if (unmappedUpdateHandler is not null)
         {
             options.MapContent(content => unmappedUpdateHandler(null!, content));
+        }
+        if (updateInterruptMapper is not null)
+        {
+            options.MapInterrupt(updateInterruptMapper);
         }
 
         var events = new List<BaseEvent>();

@@ -10,14 +10,26 @@
       ]
     },
     {
-      "role": "user",
+      "role": "assistant",
       "contents": [
         {
-          "$type": "interruptResponse",
-          "payload": {
-            "response": "johndoe42"
+          "$type": "functionCall",
+          "name": "request_user_input",
+          "arguments": {
+            "prompt": "What username would you like for your account?"
           },
-          "requestId": "call_Id_1"
+          "informationalOnly": false,
+          "callId": "call_Id_1"
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "contents": [
+        {
+          "$type": "functionResult",
+          "result": "johndoe42",
+          "callId": "call_Id_1"
         }
       ]
     }

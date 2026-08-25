@@ -40,7 +40,6 @@ public static class AGUIServiceCollectionExtensions
             options.SerializerOptions.TypeInfoResolverChain.Insert(
                 0, AGUIJsonUtilities.DefaultTypeInfoResolver);
             options.SerializerOptions.TypeInfoResolverChain.Add(AIJsonUtilities.DefaultOptions.TypeInfoResolver!);
-            AGUIJsonUtilities.RegisterInterruptContentTypes(options.SerializerOptions);
         });
 
         return services;

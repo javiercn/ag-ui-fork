@@ -152,7 +152,8 @@ public sealed class ToolCallBuilderTest
 
         var updates = builder.FlushWithInterrupts(
             outcome,
-            new HashSet<string>(StringComparer.Ordinal) { "client_tool" });
+            new HashSet<string>(StringComparer.Ordinal) { "client_tool" },
+            s_options);
 
         var approvals = updates.SelectMany(update => update.Contents)
             .OfType<ToolApprovalRequestContent>()
@@ -167,6 +168,39 @@ public sealed class ToolCallBuilderTest
 #pragma warning restore MEAI001
         Assert.True(
             Assert.IsType<FunctionCallContent>(normalServerApproval.ToolCall).InformationalOnly);
+    }
+
+    [Fact]
+    public void FlushWithInterrupts_AttachesGenericInterruptToActionableFunctionCall()
+    {
+        var builder = new ToolCallBuilder();
+        builder.StartToolCall(new ToolCallStartEvent
+        {
+            ToolCallId = "workflow-call",
+            ToolCallName = "collect_input",
+        });
+        builder.AppendArgs(new ToolCallArgsEvent
+        {
+            ToolCallId = "workflow-call",
+            Delta = """{"prompt":"Name?"}""",
+        });
+        builder.EndToolCall(new ToolCallEndEvent { ToolCallId = "workflow-call" }, s_options);
+        var interrupt = new AGUIInterrupt
+        {
+            Id = "workflow-interrupt",
+            Reason = InterruptReasons.InputRequired,
+            ToolCallId = "workflow-call",
+        };
+
+        var update = Assert.Single(builder.FlushWithInterrupts(
+            new RunFinishedInterruptOutcome { Interrupts = [interrupt] },
+            clientToolNames: null,
+            jsonSerializerOptions: s_options));
+
+        var call = Assert.IsType<FunctionCallContent>(Assert.Single(update.Contents));
+        Assert.False(call.InformationalOnly);
+        Assert.Same(interrupt, call.RawRepresentation);
+        Assert.NotNull(call.AdditionalProperties);
     }
 
     [Fact]

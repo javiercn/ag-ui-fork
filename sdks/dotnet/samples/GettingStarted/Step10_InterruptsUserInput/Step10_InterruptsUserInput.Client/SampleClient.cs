@@ -1,4 +1,3 @@
-using System.Text.Json;
 using AGUI.Abstractions;
 using AGUI.Client;
 using Microsoft.Extensions.AI;
@@ -14,7 +13,7 @@ public static class SampleClient
         List<List<ChatResponseUpdate>>? updatesPerTurn = null,
         CancellationToken cancellationToken = default)
     {
-        // Turn 1: ask to set up the account; the server pauses with an InterruptRequestContent.
+        // Turn 1: ask to set up the account; the server pauses with an actionable function call.
         var messages = new List<ChatMessage>
         {
             new(ChatRole.User, "Please setup my account"),
@@ -25,24 +24,23 @@ public static class SampleClient
         var turn1 = await StreamAsync(chatClient, messages, output, cancellationToken).ConfigureAwait(false);
         updatesPerTurn?.Add(turn1);
 
-        var interrupt = turn1
+        var workflowCall = turn1
             .SelectMany(u => u.Contents)
-            .OfType<InterruptRequestContent>()
+            .OfType<FunctionCallContent>()
             .FirstOrDefault();
-        if (interrupt is null)
+        if (workflowCall is null)
         {
             return;
         }
 
-        // Turn 2: append the interrupt + an InterruptResponseContent. The AGUIChatClient
-        // encodes the response as RunAgentInput.Resume[] on the wire.
-        var responsePayload = JsonSerializer.SerializeToElement(new { response = "johndoe42" });
-        var responseContent = new InterruptResponseContent(interrupt.RequestId) { Payload = responsePayload };
+        // Turn 2: respond with the idiomatic function result. AGUIChatClient recognizes the
+        // pending interrupted call and encodes the result as RunAgentInput.Resume[].
+        var responseContent = new FunctionResultContent(workflowCall.CallId, "johndoe42");
 
         var turn2Messages = new List<ChatMessage>(messages)
         {
-            new(ChatRole.Assistant, [interrupt]),
-            new(ChatRole.User, [responseContent]),
+            new(ChatRole.Assistant, [workflowCall]),
+            new(ChatRole.Tool, [responseContent]),
         };
         messagesPerTurn?.Add(turn2Messages.ToList());
         await output.WriteLineAsync("> [user input: johndoe42]").ConfigureAwait(false);
@@ -67,8 +65,12 @@ public static class SampleClient
             {
                 switch (content)
                 {
-                    case InterruptRequestContent ireq:
-                        await output.WriteLineAsync($"[interrupt: {ireq.Reason}] {ireq.Message}").ConfigureAwait(false);
+                    case FunctionCallContent
+                    {
+                        RawRepresentation: AGUIInterrupt interrupt,
+                    }:
+                        await output.WriteLineAsync(
+                            $"[interrupt: {interrupt.Reason}] {interrupt.Message}").ConfigureAwait(false);
                         break;
                     case TextContent { Text: { Length: > 0 } text }:
                         await output.WriteAsync(text).ConfigureAwait(false);

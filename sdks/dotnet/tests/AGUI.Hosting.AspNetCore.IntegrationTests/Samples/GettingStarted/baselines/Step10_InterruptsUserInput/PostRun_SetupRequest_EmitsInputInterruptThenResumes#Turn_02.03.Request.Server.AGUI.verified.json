@@ -1,18 +1,44 @@
 ﻿{
-  "threadId": "thread_Id_2",
+  "threadId": "thread_Id_1",
   "runId": "run_Id_2",
   "messages": [
     {
       "role": "user",
       "content": "Please setup my account"
+    },
+    {
+      "role": "assistant",
+      "toolCalls": [
+        {
+          "id": "call_Id_1",
+          "type": "function",
+          "function": {
+            "name": "request_user_input",
+            "arguments": "{\u0022prompt\u0022:\u0022What username would you like for your account?\u0022}"
+          }
+        }
+      ]
     }
   ],
   "resume": [
     {
       "interruptId": "call_Id_1",
       "status": "resolved",
-      "payload": {
-        "response": "johndoe42"
+      "payload": "johndoe42",
+      "metadata": {
+        "ag-ui": {
+          "workflowInterrupt": {
+            "interruptId": "call_Id_1",
+            "callId": "call_Id_1",
+            "name": "request_user_input",
+            "arguments": {
+              "prompt": "What username would you like for your account?"
+            }
+          },
+          "pendingWorkflowInterruptIds": [
+            "call_Id_1"
+          ]
+        }
       }
     }
   ]

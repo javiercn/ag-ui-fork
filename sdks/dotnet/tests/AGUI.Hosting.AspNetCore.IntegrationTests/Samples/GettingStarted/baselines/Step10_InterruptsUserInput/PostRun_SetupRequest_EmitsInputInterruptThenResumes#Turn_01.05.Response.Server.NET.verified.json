@@ -3,24 +3,16 @@
     "role": "assistant",
     "contents": [
       {
-        "$type": "interruptRequest",
-        "reason": "input_required",
-        "message": "What username would you like to use?",
-        "responseSchema": {
-          "type": "object",
-          "properties": {
-            "response": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "response"
-          ]
+        "$type": "functionCall",
+        "name": "request_user_input",
+        "arguments": {
+          "prompt": "What username would you like for your account?"
         },
-        "requestId": "call_Id_1"
+        "informationalOnly": false,
+        "callId": "call_Id_1"
       }
     ],
-    "responseId": "chatcmpl-Id_1",
-    "modelId": "gpt-5-mini-2025-08-07"
+    "finishReason": "tool_calls",
+    "modelId": "fake-model"
   }
 ]

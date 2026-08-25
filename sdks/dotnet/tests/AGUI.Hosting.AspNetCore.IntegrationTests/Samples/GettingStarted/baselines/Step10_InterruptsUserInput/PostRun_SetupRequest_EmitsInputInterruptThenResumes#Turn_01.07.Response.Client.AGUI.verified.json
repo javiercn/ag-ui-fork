@@ -5,6 +5,92 @@
     "runId": "run_Id_1"
   },
   {
+    "type": "TOOL_CALL_START",
+    "toolCallId": "call_Id_1",
+    "toolCallName": "request_user_input",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "functionCall",
+          "name": "request_user_input",
+          "arguments": {
+            "prompt": "What username would you like for your account?"
+          },
+          "informationalOnly": false,
+          "callId": "call_Id_1",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": null,
+      "conversationId": null,
+      "finishReason": "tool_calls",
+      "modelId": "fake-model",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TOOL_CALL_ARGS",
+    "toolCallId": "call_Id_1",
+    "delta": "{\u0022prompt\u0022:\u0022What username would you like for your account?\u0022}",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "functionCall",
+          "name": "request_user_input",
+          "arguments": {
+            "prompt": "What username would you like for your account?"
+          },
+          "informationalOnly": false,
+          "callId": "call_Id_1",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": null,
+      "conversationId": null,
+      "finishReason": "tool_calls",
+      "modelId": "fake-model",
+      "continuationToken": null
+    }
+  },
+  {
+    "type": "TOOL_CALL_END",
+    "toolCallId": "call_Id_1",
+    "rawEvent": {
+      "authorName": null,
+      "role": "assistant",
+      "contents": [
+        {
+          "$type": "functionCall",
+          "name": "request_user_input",
+          "arguments": {
+            "prompt": "What username would you like for your account?"
+          },
+          "informationalOnly": false,
+          "callId": "call_Id_1",
+          "annotations": null,
+          "additionalProperties": null
+        }
+      ],
+      "additionalProperties": null,
+      "responseId": null,
+      "messageId": null,
+      "conversationId": null,
+      "finishReason": "tool_calls",
+      "modelId": "fake-model",
+      "continuationToken": null
+    }
+  },
+  {
     "type": "RUN_FINISHED",
     "threadId": "thread_Id_1",
     "runId": "run_Id_1",
@@ -14,17 +100,10 @@
         {
           "id": "call_Id_1",
           "reason": "input_required",
-          "message": "What username would you like to use?",
+          "message": "What username would you like for your account?",
+          "toolCallId": "call_Id_1",
           "responseSchema": {
-            "type": "object",
-            "properties": {
-              "response": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "response"
-            ]
+            "type": "string"
           }
         }
       ]
