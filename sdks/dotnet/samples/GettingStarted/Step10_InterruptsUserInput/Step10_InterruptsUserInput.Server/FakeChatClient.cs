@@ -58,7 +58,7 @@ internal sealed class FakeChatClient : IChatClient
             [
                 new FunctionCallContent(
                     callId: "call_user_input_1",
-                    name: UserInputToolChatClient.ToolName,
+                    name: Program.ToolName,
                     arguments: new Dictionary<string, object?> { ["prompt"] = "What username would you like for your account?" }),
             ],
             FinishReason = ChatFinishReason.ToolCalls,

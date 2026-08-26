@@ -152,7 +152,8 @@ public sealed class ToolCallBuilderTest
 
         var updates = builder.FlushWithInterrupts(
             outcome,
-            new HashSet<string>(StringComparer.Ordinal) { "client_tool" });
+            new HashSet<string>(StringComparer.Ordinal) { "client_tool" },
+            s_options);
 
         var approvals = updates.SelectMany(update => update.Contents)
             .OfType<ToolApprovalRequestContent>()
@@ -167,6 +168,59 @@ public sealed class ToolCallBuilderTest
 #pragma warning restore MEAI001
         Assert.True(
             Assert.IsType<FunctionCallContent>(normalServerApproval.ToolCall).InformationalOnly);
+    }
+
+    [Fact]
+    public void FlushWithInterrupts_AttachesGenericInterruptToActionableFunctionCall()
+    {
+        var builder = new ToolCallBuilder();
+        builder.StartToolCall(new ToolCallStartEvent
+        {
+            ToolCallId = "interrupt-call",
+            ToolCallName = "collect_input",
+        });
+        builder.AppendArgs(new ToolCallArgsEvent
+        {
+            ToolCallId = "interrupt-call",
+            Delta = """{"prompt":"Name?"}""",
+        });
+        builder.EndToolCall(new ToolCallEndEvent { ToolCallId = "interrupt-call" }, s_options);
+        var interrupt = new AGUIInterrupt
+        {
+            Id = "interrupt-call",
+            Reason = InterruptReasons.InputRequired,
+            ToolCallId = "interrupt-call",
+        };
+
+        var update = Assert.Single(builder.FlushWithInterrupts(
+            new RunFinishedInterruptOutcome { Interrupts = [interrupt] },
+            clientToolNames: null,
+            jsonSerializerOptions: s_options));
+
+        var call = Assert.IsType<FunctionCallContent>(Assert.Single(update.Contents));
+        Assert.False(call.InformationalOnly);
+        Assert.Same(interrupt, call.RawRepresentation);
+        Assert.NotNull(call.AdditionalProperties);
+    }
+
+    [Fact]
+    public void FlushWithInterrupts_WithoutBufferedFunctionCallRejectsInterrupt()
+    {
+        var builder = new ToolCallBuilder();
+        var interrupt = new AGUIInterrupt
+        {
+            Id = "missing-call",
+            Reason = InterruptReasons.InputRequired,
+            ToolCallId = "missing-call",
+        };
+
+        var exception = Assert.Throws<InvalidOperationException>(() =>
+            builder.FlushWithInterrupts(
+                new RunFinishedInterruptOutcome { Interrupts = [interrupt] },
+                clientToolNames: null,
+                jsonSerializerOptions: s_options));
+
+        Assert.Contains("does not match a buffered function call", exception.Message);
     }
 
     [Fact]

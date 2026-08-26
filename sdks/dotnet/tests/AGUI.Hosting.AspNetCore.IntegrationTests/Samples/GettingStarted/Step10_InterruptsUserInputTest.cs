@@ -82,8 +82,8 @@ public sealed class Step10_InterruptsUserInputTest : IntegrationTestBase<Step10_
                 else
                 {
                     // Record mode: wrap whatever the app registered (e.g. the Azure OpenAI
-                    // pipeline with the request_user_input tool + UserInputToolChatClient) so a
-                    // real LLM run is captured for future replay.
+                    // pipeline with its synthetic input-request event)
+                    // so a real LLM run is captured for future replay.
                     var descriptor = services.FirstOrDefault(d => d.ServiceType == typeof(IChatClient));
                     if (descriptor != null)
                     {
@@ -113,6 +113,17 @@ public sealed class Step10_InterruptsUserInputTest : IntegrationTestBase<Step10_
     {
         foreach (var update in updates)
         {
+            foreach (var content in update.Contents)
+            {
+                if (content is FunctionCallContent call)
+                {
+                    update.RawRepresentation = new InputRequestEvent(
+                        call.CallId,
+                        Step10_InterruptsUserInput.Server.Program.ExtractPrompt(call.Arguments));
+                    break;
+                }
+            }
+
             yield return update;
         }
     }
@@ -131,7 +142,6 @@ public sealed class Step10_InterruptsUserInputTest : IntegrationTestBase<Step10_
 
         options.TypeInfoResolverChain.Add(AIJsonUtilities.DefaultOptions.TypeInfoResolver!);
         options.TypeInfoResolverChain.Add(AGUIJsonSerializerContext.Default);
-        AGUI.Abstractions.AGUIJsonUtilities.RegisterInterruptContentTypes(options);
         options.Converters.Add(new ChatResponseUpdateCaptureConverter());
 
         return options;

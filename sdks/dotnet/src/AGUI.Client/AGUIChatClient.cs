@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using AGUI.Abstractions;
@@ -64,7 +65,6 @@ public sealed class AGUIChatClient : DelegatingChatClient
         var hasCallerSuppliedResume =
             options?.RawRepresentationFactory?.Invoke(this) is RunAgentInput { Resume.Count: > 0 };
         List<ToolApprovalResponseContent>? approvalResponses = null;
-        List<InterruptResponseContent>? interruptResponses = null;
         var lastMsg = messagesList.Count > 0 ? messagesList[messagesList.Count - 1] : null;
         if (lastMsg is not null)
         {
@@ -74,11 +74,6 @@ public sealed class AGUIChatClient : DelegatingChatClient
                 {
                     approvalResponses ??= new List<ToolApprovalResponseContent>();
                     approvalResponses.Add(response);
-                }
-                else if (content is InterruptResponseContent interruptResponse)
-                {
-                    interruptResponses ??= new List<InterruptResponseContent>();
-                    interruptResponses.Add(interruptResponse);
                 }
             }
         }
@@ -94,88 +89,280 @@ public sealed class AGUIChatClient : DelegatingChatClient
             }
             else
             {
-            var requestsById = ValidateApprovalResponses(
-                messagesList,
-                approvalResponses);
-            var clientToolNames = new HashSet<string>(
-                options?.Tools?.Select(tool => tool.Name) ?? [],
-                StringComparer.Ordinal);
-            var clientRequestIds = new HashSet<string>(
-                requestsById
-                    .Where(entry => entry.Value.ToolCall is FunctionCallContent call
-                        && clientToolNames.Contains(call.Name))
-                    .Select(entry => entry.Key),
-                StringComparer.Ordinal);
-            var callIndexById = requestsById.Values
-                .Select((request, index) => new { request.ToolCall.CallId, index })
-                .ToDictionary(entry => entry.CallId, entry => entry.index, StringComparer.Ordinal);
-            var serverApprovalResponses = approvalResponses
-                .Where(response => !clientRequestIds.Contains(response.RequestId)
+                var requestsById = ValidateApprovalResponses(
+                    messagesList,
+                    approvalResponses);
+                var clientToolNames = new HashSet<string>(
+                    options?.Tools?.Select(tool => tool.Name) ?? [],
+                    StringComparer.Ordinal);
+                var clientRequestIds = new HashSet<string>(
+                    requestsById
+                        .Where(entry => entry.Value.ToolCall is FunctionCallContent call
+                            && clientToolNames.Contains(call.Name))
+                        .Select(entry => entry.Key),
+                    StringComparer.Ordinal);
+                var callIndexById = requestsById.Values
+                    .Select((request, index) => new { request.ToolCall.CallId, index })
+                    .ToDictionary(entry => entry.CallId, entry => entry.index, StringComparer.Ordinal);
+                var serverApprovalResponses = approvalResponses
+                    .Where(response => !clientRequestIds.Contains(response.RequestId)
 #pragma warning disable MEAI001
-                    && requestsById[response.RequestId].RequiresConfirmation)
+                        && requestsById[response.RequestId].RequiresConfirmation)
 #pragma warning restore MEAI001
-                .ToList();
+                    .ToList();
 
-            messagesList = NormalizeApprovalContents(
-                messagesList,
-                clientRequestIds,
-                clientToolNames,
-                callIndexById);
-            innerOptions = (innerOptions ?? options)?.Clone() ?? new ChatOptions();
-            if (serverApprovalResponses.Count > 0)
-            {
-                innerOptions.AdditionalProperties ??= [];
-                innerOptions.AdditionalProperties[AGUIClientInternalKeys.ApprovalResponses] =
-                    serverApprovalResponses;
-            }
+                messagesList = NormalizeApprovalContents(
+                    messagesList,
+                    clientRequestIds,
+                    clientToolNames,
+                    callIndexById);
+                innerOptions = (innerOptions ?? options)?.Clone() ?? new ChatOptions();
+                if (serverApprovalResponses.Count > 0)
+                {
+                    innerOptions.AdditionalProperties ??= [];
+                    innerOptions.AdditionalProperties[AGUIClientInternalKeys.ApprovalResponses] =
+                        serverApprovalResponses;
+                }
             }
         }
 
-        if (interruptResponses is { Count: > 0 })
+        var lastInterruptMessageIndex = messagesList.FindLastIndex(message =>
+            message.Contents.OfType<FunctionCallContent>().Any(call =>
+                call.AdditionalProperties?.ContainsKey(AGUIClientInternalKeys.Interrupt) is true));
+        var interruptedCalls = new List<FunctionCallContent>();
+        var hasLaterContent = lastInterruptMessageIndex >= 0
+            && messagesList
+                .Skip(lastInterruptMessageIndex + 1)
+                .SelectMany(message => message.Contents)
+                .Any(content => content is not FunctionResultContent);
+        if (lastInterruptMessageIndex >= 0 && !hasLaterContent)
         {
+            var firstBatchMessageIndex = lastInterruptMessageIndex;
+            while (firstBatchMessageIndex > 0
+                && messagesList[firstBatchMessageIndex - 1].Role == ChatRole.Assistant)
+            {
+                firstBatchMessageIndex--;
+            }
+
+            interruptedCalls = messagesList
+                .Skip(firstBatchMessageIndex)
+                .Take(lastInterruptMessageIndex - firstBatchMessageIndex + 1)
+                .SelectMany(message => message.Contents)
+                .OfType<FunctionCallContent>()
+                .Where(call =>
+                    call.AdditionalProperties?.ContainsKey(AGUIClientInternalKeys.Interrupt) is true)
+                .ToList();
+        }
+
+        List<(FunctionCallContent Call, AGUIInterrupt Interrupt, FunctionResultContent Result, string ThreadId)>?
+            interruptResponses = null;
+        if (interruptedCalls.Count > 0)
+        {
+            if (!hasCallerSuppliedResume)
+            {
+                var callsById = new Dictionary<string, FunctionCallContent>(StringComparer.Ordinal);
+                foreach (var call in interruptedCalls)
+                {
+                    if (callsById.ContainsKey(call.CallId))
+                    {
+                        throw new InvalidOperationException(
+                            $"Interrupted function call '{call.CallId}' appears more than once.");
+                    }
+                    callsById.Add(call.CallId, call);
+                }
+
+                var allCallsById = messagesList
+                    .SelectMany(message => message.Contents)
+                    .Select(content => content switch
+                    {
+                        FunctionCallContent call => call,
+                        ToolApprovalRequestContent { ToolCall: FunctionCallContent call } => call,
+                        _ => null,
+                    })
+                    .Where(call => call is not null)
+                    .ToDictionary(call => call!.CallId, call => call!, StringComparer.Ordinal);
+                var allInterruptedCallIds = new HashSet<string>(
+                    allCallsById.Values
+                        .Where(call =>
+                            call.AdditionalProperties?.ContainsKey(AGUIClientInternalKeys.Interrupt) is true)
+                        .Select(call => call.CallId),
+                    StringComparer.Ordinal);
+                var responseResults = messagesList
+                    .SelectMany(message => message.Contents)
+                    .OfType<FunctionResultContent>()
+                    .Where(result => callsById.ContainsKey(result.CallId))
+                    .ToList();
+                var duplicateResponseId = responseResults
+                    .GroupBy(result => result.CallId, StringComparer.Ordinal)
+                    .FirstOrDefault(group => group.Count() > 1)?.Key;
+                if (duplicateResponseId is not null)
+                {
+                    throw new InvalidOperationException(
+                        $"Interrupt response '{duplicateResponseId}' appears more than once.");
+                }
+
+                var staleResponse = messagesList
+                    .SelectMany(message => message.Contents)
+                    .OfType<FunctionResultContent>()
+                    .FirstOrDefault(result =>
+                        allInterruptedCallIds.Contains(result.CallId)
+                        && !callsById.ContainsKey(result.CallId));
+                if (staleResponse is not null)
+                {
+                    throw new InvalidOperationException(
+                        $"Interrupt response '{staleResponse.CallId}' is stale.");
+                }
+
+                var unknownResponse = messagesList
+                    .SelectMany(message => message.Contents)
+                    .OfType<FunctionResultContent>()
+                    .FirstOrDefault(result => !allCallsById.ContainsKey(result.CallId));
+                if (unknownResponse is not null)
+                {
+                    throw new InvalidOperationException(
+                        $"Interrupt response '{unknownResponse.CallId}' does not match a function call.");
+                }
+
+                var resultsById = responseResults.ToDictionary(
+                    result => result.CallId,
+                    StringComparer.Ordinal);
+                var missingCallIds = callsById.Keys
+                    .Where(callId => !resultsById.ContainsKey(callId))
+                    .ToList();
+                if (missingCallIds.Count > 0)
+                {
+                    throw new InvalidOperationException(
+                        $"Interrupt responses are missing for call(s): {string.Join(", ", missingCallIds)}.");
+                }
+
+                interruptResponses = [];
+                foreach (var call in interruptedCalls)
+                {
+                    if (call.AdditionalProperties?.TryGetValue(
+                            AGUIClientInternalKeys.Interrupt,
+                            out JsonElement serializedInterrupt) is not true
+                        || serializedInterrupt.Deserialize(
+                            AGUIJsonSerializerContext.Default.AGUIInterrupt) is not { } interrupt
+                        || !string.Equals(interrupt.Id, call.CallId, StringComparison.Ordinal)
+                        || !string.Equals(interrupt.ToolCallId, call.CallId, StringComparison.Ordinal)
+                        || call.AdditionalProperties.TryGetValue(
+                            AGUIClientInternalKeys.InterruptThreadId,
+                            out string? interruptThreadId) is not true
+                        || string.IsNullOrEmpty(interruptThreadId))
+                    {
+                        throw new InvalidOperationException(
+                            $"Interrupted function call '{call.CallId}' has invalid correlation metadata.");
+                    }
+
+                    if (interrupt.ExpiresAt is not null
+                        && DateTimeOffset.TryParse(interrupt.ExpiresAt, out var expiresAt)
+                        && expiresAt <= DateTimeOffset.UtcNow)
+                    {
+                        throw new InvalidOperationException(
+                            $"Interrupt '{interrupt.Id}' has expired.");
+                    }
+
+                    interruptResponses.Add((
+                        call,
+                        interrupt,
+                        resultsById[call.CallId],
+                        interruptThreadId));
+                }
+            }
+
+            var interruptedCallIds = new HashSet<string>(
+                interruptedCalls.Select(call => call.CallId),
+                StringComparer.Ordinal);
             messagesList = RemoveContents(
                 messagesList,
-                static content => content is InterruptRequestContent or InterruptResponseContent);
+                content => content is FunctionResultContent result
+                    && interruptedCallIds.Contains(result.CallId));
+
+            foreach (var interruptedCall in interruptedCalls)
+            {
+                interruptedCall.InformationalOnly = true;
+            }
+
             innerOptions = (innerOptions ?? options)?.Clone() ?? new ChatOptions();
+            var interruptThreadIds = interruptedCalls
+                .Select(call => call.AdditionalProperties is not null
+                    && call.AdditionalProperties.TryGetValue(
+                        AGUIClientInternalKeys.InterruptThreadId,
+                        out string? threadId)
+                        ? threadId
+                        : null)
+                .Distinct(StringComparer.Ordinal)
+                .ToList();
+            if (interruptThreadIds.Count != 1)
+            {
+                throw new InvalidOperationException(
+                    "Pending interrupted function calls must belong to one AG-UI thread.");
+            }
             innerOptions.AdditionalProperties ??= [];
-            innerOptions.AdditionalProperties[AGUIClientInternalKeys.InterruptResponses] = interruptResponses;
+            innerOptions.AdditionalProperties[AGUIClientInternalKeys.ThreadId] =
+                interruptThreadIds[0];
+            if (interruptResponses is { Count: > 0 })
+            {
+                innerOptions.AdditionalProperties[AGUIClientInternalKeys.InterruptResponses] =
+                    interruptResponses;
+            }
         }
 
-        await foreach (var update in base.GetStreamingResponseAsync(messagesList, innerOptions, cancellationToken).ConfigureAwait(false))
+        try
         {
-            // The handler surfaces the resolved AG-UI thread id on the first update. Pin it on the
-            // caller's options so that reusing the same ChatOptions across turns keeps a stable
-            // thread id — without advertising a service ConversationId. We never promote it to
-            // ConversationId, because a non-null ConversationId makes MEAI agent wrappers treat the
-            // conversation as service-managed and send only deltas on the next turn, which truncates
-            // history against a stateless AG-UI server (issue #4869). The thread id stays available
-            // via AdditionalProperties.
-            if (!threadIdPinned
-                && update.AdditionalProperties?.TryGetValue(AGUIClientInternalKeys.ThreadId, out string? resolvedThreadId) is true
-                && !string.IsNullOrEmpty(resolvedThreadId))
+            await foreach (var update in base.GetStreamingResponseAsync(messagesList, innerOptions, cancellationToken).ConfigureAwait(false))
             {
-                threadIdPinned = true;
-                if (options is not null && options.ConversationId is null)
+                // The handler surfaces the resolved AG-UI thread id on the first update. Pin it on the
+                // caller's options so that reusing the same ChatOptions across turns keeps a stable
+                // thread id — without advertising a service ConversationId. We never promote it to
+                // ConversationId, because a non-null ConversationId makes MEAI agent wrappers treat the
+                // conversation as service-managed and send only deltas on the next turn, which truncates
+                // history against a stateless AG-UI server (issue #4869). The thread id stays available
+                // via AdditionalProperties.
+                if (!threadIdPinned
+                    && update.AdditionalProperties?.TryGetValue(AGUIClientInternalKeys.ThreadId, out string? resolvedThreadId) is true
+                    && !string.IsNullOrEmpty(resolvedThreadId))
                 {
-                    options.AdditionalProperties ??= [];
-                    options.AdditionalProperties[AGUIClientInternalKeys.ThreadId] = resolvedThreadId;
+                    threadIdPinned = true;
+                    if (options is not null && options.ConversationId is null)
+                    {
+                        options.AdditionalProperties ??= [];
+                        options.AdditionalProperties[AGUIClientInternalKeys.ThreadId] = resolvedThreadId;
+                    }
                 }
-            }
 
-            // Clean up agui_thread_id from function call additional properties
-            for (var i = 0; i < update.Contents.Count; i++)
+                // Restore interrupted calls to their actionable developer-facing form after the
+                // internal FICC projection treated them as informational.
+                for (var i = 0; i < update.Contents.Count; i++)
+                {
+                    if (update.Contents[i] is FunctionCallContent functionCallContent)
+                    {
+                        functionCallContent.AdditionalProperties?.Remove(AGUIClientInternalKeys.ThreadId);
+                        if (functionCallContent.AdditionalProperties?.TryGetValue(
+                                AGUIClientInternalKeys.Interrupt,
+                                out JsonElement serializedInterrupt) is true
+                            && serializedInterrupt.Deserialize(
+                                AGUIJsonSerializerContext.Default.AGUIInterrupt) is { } interrupt)
+                        {
+                            functionCallContent.InformationalOnly = false;
+                            functionCallContent.RawRepresentation = interrupt;
+                        }
+                    }
+                }
+
+                // AG-UI servers are stateless: never surface a ConversationId (see issue #4869). The
+                // handler already nulls it; this is a defensive guard in case an inner client sets one.
+                update.ConversationId = null;
+
+                yield return update;
+            }
+        }
+        finally
+        {
+            foreach (var interruptedCall in interruptedCalls)
             {
-                if (update.Contents[i] is FunctionCallContent functionCallContent)
-                {
-                    functionCallContent.AdditionalProperties?.Remove(AGUIClientInternalKeys.ThreadId);
-                }
+                interruptedCall.InformationalOnly = false;
             }
-
-            // AG-UI servers are stateless: never surface a ConversationId (see issue #4869). The
-            // handler already nulls it; this is a defensive guard in case an inner client sets one.
-            update.ConversationId = null;
-
-            yield return update;
         }
     }
 
@@ -336,7 +523,46 @@ public sealed class AGUIChatClient : DelegatingChatClient
         ArgumentNullThrowHelper.ThrowIfNull(transport);
 
         var handler = new AGUIChatClientHandler(transport, jsonSerializerOptions);
-        return new FunctionInvokingChatClient(handler);
+        return new FunctionInvokingChatClient(handler)
+        {
+            TerminateOnUnknownCalls = true,
+            FunctionInvoker = static async (context, cancellationToken) =>
+            {
+                var hasPendingInterruptCall = context.Messages
+                    .SelectMany(message => message.Contents)
+                    .OfType<FunctionCallContent>()
+                    .Any(call =>
+                        call.AdditionalProperties?.ContainsKey(AGUIClientInternalKeys.Interrupt) is true);
+                var hasInterruptResponses =
+                    context.Options?.AdditionalProperties?.ContainsKey(
+                        AGUIClientInternalKeys.InterruptResponses) is true;
+                var terminateAfterInvocation = hasPendingInterruptCall
+                    && !hasInterruptResponses
+                    && context.FunctionCallIndex == context.FunctionCount - 1;
+                if (terminateAfterInvocation)
+                {
+                    context.Terminate = true;
+                }
+
+                try
+                {
+                    return await context.Function.InvokeAsync(
+                        context.Arguments,
+                        cancellationToken).ConfigureAwait(false);
+                }
+                catch (Exception exception) when (
+                    terminateAfterInvocation
+                    && !cancellationToken.IsCancellationRequested)
+                {
+                    // FICC clears Terminate when it captures an invocation exception. Returning the
+                    // standard FRC shape preserves the failure while keeping this batch terminal.
+                    return new FunctionResultContent(context.CallContent.CallId, result: null)
+                    {
+                        Exception = exception,
+                    };
+                }
+            },
+        };
     }
 
     internal static JsonSerializerOptions CombineJsonSerializerOptions(JsonSerializerOptions? jsonSerializerOptions)
@@ -431,11 +657,16 @@ public sealed class AGUIChatClient : DelegatingChatClient
                     };
                 }
 
-                // Apply client vs server tool call distinction
-                var fcc = update.Contents.OfType<FunctionCallContent>().FirstOrDefault();
-                if (fcc != null)
+                // Apply client, server, and interrupted-call distinctions. Interrupted calls are
+                // temporarily informational so FICC can execute all local peers; the outer
+                // AGUIChatClient restores them before yielding to the developer.
+                foreach (var fcc in update.Contents.OfType<FunctionCallContent>())
                 {
-                    if (clientToolSet.Count > 0 && clientToolSet.Contains(fcc.Name))
+                    if (fcc.AdditionalProperties?.ContainsKey(AGUIClientInternalKeys.Interrupt) is true)
+                    {
+                        fcc.InformationalOnly = true;
+                    }
+                    else if (clientToolSet.Count > 0 && clientToolSet.Contains(fcc.Name))
                     {
                         // Client tool: store thread ID so we can recover it on next turn
                         fcc.AdditionalProperties ??= [];
@@ -444,13 +675,7 @@ public sealed class AGUIChatClient : DelegatingChatClient
                     else
                     {
                         // Server tool: mark as informational so it won't be executed client-side
-                        for (var i = 0; i < update.Contents.Count; i++)
-                        {
-                            if (update.Contents[i] is FunctionCallContent serverFcc)
-                            {
-                                serverFcc.InformationalOnly = true;
-                            }
-                        }
+                        fcc.InformationalOnly = true;
                     }
                 }
 
@@ -552,7 +777,8 @@ public sealed class AGUIChatClient : DelegatingChatClient
             }
 
             List<ToolApprovalResponseContent>? approvalResponses = null;
-            List<InterruptResponseContent>? interruptResponses = null;
+            List<(FunctionCallContent Call, AGUIInterrupt Interrupt, FunctionResultContent Result, string ThreadId)>?
+                interruptResponses = null;
             options?.AdditionalProperties?.TryGetValue(AGUIClientInternalKeys.ApprovalResponses, out approvalResponses);
             options?.AdditionalProperties?.TryGetValue(AGUIClientInternalKeys.InterruptResponses, out interruptResponses);
 
@@ -619,22 +845,62 @@ public sealed class AGUIChatClient : DelegatingChatClient
                     input.Resume = resumeList;
                 }
 
-                // Convert InterruptResponseContent list to resume entries, appending to any
-                // approval-derived entries produced above.
+                // Convert interrupted FunctionResultContent responses to Resume entries,
+                // appending to any approval-derived entries produced above.
                 if (interruptResponses is { Count: > 0 })
                 {
                     var resumeList = input.Resume is { Count: > 0 } existing
                         ? new List<AGUIResume>(existing)
                         : new List<AGUIResume>(interruptResponses.Count);
 
-                    foreach (var ir in interruptResponses)
+                    foreach (var interruptResponse in interruptResponses)
                     {
+                        if (!string.Equals(
+                            interruptResponse.ThreadId,
+                            threadId,
+                            StringComparison.Ordinal))
+                        {
+                            throw new InvalidOperationException(
+                                $"Interrupt response '{interruptResponse.Result.CallId}' belongs to a different thread.");
+                        }
+
+                        var status = interruptResponse.Result.Exception switch
+                        {
+                            null => ResumeStatus.Resolved,
+                            OperationCanceledException => ResumeStatus.Cancelled,
+                            Exception exception => throw new InvalidOperationException(
+                                "Interrupted function failed instead of being resolved or cancelled.",
+                                exception),
+                        };
+                        var payload = status == ResumeStatus.Cancelled
+                            ? null
+                            : interruptResponse.Result.Result switch
+                            {
+                                null => (JsonElement?)null,
+                                JsonElement element => element.Clone(),
+                                object result => JsonSerializer.SerializeToElement(
+                                    result,
+                                    jsonSerializerOptions.GetTypeInfo(result.GetType())),
+                            };
+                        JsonObject? metadata = interruptResponse.Interrupt.Metadata is
+                            { ValueKind: JsonValueKind.Object } existingMetadata
+                                ? JsonNode.Parse(existingMetadata.GetRawText())!.AsObject()
+                                : null;
+                        if (interruptResponse.Result.Exception is OperationCanceledException cancellation)
+                        {
+                            metadata ??= new JsonObject();
+                            metadata["reason"] = cancellation.Message;
+                        }
+
                         resumeList.Add(new AGUIResume
                         {
-                            InterruptId = ir.RequestId,
-                            Status = ResumeStatus.Resolved,
-                            Payload = ir.Payload,
-                            Metadata = ir.Metadata,
+                            InterruptId = interruptResponse.Interrupt.Id,
+                            Status = status,
+                            Payload = payload,
+                            Metadata = metadata is null
+                                ? null
+                                : JsonDocument.Parse(
+                                    metadata.ToJsonString()).RootElement.Clone(),
                         });
                     }
 

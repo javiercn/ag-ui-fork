@@ -3,26 +3,6 @@ abstract AGUI.Abstractions.AGUIMessage.Role.get -> string!
 abstract AGUI.Abstractions.BaseEvent.Type.get -> string!
 AGUI.Abstractions.AGUIChatMessageExtensions
 AGUI.Abstractions.AGUIToolExtensions
-AGUI.Abstractions.InterruptRequestContent
-AGUI.Abstractions.InterruptRequestContent.ExpiresAt.get -> string?
-AGUI.Abstractions.InterruptRequestContent.ExpiresAt.set -> void
-AGUI.Abstractions.InterruptRequestContent.InterruptRequestContent(string! requestId) -> void
-AGUI.Abstractions.InterruptRequestContent.Message.get -> string?
-AGUI.Abstractions.InterruptRequestContent.Message.set -> void
-AGUI.Abstractions.InterruptRequestContent.Metadata.get -> System.Text.Json.JsonElement?
-AGUI.Abstractions.InterruptRequestContent.Metadata.set -> void
-AGUI.Abstractions.InterruptRequestContent.Reason.get -> string?
-AGUI.Abstractions.InterruptRequestContent.Reason.set -> void
-AGUI.Abstractions.InterruptRequestContent.ResponseSchema.get -> System.Text.Json.JsonElement?
-AGUI.Abstractions.InterruptRequestContent.ResponseSchema.set -> void
-AGUI.Abstractions.InterruptRequestContent.ToolCallId.get -> string?
-AGUI.Abstractions.InterruptRequestContent.ToolCallId.set -> void
-AGUI.Abstractions.InterruptResponseContent
-AGUI.Abstractions.InterruptResponseContent.InterruptResponseContent(string! requestId) -> void
-AGUI.Abstractions.InterruptResponseContent.Metadata.get -> System.Text.Json.JsonElement?
-AGUI.Abstractions.InterruptResponseContent.Metadata.set -> void
-AGUI.Abstractions.InterruptResponseContent.Payload.get -> System.Text.Json.JsonElement?
-AGUI.Abstractions.InterruptResponseContent.Payload.set -> void
 static AGUI.Abstractions.AGUIChatMessageExtensions.AsChatMessages(this System.Collections.Generic.IEnumerable<AGUI.Abstractions.AGUIMessage!>! aguiMessages) -> System.Collections.Generic.IEnumerable<Microsoft.Extensions.AI.ChatMessage!>!
 static AGUI.Abstractions.AGUIChatMessageExtensions.AsAGUIMessages(this System.Collections.Generic.IEnumerable<Microsoft.Extensions.AI.ChatMessage!>! chatMessages) -> System.Collections.Generic.IEnumerable<AGUI.Abstractions.AGUIMessage!>!
 static AGUI.Abstractions.AGUIChatMessageExtensions.MapChatRole(string! role) -> Microsoft.Extensions.AI.ChatRole
@@ -793,7 +773,6 @@ static AGUI.Abstractions.AGUIUserContent.implicit operator AGUI.Abstractions.AGU
 static AGUI.Abstractions.AGUIUserContent.implicit operator AGUI.Abstractions.AGUIUserContent(AGUI.Abstractions.AGUIInputContent![]! parts) -> AGUI.Abstractions.AGUIUserContent
 AGUI.Abstractions.AGUIJsonUtilities
 static AGUI.Abstractions.AGUIJsonUtilities.DefaultTypeInfoResolver.get -> System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver!
-static AGUI.Abstractions.AGUIJsonUtilities.RegisterInterruptContentTypes(System.Text.Json.JsonSerializerOptions! options) -> void
 AGUI.Abstractions.RunFinishedOutcomeTypes
 const AGUI.Abstractions.RunFinishedOutcomeTypes.Interrupt = "interrupt" -> string!
 const AGUI.Abstractions.RunFinishedOutcomeTypes.Success = "success" -> string!

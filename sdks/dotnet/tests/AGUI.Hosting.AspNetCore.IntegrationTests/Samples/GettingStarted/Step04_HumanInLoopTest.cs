@@ -125,7 +125,6 @@ public sealed class Step04_HumanInLoopTest : IntegrationTestBase<Step04_HumanInL
         options.TypeInfoResolverChain.Add(AIJsonUtilities.DefaultOptions.TypeInfoResolver!);
         options.TypeInfoResolverChain.Add(AGUIJsonSerializerContext.Default);
         options.TypeInfoResolverChain.Add(Step04_HumanInLoop.Server.SampleJsonSerializerContext.Default);
-        AGUI.Abstractions.AGUIJsonUtilities.RegisterInterruptContentTypes(options);
         options.Converters.Add(new ChatResponseUpdateCaptureConverter());
         return options;
     }

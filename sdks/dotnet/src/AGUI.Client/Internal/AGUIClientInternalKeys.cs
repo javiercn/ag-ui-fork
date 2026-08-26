@@ -18,7 +18,9 @@ internal static class AGUIClientInternalKeys
     // recreates client-owned approval calls.
     internal const string ApprovalCallIndex = "agui_approval_call_index";
 
-    // Carries a list of InterruptResponseContent items from the outer chat client to
-    // BuildRunAgentInput so they can be encoded as AGUIResume entries.
+    internal const string Interrupt = "agui_interrupt";
+
+    internal const string InterruptThreadId = "agui_interrupt_thread_id";
+
     internal const string InterruptResponses = "agui_interrupt_responses";
 }

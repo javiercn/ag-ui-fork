@@ -130,7 +130,6 @@ public sealed class Step08_MultimodalMessagesTest : IntegrationTestBase<Step08_M
 
         options.TypeInfoResolverChain.Add(AIJsonUtilities.DefaultOptions.TypeInfoResolver!);
         options.TypeInfoResolverChain.Add(AGUIJsonSerializerContext.Default);
-        AGUI.Abstractions.AGUIJsonUtilities.RegisterInterruptContentTypes(options);
         options.Converters.Add(new ChatResponseUpdateCaptureConverter());
 
         return options;

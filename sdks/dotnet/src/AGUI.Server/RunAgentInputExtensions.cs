@@ -61,24 +61,39 @@ public static class RunAgentInputExtensions
 
         // Translate AG-UI Resume entries into MEAI content on the message list so the
         // inner pipeline (custom IChatClient, FICC, etc.) sees standard MEAI types.
-        // Tool-approval-shaped resume payloads (with a `toolCall` field) become a
-        // ToolApprovalRequestContent + ToolApprovalResponseContent pair so
-        // FunctionInvokingChatClient resumes the tool naturally; everything else becomes
-        // a generic InterruptResponseContent.
+        // Tool-approval-shaped resume payloads become approval contents so
+        // FunctionInvokingChatClient resumes the tool naturally. Function-backed interrupt
+        // resumes become ordinary FunctionResultContent after strict correlation validation.
         var resumedClientResults = new Dictionary<string, FunctionResultContent>(StringComparer.Ordinal);
         var resumedApprovalCallIds = new HashSet<string>(StringComparer.Ordinal);
         var resumeMessageStartIndex = messages.Count;
         var originalCallsById = messages.SelectMany(message => message.Contents)
             .OfType<FunctionCallContent>()
             .ToDictionary(call => call.CallId, StringComparer.Ordinal);
+        var latestAssistantCallIndex = FindLatestAssistantFunctionCallIndex(messages);
+        var latestCallsById = latestAssistantCallIndex >= 0
+            ? messages[latestAssistantCallIndex].Contents
+                .OfType<FunctionCallContent>()
+                .ToDictionary(call => call.CallId, StringComparer.Ordinal)
+            : new Dictionary<string, FunctionCallContent>(StringComparer.Ordinal);
+        var interruptResponseCount = 0;
         if (input.Resume is { Count: > 0 } resumeEntries)
         {
-            var genericResponses = new List<AIContent>(resumeEntries.Count);
+            var interruptResponses = new List<AIContent>(resumeEntries.Count);
             var approvalRequests = new List<AIContent>(resumeEntries.Count);
             var approvalResponses = new List<AIContent>(resumeEntries.Count);
+            var resumeInterruptIds = new HashSet<string>(StringComparer.Ordinal);
+            var interruptResponseCallIds = new HashSet<string>(StringComparer.Ordinal);
             foreach (var resume in resumeEntries)
             {
-                if (TryDecodeToolApprovalResume(resume, jsonSerializerOptions,
+                if (!resumeInterruptIds.Add(resume.InterruptId))
+                {
+                    throw new InvalidOperationException(
+                        $"Resume contains duplicate response for interruption '{resume.InterruptId}'.");
+                }
+
+                if (!latestCallsById.ContainsKey(resume.InterruptId)
+                    && TryDecodeToolApprovalResume(resume, jsonSerializerOptions,
                     out var approvalRequest, out var approvalResponse, out var result))
                 {
                     if (approvalRequest!.ToolCall is not FunctionCallContent resumedCall
@@ -111,12 +126,62 @@ public static class RunAgentInputExtensions
                     continue;
                 }
 
-                genericResponses.Add(new InterruptResponseContent(resume.InterruptId)
+                var correlatedCallId = resume.InterruptId;
+                if (!latestCallsById.ContainsKey(correlatedCallId))
                 {
-                    Payload = resume.Payload,
-                    Metadata = resume.Metadata,
-                });
+                    throw new InvalidOperationException(
+                        $"Resume interruption '{resume.InterruptId}' refers to an unknown or stale function call '{correlatedCallId}'.");
+                }
+
+                if (!interruptResponseCallIds.Add(correlatedCallId))
+                {
+                    throw new InvalidOperationException(
+                        $"Resume contains multiple responses for function call '{correlatedCallId}'.");
+                }
+                if (string.Equals(resume.Status, ResumeStatus.Resolved, StringComparison.Ordinal))
+                {
+                    interruptResponses.Add(new FunctionResultContent(correlatedCallId, resume.Payload));
+                }
+                else if (string.Equals(resume.Status, ResumeStatus.Cancelled, StringComparison.Ordinal))
+                {
+                    if (resume.Payload is not null)
+                    {
+                        throw new InvalidOperationException(
+                            $"Cancelled Resume interruption '{resume.InterruptId}' must not contain a payload.");
+                    }
+
+                    var reason = resume.Metadata is { ValueKind: JsonValueKind.Object } cancellationMetadata
+                        && cancellationMetadata.TryGetProperty("reason", out var reasonElement)
+                        && reasonElement.ValueKind == JsonValueKind.String
+                            ? reasonElement.GetString()
+                            : null;
+                    interruptResponses.Add(new FunctionResultContent(correlatedCallId, result: null)
+                    {
+                        Exception = new OperationCanceledException(reason),
+                    });
+                }
+                else
+                {
+                    throw new InvalidOperationException(
+                        $"Resume interruption '{resume.InterruptId}' has unsupported status '{resume.Status}'.");
+                }
             }
+
+            if (interruptResponseCallIds.Count > 0
+                && (latestAssistantCallIndex < 0
+                    || !IsResumeForLatestCallBatch(
+                        messages,
+                        latestAssistantCallIndex,
+                        resumeMessageStartIndex,
+                        interruptResponseCallIds
+                            .Concat(resumedApprovalCallIds)
+                            .ToHashSet(StringComparer.Ordinal),
+                        requireCompleteBatch: true)))
+            {
+                throw new InvalidOperationException(
+                    "Function-backed Resume entries do not match the latest unresolved function-call batch.");
+            }
+            interruptResponseCount = interruptResponses.Count;
 
             if (approvalRequests.Count > 0)
             {
@@ -124,9 +189,9 @@ public static class RunAgentInputExtensions
                 messages.Add(new ChatMessage(ChatRole.User, approvalResponses));
             }
 
-            if (genericResponses.Count > 0)
+            if (interruptResponses.Count > 0)
             {
-                messages.Add(new ChatMessage(ChatRole.User, genericResponses));
+                messages.Add(new ChatMessage(ChatRole.Tool, interruptResponses));
             }
         }
 
@@ -153,7 +218,7 @@ public static class RunAgentInputExtensions
             chatOptions,
             streamOptions ?? new AGUIStreamOptions(),
             jsonSerializerOptions,
-            isContinuation,
+            isContinuation || interruptResponseCount > 0,
             clientToolNames);
     }
 
@@ -347,7 +412,8 @@ public static class RunAgentInputExtensions
         List<ChatMessage> messages,
         int assistantCallIndex,
         int resumeMessageStartIndex,
-        ICollection<string> resumedCallIds)
+        ICollection<string> resumedCallIds,
+        bool requireCompleteBatch = false)
     {
         var batchCallIds = messages[assistantCallIndex].Contents
             .OfType<FunctionCallContent>()
@@ -365,8 +431,12 @@ public static class RunAgentInputExtensions
             .OfType<FunctionResultContent>()
             .Select(result => result.CallId)
             .ToHashSet(StringComparer.Ordinal);
-        if (persistedResultCallIds.Any(resumedCallIds.Contains)
-            || batchCallIds.All(persistedResultCallIds.Contains))
+        if (persistedResultCallIds.Any(resumedCallIds.Contains))
+        {
+            return false;
+        }
+        persistedResultCallIds.UnionWith(resumedCallIds);
+        if (requireCompleteBatch && !batchCallIds.SetEquals(persistedResultCallIds))
         {
             return false;
         }

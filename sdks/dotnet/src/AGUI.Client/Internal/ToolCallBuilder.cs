@@ -106,24 +106,40 @@ internal sealed class ToolCallBuilder
 
     public IReadOnlyList<ChatResponseUpdate> FlushWithInterrupts(
         RunFinishedInterruptOutcome interruptOutcome,
-        ISet<string>? clientToolNames)
+        ISet<string>? clientToolNames,
+        JsonSerializerOptions jsonSerializerOptions)
     {
-        if (_buffer.Count == 0)
-        {
-            return Array.Empty<ChatResponseUpdate>();
-        }
-
-        // Build a map of interrupted toolCallIds to their interrupt
+        // Every interrupt surfaced through IChatClient must identify the function call
+        // that carries it. Generic, non-function interrupts have no idiomatic MEAI shape.
         var interruptById = new Dictionary<string, AGUIInterrupt>(StringComparer.Ordinal);
         foreach (var interrupt in interruptOutcome.Interrupts)
         {
-            if (string.Equals(interrupt.Reason, InterruptReasons.ToolCall, StringComparison.OrdinalIgnoreCase)
-                && interrupt.ToolCallId is not null)
+            if (string.IsNullOrEmpty(interrupt.ToolCallId))
             {
-                interruptById[interrupt.ToolCallId] = interrupt;
+                throw new InvalidOperationException(
+                    $"Interrupt '{interrupt.Id}' is not correlated with a function call.");
             }
+
+            if (!string.Equals(
+                    interrupt.Reason,
+                    InterruptReasons.ToolCall,
+                    StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(interrupt.Id, interrupt.ToolCallId, StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException(
+                    $"Function-backed interrupt '{interrupt.Id}' must use its function call ID.");
+            }
+
+            if (interruptById.ContainsKey(interrupt.ToolCallId))
+            {
+                throw new InvalidOperationException(
+                    $"Multiple interrupts target function call '{interrupt.ToolCallId}'.");
+            }
+            interruptById.Add(interrupt.ToolCallId, interrupt);
         }
-        var hasToolApprovalInterrupt = interruptById.Count > 0;
+        var hasToolApprovalInterrupt = interruptById.Values.Any(interrupt =>
+            string.Equals(interrupt.Reason, InterruptReasons.ToolCall, StringComparison.OrdinalIgnoreCase));
+        var matchedInterruptIds = new HashSet<string>(StringComparer.Ordinal);
 
         var updates = new List<ChatResponseUpdate>(_buffer.Count);
         foreach (var update in _buffer)
@@ -132,12 +148,31 @@ internal sealed class ToolCallBuilder
                 && update.Contents[0] is FunctionCallContent fcc
                 && interruptById.TryGetValue(fcc.CallId, out var interrupt))
             {
+                matchedInterruptIds.Add(interrupt.Id);
+
+                if (!string.Equals(
+                    interrupt.Reason,
+                    InterruptReasons.ToolCall,
+                    StringComparison.OrdinalIgnoreCase))
+                {
+                    fcc.AdditionalProperties ??= [];
+                    fcc.AdditionalProperties[AGUIClientInternalKeys.Interrupt] =
+                        JsonSerializer.SerializeToElement(
+                            interrupt,
+                            jsonSerializerOptions.GetTypeInfo(typeof(AGUIInterrupt)));
+                    fcc.AdditionalProperties[AGUIClientInternalKeys.InterruptThreadId] =
+                        _conversationId ?? string.Empty;
+                    fcc.RawRepresentation = interrupt;
+                    fcc.InformationalOnly = false;
+                    updates.Add(update);
+                    continue;
+                }
+
                 if (clientToolNames?.Contains(fcc.Name) is not true)
                 {
                     fcc.InformationalOnly = true;
                 }
 
-                // This tool call is interrupted — replace with ToolApprovalRequestContent
                 var approvalRequest = new ToolApprovalRequestContent(
                     interrupt.Id, fcc)
                 {
@@ -182,6 +217,14 @@ internal sealed class ToolCallBuilder
             {
                 updates.Add(update);
             }
+        }
+
+        var unmatchedInterrupt = interruptOutcome.Interrupts.FirstOrDefault(
+            interrupt => !matchedInterruptIds.Contains(interrupt.Id));
+        if (unmatchedInterrupt is not null)
+        {
+            throw new InvalidOperationException(
+                $"Interrupt '{unmatchedInterrupt.Id}' does not match a buffered function call.");
         }
 
         _buffer.Clear();

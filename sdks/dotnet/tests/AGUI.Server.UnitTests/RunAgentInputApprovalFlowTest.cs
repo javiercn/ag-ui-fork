@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using AGUI.Abstractions;
 using Microsoft.Extensions.AI;
 using Xunit;
@@ -317,6 +318,177 @@ public sealed class RunAgentInputApprovalFlowTest
     }
 
     [Fact]
+    public void FunctionInterruptResume_ReconstructsFunctionResultContent()
+    {
+        var call = CreateCall("interrupt-call-1", "collect_input");
+        var input = CreateInput([call]);
+        input.Resume =
+        [
+            CreateFunctionResume(
+                call,
+                JsonDocument.Parse("\"answer\"").RootElement.Clone()),
+        ];
+
+        var context = input.ToChatRequestContext(s_jsonOptions);
+
+        Assert.True(context.IsContinuation);
+        var result = Assert.Single(context.Messages.SelectMany(message => message.Contents)
+            .OfType<FunctionResultContent>());
+        Assert.Equal(call.CallId, result.CallId);
+        Assert.Equal("answer", Assert.IsType<JsonElement>(result.Result).GetString());
+    }
+
+    [Fact]
+    public void FunctionInterruptResume_CombinesWithToolApprovalResume()
+    {
+        var interruptedCall = CreateCall("interrupt-call-1", "collect_input");
+        var approvedCall = CreateCall("server-call-1", "server_tool");
+        var input = CreateInput([interruptedCall, approvedCall]);
+        input.Resume =
+        [
+            CreateFunctionResume(
+                interruptedCall,
+                JsonDocument.Parse("\"answer\"").RootElement.Clone()),
+            CreateApprovalResume(approvedCall, approved: true, result: null),
+        ];
+
+        var context = input.ToChatRequestContext(s_jsonOptions);
+
+        Assert.True(context.IsContinuation);
+        var result = Assert.Single(context.Messages.SelectMany(message => message.Contents)
+            .OfType<FunctionResultContent>());
+        Assert.Equal(interruptedCall.CallId, result.CallId);
+        Assert.Contains(
+            context.Messages.SelectMany(message => message.Contents),
+            content => content is ToolApprovalResponseContent response
+                && response.ToolCall.CallId == approvedCall.CallId);
+    }
+
+    [Fact]
+    public void FunctionInterruptResume_ToolCallShapedPayloadRemainsAFunctionResult()
+    {
+        var call = CreateCall("interrupt-call-1", "collect_input", "original");
+        var payload = JsonDocument.Parse("""
+            {
+              "toolCall": {
+                "callId": "not-an-approval"
+              }
+            }
+            """).RootElement.Clone();
+        var input = CreateInput([call]);
+        input.Resume =
+        [
+            CreateFunctionResume(call, payload),
+        ];
+
+        var context = input.ToChatRequestContext(s_jsonOptions);
+
+        var result = Assert.Single(context.Messages.SelectMany(message => message.Contents)
+            .OfType<FunctionResultContent>());
+        Assert.True(JsonElement.DeepEquals(payload, Assert.IsType<JsonElement>(result.Result)));
+        Assert.DoesNotContain(
+            context.Messages.SelectMany(message => message.Contents),
+            content => content is ToolApprovalRequestContent or ToolApprovalResponseContent);
+    }
+
+    [Fact]
+    public void FunctionInterruptResume_MissingPendingResponseIsRejected()
+    {
+        var first = CreateCall("interrupt-call-1", "collect_input", "first");
+        var second = CreateCall("interrupt-call-2", "collect_input", "second");
+        var input = CreateInput([first, second]);
+        input.Resume =
+        [
+            CreateFunctionResume(
+                first,
+                JsonDocument.Parse("\"answer\"").RootElement.Clone()),
+        ];
+
+        var exception = Assert.Throws<InvalidOperationException>(
+            () => input.ToChatRequestContext(s_jsonOptions));
+
+        Assert.Contains("do not match the latest unresolved function-call batch", exception.Message);
+    }
+
+    [Fact]
+    public void FunctionInterruptResume_DuplicateResponseIsRejected()
+    {
+        var call = CreateCall("interrupt-call-1", "collect_input", "original");
+        var response = CreateFunctionResume(
+            call,
+            JsonDocument.Parse("\"answer\"").RootElement.Clone());
+        var input = CreateInput([call]);
+        input.Resume = [response, response];
+
+        var exception = Assert.Throws<InvalidOperationException>(
+            () => input.ToChatRequestContext(s_jsonOptions));
+
+        Assert.Contains("duplicate response", exception.Message);
+    }
+
+    [Fact]
+    public void FunctionInterruptResume_UnknownOrStaleCallIsRejected()
+    {
+        var call = CreateCall("interrupt-call-1", "collect_input", "original");
+        var input = CreateInput([call]);
+        input.Messages.Add(new AGUIAssistantMessage { Content = "finished" });
+        input.Messages.Add(new AGUIUserMessage { Content = "new turn" });
+        input.Resume =
+        [
+            CreateFunctionResume(
+                call,
+                JsonDocument.Parse("\"answer\"").RootElement.Clone()),
+        ];
+
+        var exception = Assert.Throws<InvalidOperationException>(
+            () => input.ToChatRequestContext(s_jsonOptions));
+
+        Assert.Contains("latest unresolved function-call batch", exception.Message);
+    }
+
+    [Fact]
+    public void FunctionInterruptResume_CancelledStatusReconstructsCancellation()
+    {
+        var call = CreateCall("interrupt-call-1", "collect_input", "original");
+        var input = CreateInput([call]);
+        input.Resume =
+        [
+            CreateFunctionResume(
+                call,
+                payload: null,
+                status: ResumeStatus.Cancelled,
+                reason: "cancelled by user"),
+        ];
+
+        var context = input.ToChatRequestContext(s_jsonOptions);
+
+        var result = Assert.Single(context.Messages.SelectMany(message => message.Contents)
+            .OfType<FunctionResultContent>());
+        var cancellation = Assert.IsType<OperationCanceledException>(result.Exception);
+        Assert.Equal("cancelled by user", cancellation.Message);
+        Assert.Null(result.Result);
+    }
+
+    [Fact]
+    public void FunctionInterruptResume_UnsupportedStatusIsRejected()
+    {
+        var call = CreateCall("interrupt-call-1", "collect_input");
+        var input = CreateInput([call]);
+        input.Resume =
+        [
+            CreateFunctionResume(
+                call,
+                payload: null,
+                status: "pending"),
+        ];
+
+        var exception = Assert.Throws<InvalidOperationException>(
+            () => input.ToChatRequestContext(s_jsonOptions));
+
+        Assert.Contains("unsupported status 'pending'", exception.Message);
+    }
+
+    [Fact]
     public void Resume_CompletedMixedBatchIsRejected()
     {
         var clientCall = CreateCall("client-1", "client_tool");
@@ -457,6 +629,25 @@ public sealed class RunAgentInputApprovalFlowTest
                 s_jsonOptions.GetTypeInfo(typeof(AGUIToolApprovalResumePayload))),
         };
 
+    private static AGUIResume CreateFunctionResume(
+        FunctionCallContent call,
+        JsonElement? payload,
+        string status = ResumeStatus.Resolved,
+        string? reason = null)
+    {
+        var metadata = reason is null ? null : new JsonObject { ["reason"] = reason };
+
+        return new AGUIResume
+        {
+            InterruptId = call.CallId,
+            Status = status,
+            Payload = payload,
+            Metadata = metadata is null
+                ? null
+                : JsonDocument.Parse(metadata.ToJsonString()).RootElement.Clone(),
+        };
+    }
+
     private static void AssertApprovalBatch(
         List<ChatMessage> messages,
         IEnumerable<string> expectedCallIds,
@@ -508,7 +699,6 @@ public sealed class RunAgentInputApprovalFlowTest
     {
         var options = new JsonSerializerOptions(AGUIJsonSerializerContext.Default.Options);
         options.TypeInfoResolverChain.Insert(0, AIJsonUtilities.DefaultOptions.TypeInfoResolver!);
-        AGUI.Abstractions.AGUIJsonUtilities.RegisterInterruptContentTypes(options);
         return options;
     }
 

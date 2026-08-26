@@ -12,33 +12,35 @@
     "role": "assistant",
     "contents": [
       {
-        "$type": "interruptRequest",
-        "reason": "input_required",
-        "message": "What username would you like to use?",
-        "responseSchema": {
-          "type": "object",
-          "properties": {
-            "response": {
+        "$type": "functionCall",
+        "name": "request_user_input",
+        "arguments": {
+          "prompt": "What username would you like for your account?"
+        },
+        "informationalOnly": false,
+        "callId": "call_Id_1",
+        "additionalProperties": {
+          "agui_interrupt": {
+            "id": "call_Id_1",
+            "reason": "input_required",
+            "message": "What username would you like for your account?",
+            "toolCallId": "call_Id_1",
+            "responseSchema": {
               "type": "string"
             }
           },
-          "required": [
-            "response"
-          ]
-        },
-        "requestId": "call_Id_1"
+          "agui_interrupt_thread_id": "thread_Id_1"
+        }
       }
     ]
   },
   {
-    "role": "user",
+    "role": "tool",
     "contents": [
       {
-        "$type": "interruptResponse",
-        "payload": {
-          "response": "johndoe42"
-        },
-        "requestId": "call_Id_1"
+        "$type": "functionResult",
+        "result": "johndoe42",
+        "callId": "call_Id_1"
       }
     ]
   }

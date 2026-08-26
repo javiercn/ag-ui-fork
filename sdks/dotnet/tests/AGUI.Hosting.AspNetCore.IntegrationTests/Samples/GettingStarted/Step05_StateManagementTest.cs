@@ -124,7 +124,7 @@ public sealed class Step05_StateManagementTest : IntegrationTestBase<Step05_Stat
 
         options.TypeInfoResolverChain.Add(AIJsonUtilities.DefaultOptions.TypeInfoResolver!);
         options.TypeInfoResolverChain.Add(AGUIJsonSerializerContext.Default);
-        options.TypeInfoResolverChain.Add(SampleJsonSerializerContext.Default);        AGUI.Abstractions.AGUIJsonUtilities.RegisterInterruptContentTypes(options);
+        options.TypeInfoResolverChain.Add(SampleJsonSerializerContext.Default);
         options.Converters.Add(new ChatResponseUpdateCaptureConverter());
         return options;
     }

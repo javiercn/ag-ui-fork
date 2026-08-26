@@ -168,14 +168,8 @@ public sealed class NullOmissionTest
         // the first time. This is not hypothetical either — within days of the
         // sweep landing, new feature work reintroduced fourteen of them.
         //
-        // Allowlist: the interrupt content types are registered onto caller-owned
-        // JsonSerializerOptions and cannot inherit the context's setting, so their
-        // attributes are load-bearing. See the comments on those classes.
-        var allowlist = new HashSet<Type> { typeof(InterruptRequestContent), typeof(InterruptResponseContent) };
-
         var offenders = typeof(BaseEvent).Assembly
             .GetTypes()
-            .Where(type => !allowlist.Contains(type))
             .SelectMany(type => type.GetProperties(
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly))
             .Where(property => property

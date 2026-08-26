@@ -46,9 +46,9 @@ Fix: make the client accept a format the server offers. For SSE, allow `text/eve
 
 ## An interrupt or approval won't resume
 
-Resuming a paused run needs **both** the request and the matching response in the resumed message list, sharing the same id — the SDK pairs them to reconnect to the paused call.
+Resuming a paused run needs the original request and matching response in the full message history so the SDK can reconnect them.
 
-Fix: append both — the `ToolApprovalRequestContent` (or `InterruptRequestContent`) on an assistant message and its `CreateResponse(...)` / `InterruptResponseContent(requestId)` on a user message — then stream again. Sending the response alone leaves nothing to resume.
+Fix: for approval, append the `ToolApprovalRequestContent` and its `CreateResponse(...)`. For generic workflow input, preserve the actionable `FunctionCallContent` and append one matching `FunctionResultContent` for every pending interruption. Then stream again.
 
 ## Inspecting what's on the wire
 

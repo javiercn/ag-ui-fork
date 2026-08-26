@@ -16,7 +16,7 @@ public sealed class AGUIStreamOptions
 {
     private readonly Dictionary<string, Func<FunctionResultContent, IEnumerable<BaseEvent>>> _resultMappings = new(StringComparer.Ordinal);
     private readonly Dictionary<string, Func<FunctionCallContent, IEnumerable<BaseEvent>>> _callMappings = new(StringComparer.Ordinal);
-    private List<Func<AIContent, AGUIInterrupt?>>? _interruptMappers;
+    private List<Func<ChatResponseUpdate, IEnumerable<AGUIInterrupt>?>>? _interruptMappers;
     private List<Func<AIContent, IEnumerable<BaseEvent>?>>? _contentMappers;
     private Func<ChatResponseUpdate, IEnumerable<AGUIToolCallArgumentFragment>?>? _toolCallArgumentExtractor;
 
@@ -41,20 +41,18 @@ public sealed class AGUIStreamOptions
     }
 
     /// <summary>
-    /// Registers a fallback that maps an <see cref="AIContent"/> to an <see cref="AGUIInterrupt"/>.
-    /// When the registered mapper returns a non-null value, the hosting layer emits a
-    /// <see cref="RunFinishedEvent"/> with a <see cref="RunFinishedInterruptOutcome"/> carrying the interrupt
-    /// and the run terminates. This is invoked for content types not handled by the built-in mappings
-    /// (text, tool calls, tool results, and tool approval requests).
+    /// Registers a mapper that classifies a complete <see cref="ChatResponseUpdate"/> as one or
+    /// more AG-UI interrupts.
     /// </summary>
     /// <remarks>
-    /// Multiple mappers may be registered. They are tried in registration order and the first non-null
-    /// result wins. Return <see langword="null"/> from a mapper to skip and try the next one (or to fall
-    /// through to <see cref="MapContent"/>).
+    /// The mapper runs after the update's normal content conversion, so function calls still emit
+    /// their tool-call events. Interrupts returned across the stream are accumulated into one
+    /// terminal <see cref="RunFinishedEvent"/>.
     /// </remarks>
-    /// <param name="mapper">A callback that receives an <see cref="AIContent"/> and returns an <see cref="AGUIInterrupt"/> or <see langword="null"/>.</param>
+    /// <param name="mapper">A callback that returns interrupts for an update, or <see langword="null"/> to skip it.</param>
     /// <returns>This instance for fluent chaining.</returns>
-    public AGUIStreamOptions MapInterrupt(Func<AIContent, AGUIInterrupt?> mapper)
+    public AGUIStreamOptions MapInterrupt(
+        Func<ChatResponseUpdate, IEnumerable<AGUIInterrupt>?> mapper)
     {
         ArgumentNullException.ThrowIfNull(mapper);
         _interruptMappers ??= [];
@@ -64,9 +62,8 @@ public sealed class AGUIStreamOptions
 
     /// <summary>
     /// Registers a fallback that maps an <see cref="AIContent"/> to a sequence of AG-UI <see cref="BaseEvent"/>
-    /// instances. Invoked for content types that are not handled by the built-in mappings and that none of the
-    /// registered <see cref="MapInterrupt"/> mappers claimed. Frameworks use this to surface their own content
-    /// types (e.g., workflow step events) as AG-UI events.
+    /// instances. Invoked for content types that are not handled by the built-in mappings.
+    /// Frameworks use this to surface their own content types (e.g., step events) as AG-UI events.
     /// </summary>
     /// <remarks>
     /// Multiple mappers may be registered. They are tried in registration order; the first non-null result
@@ -168,7 +165,7 @@ public sealed class AGUIStreamOptions
         return _toolCallArgumentExtractor is not null;
     }
 
-    internal AGUIInterrupt? InvokeInterruptMappers(AIContent content)
+    internal IEnumerable<AGUIInterrupt>? InvokeInterruptMappers(ChatResponseUpdate update)
     {
         if (_interruptMappers is null)
         {
@@ -177,9 +174,10 @@ public sealed class AGUIStreamOptions
 
         foreach (var mapper in _interruptMappers)
         {
-            if (mapper(content) is { } interrupt)
+            var interrupts = mapper(update);
+            if (interrupts is not null)
             {
-                return interrupt;
+                return interrupts;
             }
         }
 

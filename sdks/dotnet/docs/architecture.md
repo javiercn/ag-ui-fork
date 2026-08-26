@@ -20,7 +20,7 @@ The core design philosophy is: **you should not have to learn a new programming 
         AGUI.Client (consumer)
 ```
 
-**`AGUI.Abstractions`** defines the protocol: events, messages, tools, capabilities, and their JSON serialization (`AGUIJsonSerializerContext`). It has no opinion about HTTP, ASP.NET Core, or any hosting framework. Every other package depends on it. It also hosts `AGUIJsonUtilities.RegisterInterruptContentTypes`, the STJ-only registration for interrupt content types.
+**`AGUI.Abstractions`** defines the protocol: events, messages, tools, capabilities, and their JSON serialization (`AGUIJsonSerializerContext`). It has no opinion about HTTP, ASP.NET Core, or any hosting framework. Every other package depends on it.
 
 **`AGUI.Formatting`** defines the wire-format abstraction: `IAGUIEventStreamFormatter` (a bidirectional read/write formatter) and `SseEventStreamFormatter`, the Server-Sent Events wire format. It depends only on Abstractions and `System.Net.ServerSentEvents`.
 
@@ -106,10 +106,10 @@ The Dojo server's `CreateAgenticUIStreamOptions` shows both in action: `create_p
 
 ### Custom content and interrupts
 
-Two fluent methods on `AGUIStreamOptions` install fallback chains for content types the converter doesn't handle natively:
+The fluent methods on `AGUIStreamOptions` install extension chains around normal conversion:
 
-- **`MapInterrupt(Func<AIContent, AGUIInterrupt?>)`** registers a callback that receives an `AIContent` and can return an `AGUIInterrupt`. If it does, the SDK emits a `RunFinishedEvent` with outcome `"interrupt"` and stops the run. The client is expected to show the interrupt to the user, collect a response, and resume via `RunAgentInput.Resume`. Multiple registrations chain in order; the first non-null result wins.
-- **`MapContent(Func<AIContent, IEnumerable<BaseEvent>?>)`** registers a callback that receives an `AIContent` and can return a sequence of `BaseEvent` instances. This is the extension point for agent frameworks that produce their own content types—for example, mapping `TextReasoningContent` to reasoning events, or mapping workflow step markers to `StepStartedEvent` / `StepFinishedEvent`. Multiple registrations chain the same way.
+- **`MapInterrupt(Func<ChatResponseUpdate, IEnumerable<AGUIInterrupt>?>)`** classifies a complete update, including `RawRepresentation`, after normal content conversion. A function call therefore still emits `ToolCallStartEvent` / `ToolCallArgsEvent` / `ToolCallEndEvent`; mapped interrupts from every update are accumulated into one terminal `RunFinishedEvent`. Every function-backed interrupt must identify its `FunctionCallContent` with `Id == ToolCallId == CallId`.
+- **`MapContent(Func<AIContent, IEnumerable<BaseEvent>?>)`** registers a callback that receives an `AIContent` and can return a sequence of `BaseEvent` instances. This is the extension point for agent frameworks that produce their own content types—for example, mapping `TextReasoningContent` to reasoning events, or mapping step markers to `StepStartedEvent` / `StepFinishedEvent`. Multiple registrations chain the same way.
 
 ---
 
@@ -135,7 +135,7 @@ Every AG-UI interaction follows the same shape: the client POSTs a `RunAgentInpu
 
 **Extensibility.** `CustomEvent` carries a freeform name and value. `RawEvent` wraps a `JsonElement` verbatim—the SDK uses this internally to let agent frameworks inject pre-built protocol events into the `ChatResponseUpdate` stream.
 
-**Interrupts.** `AGUIInterrupt` is a payload attached to a `RunFinishedEvent` with outcome `"interrupt"`. It carries an ID, a reason string, and an arbitrary `JsonElement` payload. The most common interrupt is tool approval: the server fills in an `AGUIToolApprovalPayload` (wrapping an `AGUIToolCallInfo`) so the UI can show the user what the agent wants to do. The client responds with an `AGUIResume` that includes the interrupt ID and a response payload.
+**Interrupts.** `AGUIInterrupt` is a payload attached to a `RunFinishedEvent` with outcome `"interrupt"`. It carries an ID, reason, optional response schema and metadata, and—for a function-backed interrupt—a `ToolCallId` that correlates it with the normal function call events in the same stream. Tool approval remains the specialized case. The client responds with an `AGUIResume` that includes the interrupt ID and a response payload.
 
 ---
 
@@ -173,7 +173,9 @@ The AG-UI specification does not prescribe how capabilities are exposed over the
 2. POST it to the server and read the SSE response as an `IAsyncEnumerable<BaseEvent>`.
 3. Convert the event stream back to `ChatResponseUpdate` objects using `EventStreamConverter`, which reassembles text messages via `TextMessageBuilder` and tool calls via `ToolCallBuilder`.
 
-When the server sends a `RunFinishedEvent` with outcome `"interrupt"` and a tool approval payload, `AGUIChatClient` surfaces it as a `ToolApprovalRequestContent`. For other interrupts, it surfaces an `InterruptRequestContent`. The calling code handles the interrupt and supplies the response, which gets sent as `RunAgentInput.Resume` on the next request.
+When the server sends a `RunFinishedEvent` with outcome `"interrupt"` and a tool approval payload, `AGUIChatClient` surfaces it as a `ToolApprovalRequestContent`. A function-backed interrupt is attached to its actionable `FunctionCallContent` through `RawRepresentation`, with serializable correlation state in `AdditionalProperties`. The caller appends a matching `FunctionResultContent`; `AGUIChatClient` requires one result for every pending function-backed interruption, omits those results from AG-UI message history, and sends them as `RunAgentInput.Resume`. A result whose `Exception` is an `OperationCanceledException` produces a cancelled Resume with no payload and the exception message in metadata; any other result exception is rejected as an interrupted-function failure.
+
+For a response containing local client calls plus interrupted calls, the client temporarily marks interrupted calls informational inside `FunctionInvokingChatClient`, executes every locally invocable call exactly once, terminates before an automatic follow-up request, then restores interrupted calls to actionable form for the caller. On Resume, the server correlates each interruption to an original function call in the latest unresolved batch before reconstructing ordinary `FunctionResultContent`.
 
 When the server sends a `RunErrorEvent`, `AGUIChatClient` surfaces it as an `ErrorContent` update. The event's `message` maps to `ErrorContent.Message`, and its optional `code` maps to `ErrorContent.ErrorCode`, so callers can handle protocol error codes without parsing the raw event.
 
@@ -185,7 +187,7 @@ When the server sends a `RunErrorEvent`, `AGUIChatClient` surfaces it as an `Err
 
 ## Service registration
 
-`AddAGUI(IServiceCollection)` registers the AG-UI serialization options into the DI container. It adds `AGUIJsonSerializerContext` to the `JsonSerializerOptions` type info resolver chain so all protocol types serialize correctly. It also calls `AGUIJsonUtilities.RegisterInterruptContentTypes` (which lives in `AGUI.Abstractions`) to register `InterruptRequestContent` and `InterruptResponseContent` for polymorphic `AIContent` deserialization—these are the content types that flow through the `IChatClient` pipeline when interrupts occur.
+`AddAGUI(IServiceCollection)` registers the AG-UI serialization options into the DI container. It adds `AGUIJsonSerializerContext` to the `JsonSerializerOptions` type info resolver chain so all protocol types serialize correctly.
 
 `AddAGUI` is the ASP.NET wiring (it configures `JsonOptions`), so it ships in the `samples/AGUI.Samples.Shared` project rather than in any `src/` package. The protobuf transport is opted in by registering `ProtobufEventStreamFormatter` as an `IAGUIEventStreamFormatter` (for example, `services.AddSingleton<IAGUIEventStreamFormatter, ProtobufEventStreamFormatter>()`); the negotiating endpoint uses it when a client accepts the protobuf media type.
 

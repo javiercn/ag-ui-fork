@@ -123,7 +123,6 @@ public sealed class Step03_FrontendToolsTest : IntegrationTestBase<Step03_Fronte
 
         options.TypeInfoResolverChain.Add(AIJsonUtilities.DefaultOptions.TypeInfoResolver!);
         options.TypeInfoResolverChain.Add(AGUIJsonSerializerContext.Default);
-        AGUI.Abstractions.AGUIJsonUtilities.RegisterInterruptContentTypes(options);
         options.Converters.Add(new ChatResponseUpdateCaptureConverter());
 
         return options;

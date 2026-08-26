@@ -3,12 +3,12 @@
     "role": "assistant",
     "contents": [],
     "additionalProperties": {
-      "agui_thread_id": "thread_Id_2"
+      "agui_thread_id": "thread_Id_1"
     },
     "responseId": "run_Id_2",
     "rawRepresentation": {
       "type": "RUN_STARTED",
-      "threadId": "thread_Id_2",
+      "threadId": "thread_Id_1",
       "runId": "run_Id_2"
     }
   },
@@ -17,32 +17,32 @@
     "contents": [
       {
         "$type": "text",
-        "text": "Your account has been created with the username johndoe42."
+        "text": "Thank you! Your account has been created with the username \u0027johndoe42\u0027."
       }
     ],
     "responseId": "run_Id_2",
-    "messageId": "chatcmpl-Id_2",
+    "messageId": "msg_Id_2",
     "rawRepresentation": {
       "type": "TEXT_MESSAGE_CONTENT",
-      "messageId": "chatcmpl-Id_2",
-      "delta": "Your account has been created with the username johndoe42.",
+      "messageId": "msg_Id_2",
+      "delta": "Thank you! Your account has been created with the username \u0027johndoe42\u0027.",
       "rawEvent": {
         "authorName": null,
         "role": "assistant",
         "contents": [
           {
             "$type": "text",
-            "text": "Your account has been created with the username johndoe42.",
+            "text": "Thank you! Your account has been created with the username \u0027johndoe42\u0027.",
             "annotations": null,
             "additionalProperties": null
           }
         ],
         "additionalProperties": null,
-        "responseId": "chatcmpl-Id_2",
-        "messageId": "chatcmpl-Id_2",
+        "responseId": null,
+        "messageId": null,
         "conversationId": null,
-        "finishReason": "stop",
-        "modelId": "gpt-5-mini-2025-08-07",
+        "finishReason": null,
+        "modelId": "fake-model",
         "continuationToken": null
       }
     }
@@ -54,52 +54,11 @@
     "finishReason": "stop",
     "rawRepresentation": {
       "type": "RUN_FINISHED",
-      "threadId": "thread_Id_2",
+      "threadId": "thread_Id_1",
       "runId": "run_Id_2",
       "outcome": {
         "type": "success"
-      },
-      "usage": [
-        {
-          "inputTokens": 247,
-          "outputTokens": 215,
-          "totalTokens": 462,
-          "reasoningTokens": 192,
-          "cachedInputTokens": 0
-        }
-      ]
-    }
-  },
-  {
-    "role": "assistant",
-    "contents": [
-      {
-        "$type": "usage",
-        "details": {
-          "inputTokenCount": 247,
-          "outputTokenCount": 215,
-          "cachedInputTokenCount": 0,
-          "reasoningTokenCount": 192
-        }
       }
-    ],
-    "responseId": "run_Id_2",
-    "rawRepresentation": {
-      "type": "RUN_FINISHED",
-      "threadId": "thread_Id_2",
-      "runId": "run_Id_2",
-      "outcome": {
-        "type": "success"
-      },
-      "usage": [
-        {
-          "inputTokens": 247,
-          "outputTokens": 215,
-          "totalTokens": 462,
-          "reasoningTokens": 192,
-          "cachedInputTokens": 0
-        }
-      ]
     }
   }
 ]

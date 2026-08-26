@@ -161,8 +161,7 @@ public static class ChatResponseUpdateAGUIExtensions
         Dictionary<string, string>? callIdToToolName = null;
 
         // Accumulate interrupts so we can emit a single RunFinished with all of them.
-        // Includes both tool-approval interrupts (from ToolApprovalRequestContent) and
-        // generic input interrupts (from InterruptRequestContent).
+        // Includes both tool approvals and update-aware framework mappings.
         List<AGUIInterrupt>? pendingInterrupts = null;
 
         // Accumulate provider-reported token usage so the terminal RunFinished can
@@ -509,32 +508,6 @@ public static class ChatResponseUpdateAGUIExtensions
                         });
                         break;
 
-                    case InterruptRequestContent ireq:
-                        // Close any open text/reasoning streams before accumulating the interrupt.
-                        if (messageTracker.Close(raw) is { } ireqTextEndEvt)
-                        {
-                            yield return ireqTextEndEvt;
-                        }
-
-                        foreach (var reasonIreqCloseEvt in reasoningTracker.Close())
-                        {
-                            yield return reasonIreqCloseEvt;
-                        }
-
-                        // Accumulate the interrupt — we'll emit a single RunFinished with all interrupts at the end.
-                        pendingInterrupts ??= new List<AGUIInterrupt>();
-                        pendingInterrupts.Add(new AGUIInterrupt
-                        {
-                            Id = ireq.RequestId,
-                            Reason = ireq.Reason ?? InterruptReasons.InputRequired,
-                            Message = ireq.Message,
-                            ToolCallId = ireq.ToolCallId,
-                            ResponseSchema = ireq.ResponseSchema,
-                            ExpiresAt = ireq.ExpiresAt,
-                            Metadata = ireq.Metadata,
-                        });
-                        break;
-
                     case UsageContent usageContent:
                         // Usage is metadata, not stream content — accumulate it for the
                         // terminal RunFinished rather than emitting an event of its own.
@@ -542,44 +515,55 @@ public static class ChatResponseUpdateAGUIExtensions
                         break;
 
                     default:
-                        // Check registered interrupt mappers for custom interrupt-producing content types
-                        var interrupt = options.InvokeInterruptMappers(content);
-                        if (interrupt is not null)
+                        var events = options.InvokeContentMappers(content);
+                        if (events is not null)
                         {
-                            // Close any open text/reasoning message before accumulating the interrupt.
-                            if (messageTracker.Close(raw) is { } intEndEvt)
+                            foreach (var evt in events)
                             {
-                                yield return intEndEvt;
-                            }
-
-                            foreach (var reasonIntCloseEvt in reasoningTracker.Close())
-                            {
-                                yield return reasonIntCloseEvt;
-                            }
-
-                            // Accumulate alongside any built-in (tool-approval / InterruptRequestContent)
-                            // interrupts so the stream still ends with a single RunFinished carrying every
-                            // interrupt, rather than emitting a second RunFinished here.
-                            pendingInterrupts ??= new List<AGUIInterrupt>();
-                            pendingInterrupts.Add(interrupt);
-                        }
-                        else
-                        {
-                            var events = options.InvokeContentMappers(content);
-                            if (events is not null)
-                            {
-                                foreach (var evt in events)
+                                if (evt is RunFinishedEvent)
                                 {
-                                    if (evt is RunFinishedEvent)
-                                    {
-                                        runFinishedEmitted = true;
-                                    }
-
-                                    yield return evt;
+                                    runFinishedEmitted = true;
                                 }
+
+                                yield return evt;
                             }
                         }
                         break;
+                }
+            }
+
+            // Framework interrupt classification runs after every content item has gone through
+            // normal conversion. In particular, FunctionCallContent still emits START/ARGS/END
+            // before the terminal interrupt outcome is produced.
+            if (options.InvokeInterruptMappers(chatResponse) is { } mappedInterrupts)
+            {
+                foreach (var mappedInterrupt in mappedInterrupts)
+                {
+                    if (string.IsNullOrEmpty(mappedInterrupt.ToolCallId)
+                        || !chatResponse.Contents.OfType<FunctionCallContent>().Any(
+                            call => string.Equals(
+                                call.CallId,
+                                mappedInterrupt.ToolCallId,
+                                StringComparison.Ordinal)))
+                    {
+                        throw new InvalidOperationException(
+                            $"Interrupt '{mappedInterrupt.Id}' is not correlated with a FunctionCallContent in its update.");
+                    }
+                    if (!string.Equals(
+                            mappedInterrupt.Reason,
+                            InterruptReasons.ToolCall,
+                            StringComparison.OrdinalIgnoreCase)
+                        && !string.Equals(
+                            mappedInterrupt.Id,
+                            mappedInterrupt.ToolCallId,
+                            StringComparison.Ordinal))
+                    {
+                        throw new InvalidOperationException(
+                            $"Function-backed interrupt '{mappedInterrupt.Id}' must use its function call ID.");
+                    }
+
+                    pendingInterrupts ??= new List<AGUIInterrupt>();
+                    pendingInterrupts.Add(mappedInterrupt);
                 }
             }
         }
@@ -618,6 +602,23 @@ public static class ChatResponseUpdateAGUIExtensions
         // Emit accumulated tool approval interrupts as a single RunFinished
         if (pendingInterrupts is { Count: > 0 })
         {
+            var duplicateInterruptId = pendingInterrupts
+                .GroupBy(interrupt => interrupt.Id, StringComparer.Ordinal)
+                .FirstOrDefault(group => group.Count() > 1)?.Key;
+            if (duplicateInterruptId is not null)
+            {
+                throw new InvalidOperationException(
+                    $"Multiple interrupts used the same ID '{duplicateInterruptId}'.");
+            }
+
+            var uncorrelatedInterrupt = pendingInterrupts.FirstOrDefault(
+                interrupt => string.IsNullOrEmpty(interrupt.ToolCallId));
+            if (uncorrelatedInterrupt is not null)
+            {
+                throw new InvalidOperationException(
+                    $"Interrupt '{uncorrelatedInterrupt.Id}' is not correlated with a FunctionCallContent.");
+            }
+
             yield return RunFinishedEvent.Create(threadId, runId,
                 new RunFinishedInterruptOutcome { Interrupts = pendingInterrupts },
                 usageTracker.Build());

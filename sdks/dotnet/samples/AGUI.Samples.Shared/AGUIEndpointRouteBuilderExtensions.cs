@@ -26,10 +26,12 @@ public static class AGUIEndpointRouteBuilderExtensions
     /// </summary>
     /// <param name="endpoints">The endpoint route builder.</param>
     /// <param name="pattern">The route pattern to map.</param>
+    /// <param name="streamOptions">Optional event-conversion mappings for the endpoint.</param>
     /// <returns>An <see cref="IEndpointConventionBuilder"/> for further endpoint configuration.</returns>
     public static IEndpointConventionBuilder MapAGUI(
         this IEndpointRouteBuilder endpoints,
-        string pattern)
+        string pattern,
+        AGUIStreamOptions? streamOptions = null)
     {
         return endpoints.MapPost(pattern, (
             [FromBody] RunAgentInput input,
@@ -40,7 +42,7 @@ public static class AGUIEndpointRouteBuilderExtensions
         {
             var jsonSerializerOptions = jsonOptions.Value.SerializerOptions;
 
-            var ctx = input.ToChatRequestContext(jsonSerializerOptions);
+            var ctx = input.ToChatRequestContext(jsonSerializerOptions, streamOptions);
 
             var updates = chatClient.GetStreamingResponseAsync(ctx.Messages, ctx.ChatOptions, cancellationToken);
 

@@ -21,12 +21,9 @@ function collectText(events: BaseEvent[]): string {
 let server: StepServerHandle;
 
 beforeAll(async () => {
-  // Step10's UserInputChatClient deterministically emits an
-  // InterruptRequestContent with reason=input_required on the first turn,
-  // and on resume reads the InterruptResponseContent payload to produce a
-  // confirmation text. The hosting layer encodes this as RUN_FINISHED
-  // outcome=interrupt + a reasoning-free response on the wire — exactly
-  // what the TS HttpAgent should observe across the language boundary.
+  // Step10 preserves the model's normal function call and classifies the
+  // complete update as an input_required interruption. Resume correlation
+  // reconstructs a FunctionResultContent for the server-side interrupt.
   server = await startStepServer({
     step: 10,
     projectName: "InterruptsUserInput",
@@ -71,6 +68,7 @@ describe("TS HttpAgent -> C# Step10_InterruptsUserInput.Server", () => {
             reason: string;
             message?: string;
             responseSchema?: unknown;
+            toolCallId?: string;
           }>;
         };
     expect(outcome.type).toBe("interrupt");
@@ -79,11 +77,13 @@ describe("TS HttpAgent -> C# Step10_InterruptsUserInput.Server", () => {
     expect(interrupt.reason).toBe("input_required");
     expect(interrupt.message).toMatch(/username/i);
     expect(interrupt.responseSchema).toBeDefined();
-
-    // Turn 2: resume with the requested data. The payload shape is
-    // declared by the interrupt's responseSchema — `{ response: string }`
-    // for Step10. The hosting layer decodes Resume.Payload into an
-    // InterruptResponseContent for the inner UserInputChatClient.
+    const toolStart = turn1.find(
+      (event) => event.type === EventType.TOOL_CALL_START,
+    ) as BaseEvent & { toolCallId: string; toolCallName: string };
+    expect(toolStart.toolCallId).toBe(interrupt.toolCallId);
+    expect(interrupt.id).toBe(toolStart.toolCallId);
+    expect(toolStart.toolCallName).toBe("request_user_input");
+    // Turn 2: send the function result through Resume using the function call ID.
     const turn2: BaseEvent[] = [];
     await agent.runAgent(
       {
@@ -91,7 +91,7 @@ describe("TS HttpAgent -> C# Step10_InterruptsUserInput.Server", () => {
           {
             interruptId: interrupt.id,
             status: "resolved",
-            payload: { response: "johndoe42" },
+            payload: "johndoe42",
           },
         ],
       },
