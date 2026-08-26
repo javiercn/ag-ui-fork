@@ -109,7 +109,6 @@ The Dojo server's `CreateAgenticUIStreamOptions` shows both in action: `create_p
 The fluent methods on `AGUIStreamOptions` install extension chains around normal conversion:
 
 - **`MapInterrupt(Func<ChatResponseUpdate, IEnumerable<AGUIInterrupt>?>)`** classifies a complete update, including `RawRepresentation`, after normal content conversion. A function call therefore still emits `ToolCallStartEvent` / `ToolCallArgsEvent` / `ToolCallEndEvent`; mapped interrupts from every update are accumulated into one terminal `RunFinishedEvent`. Every generic workflow interrupt must identify its `FunctionCallContent` through `ToolCallId`.
-- **`MapInterrupt(Func<AIContent, AGUIInterrupt?>)`** remains as the migration-safe fallback for custom content that is not handled natively. Multiple registrations chain in order; the first non-null result wins.
 - **`MapContent(Func<AIContent, IEnumerable<BaseEvent>?>)`** registers a callback that receives an `AIContent` and can return a sequence of `BaseEvent` instances. This is the extension point for agent frameworks that produce their own content types—for example, mapping `TextReasoningContent` to reasoning events, or mapping workflow step markers to `StepStartedEvent` / `StepFinishedEvent`. Multiple registrations chain the same way.
 
 ---

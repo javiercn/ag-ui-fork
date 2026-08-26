@@ -49,7 +49,7 @@ One unit-test project per `src/` package:
 | `tests/AGUI.Client.UnitTests/` | Client builders, protocol rules, transport negotiation | Standard xunit assertions |
 | `tests/AGUI.Formatting.UnitTests/` | `SseEventStreamFormatter` read/write round-trips, the SSE wire format | Standard xunit assertions |
 | `tests/AGUI.Protobuf.UnitTests/` | Protobuf codec, `ProtobufEventStreamFormatter`, `JsonElement`↔`google.protobuf.Value` bridge | Standard xunit assertions |
-| `tests/AGUI.Server.UnitTests/` | `ChatResponseUpdate` → AG-UI event conversion, mixed tool invocation, interrupt content | Standard xunit assertions |
+| `tests/AGUI.Server.UnitTests/` | `ChatResponseUpdate` → AG-UI event conversion, mixed tool invocation, interrupt mapping | Standard xunit assertions |
 
 Run a single unit test project:
 
@@ -133,7 +133,7 @@ Every AG-UI endpoint follows this shape (the GettingStarted samples map it via t
 4. Pipe through `.AsAGUIEventStreamAsync(ctx, cancellationToken)` to get the AG-UI event stream.
 5. Return `AGUIResults.Events(events, httpContext, cancellationToken)` (from `AGUI.Samples.Shared`). This negotiating `IResult` inspects the request `Accept` header and encodes the stream as Server-Sent Events (the default) or protobuf when the server registers `ProtobufEventStreamFormatter` as an `IAGUIEventStreamFormatter` and the client accepts it. Endpoints no longer hand-write `TypedResults.ServerSentEvents(...)`.
 
-If the endpoint needs framework-specific content mapping (e.g. reasoning, custom workflow events) or a custom interrupt classifier, configure them on the `AGUIStreamOptions` instance passed to `ToChatRequestContext` via fluent `MapContent(...)` / `MapInterrupt(...)` / `MapCall(...)` / `MapResult(...)` calls. Prefer the update-aware `MapInterrupt(Func<ChatResponseUpdate, IEnumerable<AGUIInterrupt>?>)` overload for workflow suspension: normal content conversion runs first, every interrupt must correlate to a `FunctionCallContent` through `ToolCallId`, and interrupts returned across the stream are accumulated into one terminal outcome.
+If the endpoint needs framework-specific content mapping (e.g. reasoning, custom workflow events) or a custom interrupt classifier, configure them on the `AGUIStreamOptions` instance passed to `ToChatRequestContext` via fluent `MapContent(...)` / `MapInterrupt(...)` / `MapCall(...)` / `MapResult(...)` calls. `MapInterrupt(Func<ChatResponseUpdate, IEnumerable<AGUIInterrupt>?>)` classifies complete updates for workflow suspension: normal content conversion runs first, every interrupt must correlate to a `FunctionCallContent` through `ToolCallId`, and interrupts returned across the stream are accumulated into one terminal outcome.
 
 ## Public API surface
 

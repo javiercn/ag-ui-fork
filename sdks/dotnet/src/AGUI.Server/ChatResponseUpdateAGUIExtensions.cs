@@ -515,41 +515,17 @@ public static class ChatResponseUpdateAGUIExtensions
                         break;
 
                     default:
-                        // Check registered interrupt mappers for custom interrupt-producing content types
-                        var interrupt = options.InvokeInterruptMappers(content);
-                        if (interrupt is not null)
+                        var events = options.InvokeContentMappers(content);
+                        if (events is not null)
                         {
-                            // Close any open text/reasoning message before accumulating the interrupt.
-                            if (messageTracker.Close(raw) is { } intEndEvt)
+                            foreach (var evt in events)
                             {
-                                yield return intEndEvt;
-                            }
-
-                            foreach (var reasonIntCloseEvt in reasoningTracker.Close())
-                            {
-                                yield return reasonIntCloseEvt;
-                            }
-
-                            // Accumulate alongside built-in tool-approval interrupts so the stream
-                            // still ends with a single RunFinished carrying every
-                            // interrupt, rather than emitting a second RunFinished here.
-                            pendingInterrupts ??= new List<AGUIInterrupt>();
-                            pendingInterrupts.Add(interrupt);
-                        }
-                        else
-                        {
-                            var events = options.InvokeContentMappers(content);
-                            if (events is not null)
-                            {
-                                foreach (var evt in events)
+                                if (evt is RunFinishedEvent)
                                 {
-                                    if (evt is RunFinishedEvent)
-                                    {
-                                        runFinishedEmitted = true;
-                                    }
-
-                                    yield return evt;
+                                    runFinishedEmitted = true;
                                 }
+
+                                yield return evt;
                             }
                         }
                         break;
