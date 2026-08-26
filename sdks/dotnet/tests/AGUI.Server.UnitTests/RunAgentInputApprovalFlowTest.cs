@@ -318,16 +318,14 @@ public sealed class RunAgentInputApprovalFlowTest
     }
 
     [Fact]
-    public void WorkflowResume_ReconstructsFunctionResultContent()
+    public void FunctionInterruptResume_ReconstructsFunctionResultContent()
     {
-        var call = CreateCall("workflow-1", "collect_input", "original");
+        var call = CreateCall("interrupt-call-1", "collect_input");
         var input = CreateInput([call]);
         input.Resume =
         [
-            CreateWorkflowResume(
+            CreateFunctionResume(
                 call,
-                "interrupt-1",
-                ["interrupt-1"],
                 JsonDocument.Parse("\"answer\"").RootElement.Clone()),
         ];
 
@@ -341,9 +339,35 @@ public sealed class RunAgentInputApprovalFlowTest
     }
 
     [Fact]
-    public void WorkflowResume_ToolCallShapedPayloadRemainsAWorkflowResult()
+    public void FunctionInterruptResume_CombinesWithToolApprovalResume()
     {
-        var call = CreateCall("workflow-1", "collect_input", "original");
+        var interruptedCall = CreateCall("interrupt-call-1", "collect_input");
+        var approvedCall = CreateCall("server-call-1", "server_tool");
+        var input = CreateInput([interruptedCall, approvedCall]);
+        input.Resume =
+        [
+            CreateFunctionResume(
+                interruptedCall,
+                JsonDocument.Parse("\"answer\"").RootElement.Clone()),
+            CreateApprovalResume(approvedCall, approved: true, result: null),
+        ];
+
+        var context = input.ToChatRequestContext(s_jsonOptions);
+
+        Assert.True(context.IsContinuation);
+        var result = Assert.Single(context.Messages.SelectMany(message => message.Contents)
+            .OfType<FunctionResultContent>());
+        Assert.Equal(interruptedCall.CallId, result.CallId);
+        Assert.Contains(
+            context.Messages.SelectMany(message => message.Contents),
+            content => content is ToolApprovalResponseContent response
+                && response.ToolCall.CallId == approvedCall.CallId);
+    }
+
+    [Fact]
+    public void FunctionInterruptResume_ToolCallShapedPayloadRemainsAFunctionResult()
+    {
+        var call = CreateCall("interrupt-call-1", "collect_input", "original");
         var payload = JsonDocument.Parse("""
             {
               "toolCall": {
@@ -354,7 +378,7 @@ public sealed class RunAgentInputApprovalFlowTest
         var input = CreateInput([call]);
         input.Resume =
         [
-            CreateWorkflowResume(call, "interrupt-1", ["interrupt-1"], payload),
+            CreateFunctionResume(call, payload),
         ];
 
         var context = input.ToChatRequestContext(s_jsonOptions);
@@ -368,34 +392,30 @@ public sealed class RunAgentInputApprovalFlowTest
     }
 
     [Fact]
-    public void WorkflowResume_MissingPendingResponseIsRejected()
+    public void FunctionInterruptResume_MissingPendingResponseIsRejected()
     {
-        var first = CreateCall("workflow-1", "collect_input", "first");
-        var second = CreateCall("workflow-2", "collect_input", "second");
+        var first = CreateCall("interrupt-call-1", "collect_input", "first");
+        var second = CreateCall("interrupt-call-2", "collect_input", "second");
         var input = CreateInput([first, second]);
         input.Resume =
         [
-            CreateWorkflowResume(
+            CreateFunctionResume(
                 first,
-                "interrupt-1",
-                ["interrupt-1", "interrupt-2"],
                 JsonDocument.Parse("\"answer\"").RootElement.Clone()),
         ];
 
         var exception = Assert.Throws<InvalidOperationException>(
             () => input.ToChatRequestContext(s_jsonOptions));
 
-        Assert.Contains("exactly one response", exception.Message);
+        Assert.Contains("do not match the latest unresolved function-call batch", exception.Message);
     }
 
     [Fact]
-    public void WorkflowResume_DuplicateResponseIsRejected()
+    public void FunctionInterruptResume_DuplicateResponseIsRejected()
     {
-        var call = CreateCall("workflow-1", "collect_input", "original");
-        var response = CreateWorkflowResume(
+        var call = CreateCall("interrupt-call-1", "collect_input", "original");
+        var response = CreateFunctionResume(
             call,
-            "interrupt-1",
-            ["interrupt-1"],
             JsonDocument.Parse("\"answer\"").RootElement.Clone());
         var input = CreateInput([call]);
         input.Resume = [response, response];
@@ -407,18 +427,16 @@ public sealed class RunAgentInputApprovalFlowTest
     }
 
     [Fact]
-    public void WorkflowResume_UnknownOrStaleCallIsRejected()
+    public void FunctionInterruptResume_UnknownOrStaleCallIsRejected()
     {
-        var call = CreateCall("workflow-1", "collect_input", "original");
+        var call = CreateCall("interrupt-call-1", "collect_input", "original");
         var input = CreateInput([call]);
         input.Messages.Add(new AGUIAssistantMessage { Content = "finished" });
         input.Messages.Add(new AGUIUserMessage { Content = "new turn" });
         input.Resume =
         [
-            CreateWorkflowResume(
+            CreateFunctionResume(
                 call,
-                "interrupt-1",
-                ["interrupt-1"],
                 JsonDocument.Parse("\"answer\"").RootElement.Clone()),
         ];
 
@@ -429,24 +447,45 @@ public sealed class RunAgentInputApprovalFlowTest
     }
 
     [Fact]
-    public void WorkflowResume_SubstitutedNameOrArgumentsAreRejected()
+    public void FunctionInterruptResume_CancelledStatusReconstructsCancellation()
     {
-        var call = CreateCall("workflow-1", "collect_input", "original");
-        var substituted = CreateCall("workflow-1", "other_input", "substituted");
+        var call = CreateCall("interrupt-call-1", "collect_input", "original");
         var input = CreateInput([call]);
         input.Resume =
         [
-            CreateWorkflowResume(
-                substituted,
-                "interrupt-1",
-                ["interrupt-1"],
-                JsonDocument.Parse("\"answer\"").RootElement.Clone()),
+            CreateFunctionResume(
+                call,
+                payload: null,
+                status: ResumeStatus.Cancelled,
+                reason: "cancelled by user"),
+        ];
+
+        var context = input.ToChatRequestContext(s_jsonOptions);
+
+        var result = Assert.Single(context.Messages.SelectMany(message => message.Contents)
+            .OfType<FunctionResultContent>());
+        var cancellation = Assert.IsType<OperationCanceledException>(result.Exception);
+        Assert.Equal("cancelled by user", cancellation.Message);
+        Assert.Null(result.Result);
+    }
+
+    [Fact]
+    public void FunctionInterruptResume_UnsupportedStatusIsRejected()
+    {
+        var call = CreateCall("interrupt-call-1", "collect_input");
+        var input = CreateInput([call]);
+        input.Resume =
+        [
+            CreateFunctionResume(
+                call,
+                payload: null,
+                status: "pending"),
         ];
 
         var exception = Assert.Throws<InvalidOperationException>(
             () => input.ToChatRequestContext(s_jsonOptions));
 
-        Assert.Contains("substituted function", exception.Message);
+        Assert.Contains("unsupported status 'pending'", exception.Message);
     }
 
     [Fact]
@@ -590,37 +629,22 @@ public sealed class RunAgentInputApprovalFlowTest
                 s_jsonOptions.GetTypeInfo(typeof(AGUIToolApprovalResumePayload))),
         };
 
-    private static AGUIResume CreateWorkflowResume(
+    private static AGUIResume CreateFunctionResume(
         FunctionCallContent call,
-        string interruptId,
-        IReadOnlyList<string> pendingInterruptIds,
-        JsonElement payload)
+        JsonElement? payload,
+        string status = ResumeStatus.Resolved,
+        string? reason = null)
     {
-        var arguments = JsonSerializer.SerializeToElement(
-            call.Arguments,
-            s_jsonOptions.GetTypeInfo(typeof(IDictionary<string, object?>)));
-        var metadata = new JsonObject
-        {
-            [AGUIMetadata.ReservedKey] = new JsonObject
-            {
-                ["workflowInterrupt"] = new JsonObject
-                {
-                    ["interruptId"] = interruptId,
-                    ["callId"] = call.CallId,
-                    ["name"] = call.Name,
-                    ["arguments"] = JsonNode.Parse(arguments.GetRawText()),
-                },
-                ["pendingWorkflowInterruptIds"] = new JsonArray(
-                    pendingInterruptIds.Select(id => JsonValue.Create(id)).ToArray()),
-            },
-        };
+        var metadata = reason is null ? null : new JsonObject { ["reason"] = reason };
 
         return new AGUIResume
         {
-            InterruptId = interruptId,
-            Status = ResumeStatus.Resolved,
+            InterruptId = call.CallId,
+            Status = status,
             Payload = payload,
-            Metadata = JsonDocument.Parse(metadata.ToJsonString()).RootElement.Clone(),
+            Metadata = metadata is null
+                ? null
+                : JsonDocument.Parse(metadata.ToJsonString()).RootElement.Clone(),
         };
     }
 

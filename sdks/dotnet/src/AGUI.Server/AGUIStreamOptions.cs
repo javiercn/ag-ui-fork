@@ -63,7 +63,7 @@ public sealed class AGUIStreamOptions
     /// <summary>
     /// Registers a fallback that maps an <see cref="AIContent"/> to a sequence of AG-UI <see cref="BaseEvent"/>
     /// instances. Invoked for content types that are not handled by the built-in mappings.
-    /// Frameworks use this to surface their own content types (e.g., workflow step events) as AG-UI events.
+    /// Frameworks use this to surface their own content types (e.g., step events) as AG-UI events.
     /// </summary>
     /// <remarks>
     /// Multiple mappers may be registered. They are tried in registration order; the first non-null result

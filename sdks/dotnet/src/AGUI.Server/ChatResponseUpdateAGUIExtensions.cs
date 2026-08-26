@@ -539,6 +539,29 @@ public static class ChatResponseUpdateAGUIExtensions
             {
                 foreach (var mappedInterrupt in mappedInterrupts)
                 {
+                    if (string.IsNullOrEmpty(mappedInterrupt.ToolCallId)
+                        || !chatResponse.Contents.OfType<FunctionCallContent>().Any(
+                            call => string.Equals(
+                                call.CallId,
+                                mappedInterrupt.ToolCallId,
+                                StringComparison.Ordinal)))
+                    {
+                        throw new InvalidOperationException(
+                            $"Interrupt '{mappedInterrupt.Id}' is not correlated with a FunctionCallContent in its update.");
+                    }
+                    if (!string.Equals(
+                            mappedInterrupt.Reason,
+                            InterruptReasons.ToolCall,
+                            StringComparison.OrdinalIgnoreCase)
+                        && !string.Equals(
+                            mappedInterrupt.Id,
+                            mappedInterrupt.ToolCallId,
+                            StringComparison.Ordinal))
+                    {
+                        throw new InvalidOperationException(
+                            $"Function-backed interrupt '{mappedInterrupt.Id}' must use its function call ID.");
+                    }
+
                     pendingInterrupts ??= new List<AGUIInterrupt>();
                     pendingInterrupts.Add(mappedInterrupt);
                 }

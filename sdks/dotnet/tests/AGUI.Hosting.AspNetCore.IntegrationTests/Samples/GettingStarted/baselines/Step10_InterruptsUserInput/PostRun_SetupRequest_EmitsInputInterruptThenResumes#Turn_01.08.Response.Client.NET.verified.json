@@ -24,7 +24,7 @@
         "informationalOnly": false,
         "callId": "call_Id_1",
         "additionalProperties": {
-          "agui.workflow.interrupt": {
+          "agui_interrupt": {
             "id": "call_Id_1",
             "reason": "input_required",
             "message": "What username would you like for your account?",
@@ -33,12 +33,7 @@
               "type": "string"
             }
           },
-          "agui.workflow.thread_Id_2": "thread_Id_1",
-          "agui.workflow.call_Id_2": "call_Id_1",
-          "agui.workflow.call_Id_3": "request_user_input",
-          "agui.workflow.call_Id_4": {
-            "prompt": "What username would you like for your account?"
-          }
+          "agui_interrupt_thread_id": "thread_Id_1"
         }
       }
     ],

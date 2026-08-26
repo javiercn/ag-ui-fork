@@ -109,11 +109,6 @@ internal sealed class ToolCallBuilder
         ISet<string>? clientToolNames,
         JsonSerializerOptions jsonSerializerOptions)
     {
-        if (_buffer.Count == 0)
-        {
-            return Array.Empty<ChatResponseUpdate>();
-        }
-
         // Every interrupt surfaced through IChatClient must identify the function call
         // that carries it. Generic, non-function interrupts have no idiomatic MEAI shape.
         var interruptById = new Dictionary<string, AGUIInterrupt>(StringComparer.Ordinal);
@@ -123,6 +118,16 @@ internal sealed class ToolCallBuilder
             {
                 throw new InvalidOperationException(
                     $"Interrupt '{interrupt.Id}' is not correlated with a function call.");
+            }
+
+            if (!string.Equals(
+                    interrupt.Reason,
+                    InterruptReasons.ToolCall,
+                    StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(interrupt.Id, interrupt.ToolCallId, StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException(
+                    $"Function-backed interrupt '{interrupt.Id}' must use its function call ID.");
             }
 
             if (interruptById.ContainsKey(interrupt.ToolCallId))
@@ -150,11 +155,15 @@ internal sealed class ToolCallBuilder
                     InterruptReasons.ToolCall,
                     StringComparison.OrdinalIgnoreCase))
                 {
-                    WorkflowInterruptRegistry.Attach(
-                        fcc,
-                        interrupt,
-                        _conversationId ?? string.Empty,
-                        jsonSerializerOptions);
+                    fcc.AdditionalProperties ??= [];
+                    fcc.AdditionalProperties[AGUIClientInternalKeys.Interrupt] =
+                        JsonSerializer.SerializeToElement(
+                            interrupt,
+                            jsonSerializerOptions.GetTypeInfo(typeof(AGUIInterrupt)));
+                    fcc.AdditionalProperties[AGUIClientInternalKeys.InterruptThreadId] =
+                        _conversationId ?? string.Empty;
+                    fcc.RawRepresentation = interrupt;
+                    fcc.InformationalOnly = false;
                     updates.Add(update);
                     continue;
                 }

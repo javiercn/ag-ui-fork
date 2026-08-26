@@ -24,22 +24,7 @@
     {
       "interruptId": "call_Id_1",
       "status": "resolved",
-      "payload": "johndoe42",
-      "metadata": {
-        "ag-ui": {
-          "workflowInterrupt": {
-            "interruptId": "call_Id_1",
-            "callId": "call_Id_1",
-            "name": "request_user_input",
-            "arguments": {
-              "prompt": "What username would you like for your account?"
-            }
-          },
-          "pendingWorkflowInterruptIds": [
-            "call_Id_1"
-          ]
-        }
-      }
+      "payload": "johndoe42"
     }
   ]
 }

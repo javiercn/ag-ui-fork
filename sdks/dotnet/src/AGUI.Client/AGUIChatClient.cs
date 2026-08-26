@@ -89,86 +89,222 @@ public sealed class AGUIChatClient : DelegatingChatClient
             }
             else
             {
-            var requestsById = ValidateApprovalResponses(
-                messagesList,
-                approvalResponses);
-            var clientToolNames = new HashSet<string>(
-                options?.Tools?.Select(tool => tool.Name) ?? [],
-                StringComparer.Ordinal);
-            var clientRequestIds = new HashSet<string>(
-                requestsById
-                    .Where(entry => entry.Value.ToolCall is FunctionCallContent call
-                        && clientToolNames.Contains(call.Name))
-                    .Select(entry => entry.Key),
-                StringComparer.Ordinal);
-            var callIndexById = requestsById.Values
-                .Select((request, index) => new { request.ToolCall.CallId, index })
-                .ToDictionary(entry => entry.CallId, entry => entry.index, StringComparer.Ordinal);
-            var serverApprovalResponses = approvalResponses
-                .Where(response => !clientRequestIds.Contains(response.RequestId)
+                var requestsById = ValidateApprovalResponses(
+                    messagesList,
+                    approvalResponses);
+                var clientToolNames = new HashSet<string>(
+                    options?.Tools?.Select(tool => tool.Name) ?? [],
+                    StringComparer.Ordinal);
+                var clientRequestIds = new HashSet<string>(
+                    requestsById
+                        .Where(entry => entry.Value.ToolCall is FunctionCallContent call
+                            && clientToolNames.Contains(call.Name))
+                        .Select(entry => entry.Key),
+                    StringComparer.Ordinal);
+                var callIndexById = requestsById.Values
+                    .Select((request, index) => new { request.ToolCall.CallId, index })
+                    .ToDictionary(entry => entry.CallId, entry => entry.index, StringComparer.Ordinal);
+                var serverApprovalResponses = approvalResponses
+                    .Where(response => !clientRequestIds.Contains(response.RequestId)
 #pragma warning disable MEAI001
-                    && requestsById[response.RequestId].RequiresConfirmation)
+                        && requestsById[response.RequestId].RequiresConfirmation)
 #pragma warning restore MEAI001
-                .ToList();
+                    .ToList();
 
-            messagesList = NormalizeApprovalContents(
-                messagesList,
-                clientRequestIds,
-                clientToolNames,
-                callIndexById);
-            innerOptions = (innerOptions ?? options)?.Clone() ?? new ChatOptions();
-            if (serverApprovalResponses.Count > 0)
-            {
-                innerOptions.AdditionalProperties ??= [];
-                innerOptions.AdditionalProperties[AGUIClientInternalKeys.ApprovalResponses] =
-                    serverApprovalResponses;
-            }
+                messagesList = NormalizeApprovalContents(
+                    messagesList,
+                    clientRequestIds,
+                    clientToolNames,
+                    callIndexById);
+                innerOptions = (innerOptions ?? options)?.Clone() ?? new ChatOptions();
+                if (serverApprovalResponses.Count > 0)
+                {
+                    innerOptions.AdditionalProperties ??= [];
+                    innerOptions.AdditionalProperties[AGUIClientInternalKeys.ApprovalResponses] =
+                        serverApprovalResponses;
+                }
             }
         }
 
-        var workflowCalls = GetWorkflowCalls(messagesList);
-        List<WorkflowInterruptResponse>? workflowResponses = null;
-        if (workflowCalls.Count > 0)
+        var lastInterruptMessageIndex = messagesList.FindLastIndex(message =>
+            message.Contents.OfType<FunctionCallContent>().Any(call =>
+                call.AdditionalProperties?.ContainsKey(AGUIClientInternalKeys.Interrupt) is true));
+        var interruptedCalls = new List<FunctionCallContent>();
+        var hasLaterContent = lastInterruptMessageIndex >= 0
+            && messagesList
+                .Skip(lastInterruptMessageIndex + 1)
+                .SelectMany(message => message.Contents)
+                .Any(content => content is not FunctionResultContent);
+        if (lastInterruptMessageIndex >= 0 && !hasLaterContent)
+        {
+            var firstBatchMessageIndex = lastInterruptMessageIndex;
+            while (firstBatchMessageIndex > 0
+                && messagesList[firstBatchMessageIndex - 1].Role == ChatRole.Assistant)
+            {
+                firstBatchMessageIndex--;
+            }
+
+            interruptedCalls = messagesList
+                .Skip(firstBatchMessageIndex)
+                .Take(lastInterruptMessageIndex - firstBatchMessageIndex + 1)
+                .SelectMany(message => message.Contents)
+                .OfType<FunctionCallContent>()
+                .Where(call =>
+                    call.AdditionalProperties?.ContainsKey(AGUIClientInternalKeys.Interrupt) is true)
+                .ToList();
+        }
+
+        List<(FunctionCallContent Call, AGUIInterrupt Interrupt, FunctionResultContent Result, string ThreadId)>?
+            interruptResponses = null;
+        if (interruptedCalls.Count > 0)
         {
             if (!hasCallerSuppliedResume)
             {
-                workflowResponses = ValidateWorkflowResponses(messagesList, workflowCalls);
+                var callsById = new Dictionary<string, FunctionCallContent>(StringComparer.Ordinal);
+                foreach (var call in interruptedCalls)
+                {
+                    if (callsById.ContainsKey(call.CallId))
+                    {
+                        throw new InvalidOperationException(
+                            $"Interrupted function call '{call.CallId}' appears more than once.");
+                    }
+                    callsById.Add(call.CallId, call);
+                }
+
+                var allCallsById = messagesList
+                    .SelectMany(message => message.Contents)
+                    .Select(content => content switch
+                    {
+                        FunctionCallContent call => call,
+                        ToolApprovalRequestContent { ToolCall: FunctionCallContent call } => call,
+                        _ => null,
+                    })
+                    .Where(call => call is not null)
+                    .ToDictionary(call => call!.CallId, call => call!, StringComparer.Ordinal);
+                var allInterruptedCallIds = new HashSet<string>(
+                    allCallsById.Values
+                        .Where(call =>
+                            call.AdditionalProperties?.ContainsKey(AGUIClientInternalKeys.Interrupt) is true)
+                        .Select(call => call.CallId),
+                    StringComparer.Ordinal);
+                var responseResults = messagesList
+                    .SelectMany(message => message.Contents)
+                    .OfType<FunctionResultContent>()
+                    .Where(result => callsById.ContainsKey(result.CallId))
+                    .ToList();
+                var duplicateResponseId = responseResults
+                    .GroupBy(result => result.CallId, StringComparer.Ordinal)
+                    .FirstOrDefault(group => group.Count() > 1)?.Key;
+                if (duplicateResponseId is not null)
+                {
+                    throw new InvalidOperationException(
+                        $"Interrupt response '{duplicateResponseId}' appears more than once.");
+                }
+
+                var staleResponse = messagesList
+                    .SelectMany(message => message.Contents)
+                    .OfType<FunctionResultContent>()
+                    .FirstOrDefault(result =>
+                        allInterruptedCallIds.Contains(result.CallId)
+                        && !callsById.ContainsKey(result.CallId));
+                if (staleResponse is not null)
+                {
+                    throw new InvalidOperationException(
+                        $"Interrupt response '{staleResponse.CallId}' is stale.");
+                }
+
+                var unknownResponse = messagesList
+                    .SelectMany(message => message.Contents)
+                    .OfType<FunctionResultContent>()
+                    .FirstOrDefault(result => !allCallsById.ContainsKey(result.CallId));
+                if (unknownResponse is not null)
+                {
+                    throw new InvalidOperationException(
+                        $"Interrupt response '{unknownResponse.CallId}' does not match a function call.");
+                }
+
+                var resultsById = responseResults.ToDictionary(
+                    result => result.CallId,
+                    StringComparer.Ordinal);
+                var missingCallIds = callsById.Keys
+                    .Where(callId => !resultsById.ContainsKey(callId))
+                    .ToList();
+                if (missingCallIds.Count > 0)
+                {
+                    throw new InvalidOperationException(
+                        $"Interrupt responses are missing for call(s): {string.Join(", ", missingCallIds)}.");
+                }
+
+                interruptResponses = [];
+                foreach (var call in interruptedCalls)
+                {
+                    if (call.AdditionalProperties?.TryGetValue(
+                            AGUIClientInternalKeys.Interrupt,
+                            out JsonElement serializedInterrupt) is not true
+                        || serializedInterrupt.Deserialize(
+                            AGUIJsonSerializerContext.Default.AGUIInterrupt) is not { } interrupt
+                        || !string.Equals(interrupt.Id, call.CallId, StringComparison.Ordinal)
+                        || !string.Equals(interrupt.ToolCallId, call.CallId, StringComparison.Ordinal)
+                        || call.AdditionalProperties.TryGetValue(
+                            AGUIClientInternalKeys.InterruptThreadId,
+                            out string? interruptThreadId) is not true
+                        || string.IsNullOrEmpty(interruptThreadId))
+                    {
+                        throw new InvalidOperationException(
+                            $"Interrupted function call '{call.CallId}' has invalid correlation metadata.");
+                    }
+
+                    if (interrupt.ExpiresAt is not null
+                        && DateTimeOffset.TryParse(interrupt.ExpiresAt, out var expiresAt)
+                        && expiresAt <= DateTimeOffset.UtcNow)
+                    {
+                        throw new InvalidOperationException(
+                            $"Interrupt '{interrupt.Id}' has expired.");
+                    }
+
+                    interruptResponses.Add((
+                        call,
+                        interrupt,
+                        resultsById[call.CallId],
+                        interruptThreadId));
+                }
             }
 
-            var workflowCallIds = new HashSet<string>(
-                workflowCalls.Select(call => call.CallId),
+            var interruptedCallIds = new HashSet<string>(
+                interruptedCalls.Select(call => call.CallId),
                 StringComparer.Ordinal);
             messagesList = RemoveContents(
                 messagesList,
                 content => content is FunctionResultContent result
-                    && workflowCallIds.Contains(result.CallId));
+                    && interruptedCallIds.Contains(result.CallId));
 
-            foreach (var workflowCall in workflowCalls)
+            foreach (var interruptedCall in interruptedCalls)
             {
-                workflowCall.InformationalOnly = true;
+                interruptedCall.InformationalOnly = true;
             }
 
             innerOptions = (innerOptions ?? options)?.Clone() ?? new ChatOptions();
-            var workflowThreadIds = workflowCalls
-                .Select(call =>
-                {
-                    WorkflowInterruptRegistry.TryGet(call, out _, out var threadId);
-                    return threadId;
-                })
+            var interruptThreadIds = interruptedCalls
+                .Select(call => call.AdditionalProperties is not null
+                    && call.AdditionalProperties.TryGetValue(
+                        AGUIClientInternalKeys.InterruptThreadId,
+                        out string? threadId)
+                        ? threadId
+                        : null)
                 .Distinct(StringComparer.Ordinal)
                 .ToList();
-            if (workflowThreadIds.Count != 1)
+            if (interruptThreadIds.Count != 1)
             {
                 throw new InvalidOperationException(
-                    "Pending workflow function calls must belong to one AG-UI thread.");
+                    "Pending interrupted function calls must belong to one AG-UI thread.");
             }
             innerOptions.AdditionalProperties ??= [];
             innerOptions.AdditionalProperties[AGUIClientInternalKeys.ThreadId] =
-                workflowThreadIds[0];
-            if (workflowResponses is { Count: > 0 })
+                interruptThreadIds[0];
+            if (interruptResponses is { Count: > 0 })
             {
-                innerOptions.AdditionalProperties[AGUIClientInternalKeys.WorkflowResponses] =
-                    workflowResponses;
+                innerOptions.AdditionalProperties[AGUIClientInternalKeys.InterruptResponses] =
+                    interruptResponses;
             }
         }
 
@@ -195,17 +331,18 @@ public sealed class AGUIChatClient : DelegatingChatClient
                     }
                 }
 
-                // Restore workflow calls to their actionable developer-facing form after the
+                // Restore interrupted calls to their actionable developer-facing form after the
                 // internal FICC projection treated them as informational.
                 for (var i = 0; i < update.Contents.Count; i++)
                 {
                     if (update.Contents[i] is FunctionCallContent functionCallContent)
                     {
                         functionCallContent.AdditionalProperties?.Remove(AGUIClientInternalKeys.ThreadId);
-                        if (WorkflowInterruptRegistry.TryGet(
-                            functionCallContent,
-                            out var interrupt,
-                            out _))
+                        if (functionCallContent.AdditionalProperties?.TryGetValue(
+                                AGUIClientInternalKeys.Interrupt,
+                                out JsonElement serializedInterrupt) is true
+                            && serializedInterrupt.Deserialize(
+                                AGUIJsonSerializerContext.Default.AGUIInterrupt) is { } interrupt)
                         {
                             functionCallContent.InformationalOnly = false;
                             functionCallContent.RawRepresentation = interrupt;
@@ -222,9 +359,9 @@ public sealed class AGUIChatClient : DelegatingChatClient
         }
         finally
         {
-            foreach (var workflowCall in workflowCalls)
+            foreach (var interruptedCall in interruptedCalls)
             {
-                workflowCall.InformationalOnly = false;
+                interruptedCall.InformationalOnly = false;
             }
         }
     }
@@ -254,148 +391,6 @@ public sealed class AGUIChatClient : DelegatingChatClient
         }
 
         return filtered;
-    }
-
-    private static List<FunctionCallContent> GetWorkflowCalls(List<ChatMessage> messages)
-    {
-        var lastWorkflowMessageIndex = messages.FindLastIndex(message =>
-            message.Contents.OfType<FunctionCallContent>().Any(call =>
-                WorkflowInterruptRegistry.TryGet(call, out _, out _)));
-        if (lastWorkflowMessageIndex < 0)
-        {
-            return [];
-        }
-
-        var firstBatchMessageIndex = lastWorkflowMessageIndex;
-        while (firstBatchMessageIndex > 0
-            && messages[firstBatchMessageIndex - 1].Role == ChatRole.Assistant)
-        {
-            firstBatchMessageIndex--;
-        }
-
-        return messages
-            .Skip(firstBatchMessageIndex)
-            .Take(lastWorkflowMessageIndex - firstBatchMessageIndex + 1)
-            .SelectMany(message => message.Contents)
-            .OfType<FunctionCallContent>()
-            .Where(call => WorkflowInterruptRegistry.TryGet(call, out _, out _))
-            .ToList();
-    }
-
-    private static List<WorkflowInterruptResponse> ValidateWorkflowResponses(
-        List<ChatMessage> messages,
-        List<FunctionCallContent> workflowCalls)
-    {
-        var callsById = new Dictionary<string, FunctionCallContent>(StringComparer.Ordinal);
-        foreach (var call in workflowCalls)
-        {
-            if (!WorkflowInterruptRegistry.MatchesOriginalCall(call))
-            {
-                throw new InvalidOperationException(
-                    $"Workflow function call '{call.CallId}' does not match its original request.");
-            }
-
-            if (callsById.ContainsKey(call.CallId))
-            {
-                throw new InvalidOperationException(
-                    $"Workflow function call '{call.CallId}' appears more than once.");
-            }
-            callsById.Add(call.CallId, call);
-        }
-
-        var allCallsById = messages
-            .SelectMany(message => message.Contents)
-            .Select(content => content switch
-            {
-                FunctionCallContent call => call,
-                ToolApprovalRequestContent { ToolCall: FunctionCallContent call } => call,
-                _ => null,
-            })
-            .Where(call => call is not null)
-            .ToDictionary(call => call!.CallId, call => call!, StringComparer.Ordinal);
-        var allWorkflowCallIds = new HashSet<string>(
-            allCallsById.Values
-                .Where(call => WorkflowInterruptRegistry.TryGet(call, out _, out _))
-                .Select(call => call.CallId),
-            StringComparer.Ordinal);
-
-        var responseResults = messages
-            .SelectMany(message => message.Contents)
-            .OfType<FunctionResultContent>()
-            .Where(result => callsById.ContainsKey(result.CallId))
-            .ToList();
-        var duplicateResponseId = responseResults
-            .GroupBy(result => result.CallId, StringComparer.Ordinal)
-            .FirstOrDefault(group => group.Count() > 1)?.Key;
-        if (duplicateResponseId is not null)
-        {
-            throw new InvalidOperationException(
-                $"Workflow response '{duplicateResponseId}' appears more than once.");
-        }
-
-        var staleResponse = messages
-            .SelectMany(message => message.Contents)
-            .OfType<FunctionResultContent>()
-            .FirstOrDefault(result =>
-                allWorkflowCallIds.Contains(result.CallId)
-                && !callsById.ContainsKey(result.CallId));
-        if (staleResponse is not null)
-        {
-            throw new InvalidOperationException(
-                $"Workflow response '{staleResponse.CallId}' is stale.");
-        }
-
-        var unknownResponse = messages
-            .SelectMany(message => message.Contents)
-            .OfType<FunctionResultContent>()
-            .FirstOrDefault(result => !allCallsById.ContainsKey(result.CallId));
-        if (unknownResponse is not null)
-        {
-            throw new InvalidOperationException(
-                $"Workflow response '{unknownResponse.CallId}' does not match a function call.");
-        }
-
-        var resultsById = responseResults.ToDictionary(
-            result => result.CallId,
-            StringComparer.Ordinal);
-        var missingCallIds = callsById.Keys
-            .Where(callId => !resultsById.ContainsKey(callId))
-            .ToList();
-        if (missingCallIds.Count > 0)
-        {
-            throw new InvalidOperationException(
-                $"Workflow responses are missing for call(s): {string.Join(", ", missingCallIds)}.");
-        }
-
-        var responses = new List<WorkflowInterruptResponse>(workflowCalls.Count);
-        foreach (var call in workflowCalls)
-        {
-            _ = WorkflowInterruptRegistry.TryGet(call, out var interrupt, out var threadId);
-            if (string.IsNullOrEmpty(threadId)
-                || !string.Equals(interrupt!.ToolCallId, call.CallId, StringComparison.Ordinal))
-            {
-                throw new InvalidOperationException(
-                    $"Workflow interrupt '{interrupt?.Id}' does not match function call '{call.CallId}'.");
-            }
-
-            if (interrupt.ExpiresAt is not null
-                && DateTimeOffset.TryParse(interrupt.ExpiresAt, out var expiresAt)
-                && expiresAt <= DateTimeOffset.UtcNow)
-            {
-                throw new InvalidOperationException(
-                    $"Workflow interrupt '{interrupt.Id}' has expired.");
-            }
-
-            responses.Add(new WorkflowInterruptResponse
-            {
-                Call = call,
-                Interrupt = interrupt,
-                Result = resultsById[call.CallId],
-                ThreadId = threadId,
-            });
-        }
-
-        return responses;
     }
 
     private static Dictionary<string, ToolApprovalRequestContent> ValidateApprovalResponses(
@@ -533,26 +528,39 @@ public sealed class AGUIChatClient : DelegatingChatClient
             TerminateOnUnknownCalls = true,
             FunctionInvoker = static async (context, cancellationToken) =>
             {
-                var result = await context.Function.InvokeAsync(
-                    context.Arguments,
-                    cancellationToken).ConfigureAwait(false);
-
-                var hasPendingWorkflowCall = context.Messages
+                var hasPendingInterruptCall = context.Messages
                     .SelectMany(message => message.Contents)
                     .OfType<FunctionCallContent>()
-                    .Any(call => WorkflowInterruptRegistry.TryGet(call, out _, out _));
-                var hasWorkflowResponses =
+                    .Any(call =>
+                        call.AdditionalProperties?.ContainsKey(AGUIClientInternalKeys.Interrupt) is true);
+                var hasInterruptResponses =
                     context.Options?.AdditionalProperties?.ContainsKey(
-                        AGUIClientInternalKeys.WorkflowResponses) is true;
-
-                if (hasPendingWorkflowCall
-                    && !hasWorkflowResponses
-                    && context.FunctionCallIndex == context.FunctionCount - 1)
+                        AGUIClientInternalKeys.InterruptResponses) is true;
+                var terminateAfterInvocation = hasPendingInterruptCall
+                    && !hasInterruptResponses
+                    && context.FunctionCallIndex == context.FunctionCount - 1;
+                if (terminateAfterInvocation)
                 {
                     context.Terminate = true;
                 }
 
-                return result;
+                try
+                {
+                    return await context.Function.InvokeAsync(
+                        context.Arguments,
+                        cancellationToken).ConfigureAwait(false);
+                }
+                catch (Exception exception) when (
+                    terminateAfterInvocation
+                    && !cancellationToken.IsCancellationRequested)
+                {
+                    // FICC clears Terminate when it captures an invocation exception. Returning the
+                    // standard FRC shape preserves the failure while keeping this batch terminal.
+                    return new FunctionResultContent(context.CallContent.CallId, result: null)
+                    {
+                        Exception = exception,
+                    };
+                }
             },
         };
     }
@@ -649,12 +657,12 @@ public sealed class AGUIChatClient : DelegatingChatClient
                     };
                 }
 
-                // Apply client, server, and workflow call distinctions. Workflow calls are
+                // Apply client, server, and interrupted-call distinctions. Interrupted calls are
                 // temporarily informational so FICC can execute all local peers; the outer
                 // AGUIChatClient restores them before yielding to the developer.
                 foreach (var fcc in update.Contents.OfType<FunctionCallContent>())
                 {
-                    if (WorkflowInterruptRegistry.TryGet(fcc, out _, out _))
+                    if (fcc.AdditionalProperties?.ContainsKey(AGUIClientInternalKeys.Interrupt) is true)
                     {
                         fcc.InformationalOnly = true;
                     }
@@ -769,9 +777,10 @@ public sealed class AGUIChatClient : DelegatingChatClient
             }
 
             List<ToolApprovalResponseContent>? approvalResponses = null;
-            List<WorkflowInterruptResponse>? workflowResponses = null;
+            List<(FunctionCallContent Call, AGUIInterrupt Interrupt, FunctionResultContent Result, string ThreadId)>?
+                interruptResponses = null;
             options?.AdditionalProperties?.TryGetValue(AGUIClientInternalKeys.ApprovalResponses, out approvalResponses);
-            options?.AdditionalProperties?.TryGetValue(AGUIClientInternalKeys.WorkflowResponses, out workflowResponses);
+            options?.AdditionalProperties?.TryGetValue(AGUIClientInternalKeys.InterruptResponses, out interruptResponses);
 
             if (callerSuppliedResume)
             {
@@ -780,7 +789,7 @@ public sealed class AGUIChatClient : DelegatingChatClient
                 // stripped from the outgoing messages, so emit a diagnostic event to make
                 // the drop observable instead of silent.
                 int droppedApprovals = approvalResponses?.Count ?? 0;
-                int droppedInterrupts = workflowResponses?.Count ?? 0;
+                int droppedInterrupts = interruptResponses?.Count ?? 0;
                 if (droppedApprovals > 0 || droppedInterrupts > 0)
                 {
                     Activity.Current?.AddEvent(new ActivityEvent(
@@ -836,37 +845,62 @@ public sealed class AGUIChatClient : DelegatingChatClient
                     input.Resume = resumeList;
                 }
 
-                // Convert workflow FunctionResultContent responses to Resume entries,
+                // Convert interrupted FunctionResultContent responses to Resume entries,
                 // appending to any approval-derived entries produced above.
-                if (workflowResponses is { Count: > 0 })
+                if (interruptResponses is { Count: > 0 })
                 {
                     var resumeList = input.Resume is { Count: > 0 } existing
                         ? new List<AGUIResume>(existing)
-                        : new List<AGUIResume>(workflowResponses.Count);
+                        : new List<AGUIResume>(interruptResponses.Count);
 
-                    foreach (var workflowResponse in workflowResponses)
+                    foreach (var interruptResponse in interruptResponses)
                     {
                         if (!string.Equals(
-                            workflowResponse.ThreadId,
+                            interruptResponse.ThreadId,
                             threadId,
                             StringComparison.Ordinal))
                         {
                             throw new InvalidOperationException(
-                                $"Workflow response '{workflowResponse.Result.CallId}' belongs to a different thread.");
+                                $"Interrupt response '{interruptResponse.Result.CallId}' belongs to a different thread.");
                         }
 
-                        var status = GetWorkflowResponseStatus(workflowResponse.Result);
+                        var status = interruptResponse.Result.Exception switch
+                        {
+                            null => ResumeStatus.Resolved,
+                            OperationCanceledException => ResumeStatus.Cancelled,
+                            Exception exception => throw new InvalidOperationException(
+                                "Interrupted function failed instead of being resolved or cancelled.",
+                                exception),
+                        };
+                        var payload = status == ResumeStatus.Cancelled
+                            ? null
+                            : interruptResponse.Result.Result switch
+                            {
+                                null => (JsonElement?)null,
+                                JsonElement element => element.Clone(),
+                                object result => JsonSerializer.SerializeToElement(
+                                    result,
+                                    jsonSerializerOptions.GetTypeInfo(result.GetType())),
+                            };
+                        JsonObject? metadata = interruptResponse.Interrupt.Metadata is
+                            { ValueKind: JsonValueKind.Object } existingMetadata
+                                ? JsonNode.Parse(existingMetadata.GetRawText())!.AsObject()
+                                : null;
+                        if (interruptResponse.Result.Exception is OperationCanceledException cancellation)
+                        {
+                            metadata ??= new JsonObject();
+                            metadata["reason"] = cancellation.Message;
+                        }
+
                         resumeList.Add(new AGUIResume
                         {
-                            InterruptId = workflowResponse.Interrupt.Id,
+                            InterruptId = interruptResponse.Interrupt.Id,
                             Status = status,
-                            Payload = SerializeWorkflowResult(
-                                workflowResponse.Result.Result,
-                                jsonSerializerOptions),
-                            Metadata = CreateWorkflowResumeMetadata(
-                                workflowResponse,
-                                workflowResponses,
-                                jsonSerializerOptions),
+                            Payload = payload,
+                            Metadata = metadata is null
+                                ? null
+                                : JsonDocument.Parse(
+                                    metadata.ToJsonString()).RootElement.Clone(),
                         });
                     }
 
@@ -875,70 +909,6 @@ public sealed class AGUIChatClient : DelegatingChatClient
             }
 
             return input;
-        }
-
-        private static string GetWorkflowResponseStatus(FunctionResultContent result)
-        {
-            if (result.AdditionalProperties?.TryGetValue(
-                WorkflowInterruptRegistry.ResumeStatusKey,
-                out string? status) is not true)
-            {
-                return ResumeStatus.Resolved;
-            }
-
-            if (!string.Equals(status, ResumeStatus.Cancelled, StringComparison.Ordinal))
-            {
-                throw new InvalidOperationException(
-                    $"Unsupported workflow Resume status '{status}'.");
-            }
-
-            return status;
-        }
-
-        private static JsonElement? SerializeWorkflowResult(
-            object? result,
-            JsonSerializerOptions jsonSerializerOptions)
-        {
-            return result switch
-            {
-                null => null,
-                JsonElement element => element.Clone(),
-                _ => JsonSerializer.SerializeToElement(
-                    result,
-                    jsonSerializerOptions.GetTypeInfo(result.GetType())),
-            };
-        }
-
-        private static JsonElement CreateWorkflowResumeMetadata(
-            WorkflowInterruptResponse response,
-            IReadOnlyList<WorkflowInterruptResponse> pendingResponses,
-            JsonSerializerOptions jsonSerializerOptions)
-        {
-            var metadata = response.Interrupt.Metadata is { ValueKind: JsonValueKind.Object } existing
-                ? JsonNode.Parse(existing.GetRawText())!.AsObject()
-                : new JsonObject();
-            var arguments = JsonSerializer.SerializeToElement(
-                response.Call.Arguments,
-                jsonSerializerOptions.GetTypeInfo(typeof(IDictionary<string, object?>)));
-
-            if (metadata[AGUIMetadata.ReservedKey] is not JsonObject aguiMetadata)
-            {
-                aguiMetadata = new JsonObject();
-                metadata[AGUIMetadata.ReservedKey] = aguiMetadata;
-            }
-
-            aguiMetadata[WorkflowInterruptRegistry.ResumeMetadataKey] = new JsonObject
-            {
-                ["interruptId"] = response.Interrupt.Id,
-                ["callId"] = response.Call.CallId,
-                ["name"] = response.Call.Name,
-                ["arguments"] = JsonNode.Parse(arguments.GetRawText()),
-            };
-            aguiMetadata[WorkflowInterruptRegistry.PendingInterruptIdsMetadataKey] = new JsonArray(
-                pendingResponses.Select(pending =>
-                    JsonValue.Create(pending.Interrupt.Id)).ToArray());
-
-            return JsonDocument.Parse(metadata.ToJsonString()).RootElement.Clone();
         }
 
         private static void RestoreChatMessageToolCallOrder(List<ChatMessage> messages)

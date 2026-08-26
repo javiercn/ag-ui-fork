@@ -50,7 +50,8 @@ public sealed class Program
             "Ask the end user for a piece of free-form text. Pass the question to show them as 'prompt'.");
 
         builder.Services.AddChatClient(sp =>
-                azureChatClient ?? sp.GetRequiredService<FakeChatClient>())
+                new InputRequestChatClient(
+                    azureChatClient ?? sp.GetRequiredService<FakeChatClient>()))
             .ConfigureOptions(options =>
             {
                 options.Instructions =
@@ -67,23 +68,38 @@ public sealed class Program
         app.MapAGUI(
             "/",
             new AGUIStreamOptions().MapInterrupt(update =>
-                update.Contents
-                    .OfType<FunctionCallContent>()
-                    .Where(call => string.Equals(call.Name, ToolName, StringComparison.Ordinal))
-                    .Select(call => new AGUIInterrupt
+            {
+                if (update.RawRepresentation is not InputRequestEvent request)
+                {
+                    return null;
+                }
+
+                foreach (var content in update.Contents)
+                {
+                    if (content is FunctionCallContent call &&
+                        string.Equals(call.CallId, request.CallId, StringComparison.Ordinal))
                     {
-                        Id = call.CallId,
-                        ToolCallId = call.CallId,
-                        Reason = InterruptReasons.InputRequired,
-                        Message = ExtractPrompt(call.Arguments),
-                        ResponseSchema = ResponseSchema,
-                    })
-                    .ToList()));
+                        return
+                        [
+                            new AGUIInterrupt
+                            {
+                                Id = call.CallId,
+                                ToolCallId = call.CallId,
+                                Reason = InterruptReasons.InputRequired,
+                                Message = request.Message,
+                                ResponseSchema = ResponseSchema,
+                            },
+                        ];
+                    }
+                }
+
+                return null;
+            }));
 
         app.Run();
     }
 
-    private static string ExtractPrompt(IDictionary<string, object?>? arguments)
+    internal static string ExtractPrompt(IDictionary<string, object?>? arguments)
     {
         if (arguments is not null && arguments.TryGetValue("prompt", out var value))
         {

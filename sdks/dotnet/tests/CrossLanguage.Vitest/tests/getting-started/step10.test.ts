@@ -23,7 +23,7 @@ let server: StepServerHandle;
 beforeAll(async () => {
   // Step10 preserves the model's normal function call and classifies the
   // complete update as an input_required interruption. Resume correlation
-  // reconstructs a FunctionResultContent for the server-side workflow.
+  // reconstructs a FunctionResultContent for the server-side interrupt.
   server = await startStepServer({
     step: 10,
     projectName: "InterruptsUserInput",
@@ -81,15 +81,9 @@ describe("TS HttpAgent -> C# Step10_InterruptsUserInput.Server", () => {
       (event) => event.type === EventType.TOOL_CALL_START,
     ) as BaseEvent & { toolCallId: string; toolCallName: string };
     expect(toolStart.toolCallId).toBe(interrupt.toolCallId);
+    expect(interrupt.id).toBe(toolStart.toolCallId);
     expect(toolStart.toolCallName).toBe("request_user_input");
-    const argumentsJson = turn1
-      .filter((event) => event.type === EventType.TOOL_CALL_ARGS)
-      .map((event) => (event as BaseEvent & { delta: string }).delta)
-      .join("");
-    const callArguments = JSON.parse(argumentsJson) as Record<string, unknown>;
-
-    // Turn 2: send the function result through Resume with the serializable
-    // function correlation metadata emitted by AGUIChatClient.
+    // Turn 2: send the function result through Resume using the function call ID.
     const turn2: BaseEvent[] = [];
     await agent.runAgent(
       {
@@ -98,17 +92,6 @@ describe("TS HttpAgent -> C# Step10_InterruptsUserInput.Server", () => {
             interruptId: interrupt.id,
             status: "resolved",
             payload: "johndoe42",
-            metadata: {
-              "ag-ui": {
-                workflowInterrupt: {
-                  interruptId: interrupt.id,
-                  callId: toolStart.toolCallId,
-                  name: toolStart.toolCallName,
-                  arguments: callArguments,
-                },
-                pendingWorkflowInterruptIds: [interrupt.id],
-              },
-            },
           },
         ],
       },

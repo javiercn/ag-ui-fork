@@ -1258,24 +1258,17 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
         // RUN_FINISHED events (which produce an invalid stream the client decoder rejects).
         var toolCall = new FunctionCallContent("call-1", "delete_file");
         var approval = new ToolApprovalRequestContent("req-approval", toolCall);
-        var workflowCall = new FunctionCallContent("call-2", "collect_input");
+        var interruptedCall = new FunctionCallContent("int-custom", "collect_input");
         var update = new ChatResponseUpdate
         {
             Role = ChatRole.Assistant,
-            Contents = [approval, workflowCall]
+            Contents = [approval, interruptedCall],
+            RawRepresentation = new InputRequestEvent(interruptedCall.CallId),
         };
 
         var events = await CollectEvents(
             ToAsyncEnumerable(update),
-            updateInterruptMapper: _ =>
-            [
-                new AGUIInterrupt
-                {
-                    Id = "int-custom",
-                    ToolCallId = "call-2",
-                    Reason = "custom_reason",
-                },
-            ]);
+            updateInterruptMapper: MapInputRequest);
 
         var finished = events.OfType<RunFinishedEvent>().Single();
         var interruptOutcome = Assert.IsType<RunFinishedInterruptOutcome>(finished.Outcome);
@@ -1287,9 +1280,15 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
     [Fact]
     public async Task UpdateInterruptMapper_EmitsNormalToolEventsAndAccumulatesInterrupts()
     {
+        var unmarked = new ChatResponseUpdate
+        {
+            Role = ChatRole.Assistant,
+            Contents = [new FunctionCallContent("call-unmarked", "collect_unmarked")],
+        };
         var first = new ChatResponseUpdate
         {
             Role = ChatRole.Assistant,
+            RawRepresentation = new InputRequestEvent("call-1"),
             Contents =
             [
                 new FunctionCallContent(
@@ -1301,7 +1300,7 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
         var second = new ChatResponseUpdate
         {
             Role = ChatRole.Assistant,
-            RawRepresentation = "provider-native-update",
+            RawRepresentation = new InputRequestEvent("call-2"),
             Contents =
             [
                 new FunctionCallContent(
@@ -1311,32 +1310,60 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
             ],
         };
 
-        var sawRawRepresentation = false;
+        var mappedUpdates = 0;
         var events = await CollectEvents(
-            ToAsyncEnumerable(first, second),
+            ToAsyncEnumerable(unmarked, first, second),
             updateInterruptMapper: update =>
             {
-                sawRawRepresentation |= Equals(
-                    update.RawRepresentation,
-                    "provider-native-update");
-                return update.Contents.OfType<FunctionCallContent>()
-                    .Select(call => new AGUIInterrupt
-                    {
-                        Id = $"interrupt-{call.CallId}",
-                        ToolCallId = call.CallId,
-                        Reason = InterruptReasons.InputRequired,
-                    });
+                if (update.RawRepresentation is InputRequestEvent)
+                {
+                    mappedUpdates++;
+                }
+
+                return MapInputRequest(update);
             });
 
-        Assert.True(sawRawRepresentation);
-        Assert.Equal(2, events.OfType<ToolCallStartEvent>().Count());
-        Assert.Equal(2, events.OfType<ToolCallArgsEvent>().Count());
-        Assert.Equal(2, events.OfType<ToolCallEndEvent>().Count());
+        Assert.Equal(2, mappedUpdates);
+        Assert.Equal(3, events.OfType<ToolCallStartEvent>().Count());
+        Assert.Equal(3, events.OfType<ToolCallArgsEvent>().Count());
+        Assert.Equal(3, events.OfType<ToolCallEndEvent>().Count());
         var finished = Assert.Single(events.OfType<RunFinishedEvent>());
         var outcome = Assert.IsType<RunFinishedInterruptOutcome>(finished.Outcome);
         Assert.Equal(
-            ["interrupt-call-1", "interrupt-call-2"],
+            ["call-1", "call-2"],
             outcome.Interrupts.Select(interrupt => interrupt.Id));
+    }
+
+    private static IEnumerable<AGUIInterrupt>? MapInputRequest(ChatResponseUpdate update)
+    {
+        if (update.RawRepresentation is not InputRequestEvent request)
+        {
+            return null;
+        }
+
+        foreach (var content in update.Contents)
+        {
+            if (content is FunctionCallContent call &&
+                string.Equals(call.CallId, request.CallId, StringComparison.Ordinal))
+            {
+                return
+                [
+                    new AGUIInterrupt
+                    {
+                        Id = call.CallId,
+                        ToolCallId = call.CallId,
+                        Reason = InterruptReasons.InputRequired,
+                    },
+                ];
+            }
+        }
+
+        return null;
+    }
+
+    private sealed class InputRequestEvent(string callId)
+    {
+        public string CallId { get; } = callId;
     }
 
     [Fact]
@@ -1356,6 +1383,50 @@ public sealed class ChatResponseUpdateAGUIExtensionsTest
             ]));
 
         Assert.Contains("is not correlated", exception.Message);
+    }
+
+    [Fact]
+    public async Task UpdateInterruptMapper_RejectsUnknownFunctionCall()
+    {
+        var update = new ChatResponseUpdate(
+            ChatRole.Assistant,
+            [new FunctionCallContent("call-1", "collect_input")]);
+
+        var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => CollectEvents(
+            ToAsyncEnumerable(update),
+            updateInterruptMapper: _ =>
+            [
+                new AGUIInterrupt
+                {
+                    Id = "missing-call",
+                    ToolCallId = "missing-call",
+                    Reason = InterruptReasons.InputRequired,
+                },
+            ]));
+
+        Assert.Contains("in its update", exception.Message);
+    }
+
+    [Fact]
+    public async Task UpdateInterruptMapper_RequiresFunctionCallIdAsInterruptId()
+    {
+        var update = new ChatResponseUpdate(
+            ChatRole.Assistant,
+            [new FunctionCallContent("call-1", "collect_input")]);
+
+        var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => CollectEvents(
+            ToAsyncEnumerable(update),
+            updateInterruptMapper: _ =>
+            [
+                new AGUIInterrupt
+                {
+                    Id = "different-id",
+                    ToolCallId = "call-1",
+                    Reason = InterruptReasons.InputRequired,
+                },
+            ]));
+
+        Assert.Contains("must use its function call ID", exception.Message);
     }
 
     #endregion

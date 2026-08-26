@@ -24,22 +24,22 @@ public static class SampleClient
         var turn1 = await StreamAsync(chatClient, messages, output, cancellationToken).ConfigureAwait(false);
         updatesPerTurn?.Add(turn1);
 
-        var workflowCall = turn1
+        var interruptedCall = turn1
             .SelectMany(u => u.Contents)
             .OfType<FunctionCallContent>()
             .FirstOrDefault();
-        if (workflowCall is null)
+        if (interruptedCall is null)
         {
             return;
         }
 
         // Turn 2: respond with the idiomatic function result. AGUIChatClient recognizes the
         // pending interrupted call and encodes the result as RunAgentInput.Resume[].
-        var responseContent = new FunctionResultContent(workflowCall.CallId, "johndoe42");
+        var responseContent = new FunctionResultContent(interruptedCall.CallId, "johndoe42");
 
         var turn2Messages = new List<ChatMessage>(messages)
         {
-            new(ChatRole.Assistant, [workflowCall]),
+            new(ChatRole.Assistant, [interruptedCall]),
             new(ChatRole.Tool, [responseContent]),
         };
         messagesPerTurn?.Add(turn2Messages.ToList());

@@ -176,20 +176,20 @@ public sealed class ToolCallBuilderTest
         var builder = new ToolCallBuilder();
         builder.StartToolCall(new ToolCallStartEvent
         {
-            ToolCallId = "workflow-call",
+            ToolCallId = "interrupt-call",
             ToolCallName = "collect_input",
         });
         builder.AppendArgs(new ToolCallArgsEvent
         {
-            ToolCallId = "workflow-call",
+            ToolCallId = "interrupt-call",
             Delta = """{"prompt":"Name?"}""",
         });
-        builder.EndToolCall(new ToolCallEndEvent { ToolCallId = "workflow-call" }, s_options);
+        builder.EndToolCall(new ToolCallEndEvent { ToolCallId = "interrupt-call" }, s_options);
         var interrupt = new AGUIInterrupt
         {
-            Id = "workflow-interrupt",
+            Id = "interrupt-call",
             Reason = InterruptReasons.InputRequired,
-            ToolCallId = "workflow-call",
+            ToolCallId = "interrupt-call",
         };
 
         var update = Assert.Single(builder.FlushWithInterrupts(
@@ -201,6 +201,26 @@ public sealed class ToolCallBuilderTest
         Assert.False(call.InformationalOnly);
         Assert.Same(interrupt, call.RawRepresentation);
         Assert.NotNull(call.AdditionalProperties);
+    }
+
+    [Fact]
+    public void FlushWithInterrupts_WithoutBufferedFunctionCallRejectsInterrupt()
+    {
+        var builder = new ToolCallBuilder();
+        var interrupt = new AGUIInterrupt
+        {
+            Id = "missing-call",
+            Reason = InterruptReasons.InputRequired,
+            ToolCallId = "missing-call",
+        };
+
+        var exception = Assert.Throws<InvalidOperationException>(() =>
+            builder.FlushWithInterrupts(
+                new RunFinishedInterruptOutcome { Interrupts = [interrupt] },
+                clientToolNames: null,
+                jsonSerializerOptions: s_options));
+
+        Assert.Contains("does not match a buffered function call", exception.Message);
     }
 
     [Fact]
